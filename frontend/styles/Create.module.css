@@ -1,0 +1,75 @@
+.createContainer {
+  display: flex ;
+  position: relative;
+  flex-direction: column;
+  padding: 2.5% 10% ;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #F0F4FA;
+  margin-bottom: 1.5rem;
+}
+
+.createForm {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.createForm label {
+
+  padding-top: 1rem ;
+  display: block;
+  line-height: 3;
+}
+.createForm input {
+  font-family: "LINE Seed Sans KR", monospace;
+  width: 30rem;
+  height: 3rem;
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  padding: 0.5rem ;
+
+}
+
+.createForm select {
+  font-family: "LINE Seed Sans KR", monospace;
+  width: 30rem;
+  height: 3rem;
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  padding: 0.5rem;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.createForm textarea {
+  font-family: "LINE Seed Sans KR", monospace;
+  resize: none;
+  width: 30rem;
+  height: 10rem;
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  padding: 0.5rem ;
+}
+
+.createForm button {
+  display: block;
+  margin-top: 1rem;
+  margin-left: 25rem;
+  font-weight: bold;
+  background: #0070f3;
+  color: #F0F4FA;
+  border: none;
+  border-radius: 3px;
+  height: 2.5rem;
+  width: 5rem;
+
+}

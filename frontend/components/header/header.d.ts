@@ -4,7 +4,6 @@ export interface Object {
   auth: string;
 }
 export interface Props {
-  setVisible: React.Dispatch<React.SetStateAction<bollean>>;
   cookie: string | undefined;
 }
 

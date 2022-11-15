@@ -3,13 +3,17 @@ import Image from "next/image";
 import styles from "styles/Header.module.scss";
 import logo from "public/icon/logo.png";
 import Link from "next/link";
-import { Props } from "./header";
+import LoginModal from "components/modal/loginModal.component";
+import DropDown from "./dropDown";
 import dropDown from "public/icon/dropDown.png";
 import loginUser from "public/icon/loginUser.png";
 import { ImageInfo } from "./header";
-import DropDown from "./dropDown";
+import { Props } from "./header";
+import { useSetRecoilState } from "recoil";
+import { loginModal } from "states/loginModal";
 
-function Header({ setVisible, cookie }: Props) {
+function Header({ cookie }: Props) {
+  const setVisible = useSetRecoilState(loginModal);
   const onClickLogin = () => {
     setVisible(true);
   };
@@ -24,7 +28,7 @@ function Header({ setVisible, cookie }: Props) {
         <h1 className={styles.logoText}>모면</h1>
       </Link>
       <div className={styles.menuContainer}>
-        <Link href='/post/create'>
+        <Link href="/post/create">
           <div className={styles.menuText}>모의면접 모집</div>
         </Link>
         {cookie ? (
@@ -51,6 +55,7 @@ function Header({ setVisible, cookie }: Props) {
           </div>
         )}
       </div>
+      <LoginModal />
     </div>
   );
 }

@@ -9,7 +9,7 @@ import {Cookie} from "../../types/auth";
 const Create : NextPage<Cookie> = ({cookie}) => {
   const [visible, setVisible] = useState(false);
   return(
-    <div>
+    <div className={styles.createPageContainer}>
       <Header setVisible={setVisible} cookie={cookie}/>
       <Head>
         <title>모두의 면접</title>

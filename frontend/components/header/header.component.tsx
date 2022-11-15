@@ -24,7 +24,9 @@ function Header({ setVisible, cookie }: Props) {
         <h1 className={styles.logoText}>모면</h1>
       </Link>
       <div className={styles.menuContainer}>
-        <div className={styles.menuText}>모의면접 모집</div>
+        <Link href='/post/create'>
+          <div className={styles.menuText}>모의면접 모집</div>
+        </Link>
         {cookie ? (
           <DropDown>
             <div className={styles.loginBox}>

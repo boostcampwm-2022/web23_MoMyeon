@@ -9,10 +9,12 @@
   display: flex;
   align-items: center;
   border-bottom: 2px solid #F0F4FA;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.1rem;
+  font-size: 18px;
 }
 
 .createForm {
+  font-size: 15px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -22,29 +24,29 @@
 
 .createForm label {
 
-  padding-top: 1rem ;
+  padding-top: 1.4rem ;
   display: block;
   line-height: 3;
 }
 .createForm input {
   font-family: "LINE Seed Sans KR", monospace;
-  width: 30rem;
-  height: 3rem;
+  width: 42rem;
+  height: 4.2rem;
   background-color: #FFFFFF;
   border: 1px solid #CCCCCC;
   border-radius: 5px;
-  padding: 0.5rem ;
+  padding: 0.7rem ;
 
 }
 
 .createForm select {
   font-family: "LINE Seed Sans KR", monospace;
-  width: 30rem;
-  height: 3rem;
+  width: 42rem;
+  height: 4.2rem;
   background-color: #FFFFFF;
   border: 1px solid #CCCCCC;
   border-radius: 5px;
-  padding: 0.5rem;
+  padding: 0.7rem;
   -webkit-appearance: none;
   appearance: none;
 }
@@ -52,24 +54,24 @@
 .createForm textarea {
   font-family: "LINE Seed Sans KR", monospace;
   resize: none;
-  width: 30rem;
-  height: 10rem;
+  width: 42rem;
+  height: 14rem;
   background-color: #FFFFFF;
   border: 1px solid #CCCCCC;
   border-radius: 5px;
-  padding: 0.5rem ;
+  padding: 0.7rem ;
 }
 
 .createForm button {
   display: block;
-  margin-top: 1rem;
-  margin-left: 25rem;
+  margin-top: 1.4rem;
+  margin-left: 35rem;
   font-weight: bold;
   background: #0070f3;
   color: #F0F4FA;
   border: none;
   border-radius: 3px;
-  height: 2.5rem;
-  width: 5rem;
+  height: 3.5rem;
+  width: 7rem;
 
 }

@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { useState } from "react";
 import type { AppProps } from "next/app";
 import {
@@ -11,11 +10,6 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <Head>
-          <title> 모면 </title>
-          <meta name="description" content="" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
         <Component {...pageProps} />
       </Hydrate>
     </QueryClientProvider>

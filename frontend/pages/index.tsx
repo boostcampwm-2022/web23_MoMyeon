@@ -1,5 +1,4 @@
 import { Suspense, useState } from "react";
-import LoginModal from "components/modal/loginModal.component";
 import styles from "styles/Home.module.scss";
 import Header from "components/header/header.component";
 import HomeHead from "head/home";
@@ -10,12 +9,10 @@ import { GetServerSideProps, NextPage } from "next";
 import { Cookie } from "types/auth";
 
 const Home: NextPage<Posts & Cookie> = ({ posts, cookie }) => {
-  const [visible, setVisible] = useState(false);
   return (
     <div className={styles.main}>
       <HomeHead />
-      <Header setVisible={setVisible} cookie={cookie} />
-      <LoginModal visible={visible} setVisible={setVisible} />
+      <Header cookie={cookie} />
       <Suspense fallback={<div>로딩중</div>}>
         <PostContainer posts={posts} />
       </Suspense>

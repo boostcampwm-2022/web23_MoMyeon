@@ -2,7 +2,8 @@ import styles from "styles/Create.module.css";
 import React from "react";
 import {FieldErrors, useForm} from 'react-hook-form' ;
 import {postFormTypes} from "./createPostForm";
-
+import {Post} from "types/posts";
+import createPost from "utils/api/createPost";
 
 const CreatePostForm = () => {
 
@@ -12,10 +13,15 @@ const CreatePostForm = () => {
     }
   }
 
-  const onValid = (data : postFormTypes) => {
-    alert(data.contact);
-    console.log(data);
-    console.log('onValid');
+  const onValid = async (data : postFormTypes) => {
+    const postData : Post = {
+      title: data.postTitle,
+      hashtag: ['HTML','CSS','javascript'],
+      user: 'Blind Cat',
+      view: 100
+    }
+
+    await createPost(postData);
     reset();
   }
 
@@ -26,7 +32,6 @@ const CreatePostForm = () => {
   }
 
   const { register, handleSubmit, reset, formState: {errors} } = useForm<postFormTypes>();
-
 
   return (
     <form className={styles.createForm} onSubmit={handleSubmit(onValid, onError)} method="post">

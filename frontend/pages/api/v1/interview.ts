@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { data } from 'mockData/postData'
 import {Post} from "types/posts";
@@ -7,5 +6,9 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  res.status(200).json(data);
+  if(req.method === 'POST'){
+    const post = req.body.data ;
+    data.unshift(post);
+    res.status(201).json(post);
+  }
 }

@@ -1,17 +1,23 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
 import Head from 'next/head'
-
+import { useState } from "react";
+import type { AppProps } from "next/app";
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 export default function App({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(() => new QueryClient());
   return (
-    <>
-      <Head>
-        <title> 모면 </title>
-        <meta name="description" content="" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Component {...pageProps} />
-    </>
-
+    <QueryClientProvider client={queryClient}>
+      <Hydrate state={pageProps.dehydratedState}>
+        <Head>
+          <title> 모면 </title>
+          <meta name="description" content="" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Component {...pageProps} />
+      </Hydrate>
+    </QueryClientProvider>
   );
 }

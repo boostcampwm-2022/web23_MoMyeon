@@ -8,6 +8,7 @@ import getPosts from "utils/api/getPosts";
 import { Post, Posts } from "types/posts";
 import { GetServerSideProps, NextPage } from "next";
 import { Cookie } from "types/auth";
+
 const Home: NextPage<Posts & Cookie> = ({ posts, cookie }) => {
   const [visible, setVisible] = useState(false);
   return (

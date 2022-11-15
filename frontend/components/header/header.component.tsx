@@ -8,6 +8,7 @@ import dropDown from "public/icon/dropDown.png";
 import loginUser from "public/icon/loginUser.png";
 import { ImageInfo } from "./header";
 import DropDown from "./dropDown";
+
 function Header({ setVisible, cookie }: Props) {
   const onClickLogin = () => {
     setVisible(true);

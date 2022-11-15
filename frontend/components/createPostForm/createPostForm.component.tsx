@@ -1,14 +1,8 @@
-import styles from "../styles/Create.module.css";
+import styles from "styles/Create.module.css";
 import React from "react";
 import {FieldErrors, useForm} from 'react-hook-form' ;
+import {postFormTypes} from "./createPostForm";
 
-interface postFormTypes {
-  postTitle: string,
-  peopleLimit: number,
-  //category
-  contact: string,
-  detailContents: string
-}
 
 const CreatePostForm = () => {
 

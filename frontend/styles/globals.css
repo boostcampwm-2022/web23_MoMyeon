@@ -2,7 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  font-family: "LINE Seed Sans KR", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 10px;
 }
@@ -24,4 +24,25 @@ a {
     color: white;
     background: black;
   }
+}
+
+@font-face {
+  font-family: "LINE Seed Sans KR";
+  src: url('../public/fonts/lineSeedSansKR/LINESeedSansKR-Rg.woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "LINE Seed Sans KR";
+  src: url('../public/fonts/lineSeedSansKR/LINESeedSansKR-Bd.woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "LINE Seed Sans KR";
+  src: url('../public/fonts/lineSeedSansKR/LINESeedSansKR-Th.woff2');
+  font-weight: 300 ;
+  font-style: normal;
 }

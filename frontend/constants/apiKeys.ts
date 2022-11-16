@@ -1,5 +1,5 @@
 export enum apiKeys {
-  GET_POSTS = "http://localhost:3000/api/posts",
+  GET_POSTS = "http://localhost:3020/data",
 }
 
 export default apiKeys;

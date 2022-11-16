@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TestModule } from './test/test.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { InterviewModule } from './interview/interview.module';
 
 const env = process.env.NODE_ENV;
 
@@ -28,6 +29,8 @@ const env = process.env.NODE_ENV;
     }),
 
     TestModule,
+
+    InterviewModule,
   ],
   controllers: [],
   providers: [],

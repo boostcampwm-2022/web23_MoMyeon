@@ -1,7 +1,7 @@
 export interface postFormTypes {
   postTitle: string,
   peopleLimit: number,
-  //category
+  category : string[],
   contact: string,
   detailContents: string
 }

@@ -1,4 +1,4 @@
-import styles from "styles/Create.module.css";
+import styles from "styles/Create.module.scss";
 import Header from "components/header/header.component";
 import React from "react";
 import CreatePostForm from "components/createPostForm/createPostForm.component";

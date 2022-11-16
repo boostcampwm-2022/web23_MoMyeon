@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: nest-app
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    networks:
+      - common-net
+    depends_on:
+      - mysql
+
+  mysql:
+    container_name: mysql-host
+    image: mysql:8.0
+    env_file:
+      - ./config/.env.production
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PW}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./init.sql:/data/application/init.sql
+    command: --init-file /data/application/init.sql
+    networks:
+      - common-net
+
+networks:
+  common-net:

@@ -25,6 +25,15 @@ const Create: NextPage<Cookie> = ({ cookie }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookie = context.req.cookies.auth ? context.req.cookies.auth : null;
+  if(!cookie){
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
   return {
     props: {
       cookie,

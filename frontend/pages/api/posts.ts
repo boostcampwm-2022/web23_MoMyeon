@@ -52,7 +52,7 @@ const data = [
     view: 300,
   },
 ];
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Post[]>
 ) {

@@ -1,8 +1,12 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TestModule } from './test/test.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { CategoryModule } from './category/category.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+
+import { AppLoggerMiddleware } from './middlewares/appLoger.middleware';
 
 const env = process.env.NODE_ENV;
 
@@ -28,11 +32,17 @@ const env = process.env.NODE_ENV;
       inject: [ConfigService],
     }),
 
-    TestModule,
-
     CategoryModule,
+
+    UserModule,
+
+    AuthModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AppLoggerMiddleware).forRoutes('*');
+  }
+}

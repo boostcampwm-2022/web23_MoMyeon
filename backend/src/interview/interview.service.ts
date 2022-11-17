@@ -7,6 +7,7 @@ import { Interview } from 'src/entities/interview.entity';
 import { Category } from 'src/entities/category.entity';
 import { InterviewCategory } from 'src/entities/interviewCategory.entity';
 import { UserInterview } from 'src/entities/userInterview.entity';
+import { SelectInterviewDto } from './dto/select-interview.dto';
 
 @Injectable()
 export class InterviewService {
@@ -43,8 +44,9 @@ export class InterviewService {
     return { id: interviewId };
   }
 
-  findAll() {
-    return `This action returns all interview`;
+  async findAll(selectInterviewDto: SelectInterviewDto) {
+    //작업중
+    return selectInterviewDto;
   }
 
   async findOne(id: number) {
@@ -81,11 +83,37 @@ export class InterviewService {
     return { interviewData };
   }
 
-  update(id: number, updateInterviewDto: UpdateInterviewDto) {
-    return `This action updates a #${id} interview`;
+  async update(id: number, updateInterviewDto: UpdateInterviewDto) {
+    //interview 저장
+    updateInterviewDto.max_member = updateInterviewDto.maxMember;
+    const category = updateInterviewDto.category;
+    delete updateInterviewDto['maxMember'];
+    delete updateInterviewDto['category'];
+    this.interviewRepository.update(id, updateInterviewDto);
+
+    //interviewCategory 삭제
+    this.interviewCategoryRepository
+      .createQueryBuilder('users')
+      .softDelete()
+      .where('interviewId = :id', { id: id })
+      .execute();
+
+    //interviewCategory 저장
+    category.forEach((element) => {
+      const createInterviewCategoryData: object = {
+        interview: id,
+        category: element.id,
+      };
+      const newInterviewCategory = this.interviewCategoryRepository.create(
+        createInterviewCategoryData,
+      );
+      this.interviewCategoryRepository.save(newInterviewCategory);
+    });
+
+    return { interview_id: id };
   }
 
   remove(id: number) {
-    return `This action removes a #${id} interview`;
+    return this.interviewRepository.softDelete(id);
   }
 }

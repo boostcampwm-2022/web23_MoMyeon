@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { InterviewService } from './interview.service';
 import { CreateInterviewDto } from './dto/create-interview.dto';
 import { UpdateInterviewDto } from './dto/update-interview.dto';
+import { SelectInterviewDto } from './dto/select-interview.dto';
 
 @Controller({ version: '1', path: 'interview' })
 export class InterviewController {
@@ -21,8 +23,8 @@ export class InterviewController {
   }
 
   @Get()
-  findAll() {
-    return this.interviewService.findAll();
+  findAll(@Query() selectInterviewDto: SelectInterviewDto) {
+    return this.interviewService.findAll(selectInterviewDto);
   }
 
   @Get(':id')

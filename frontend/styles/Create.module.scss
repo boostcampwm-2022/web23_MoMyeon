@@ -52,28 +52,28 @@
   }
 }
 
-.label__title {
+.labelTitle {
   padding-top: 1.4rem ;
   display: block;
   line-height: 3;
 }
 
-.label__category {
+.labelCategory {
   border: 1px solid color.$GRAY;
   color: black;
 }
 
-.label__category__clicked {
+.labelCategoryClicked {
   background-color: color.$MAINCOLOR ;
   color: white ;
 }
 
 
-.input__checkbox {
+.inputCheckbox {
   appearance: none;
 }
 
-.input__text {
+.inputText {
   font-family: "LINE Seed Sans KR", monospace;
   width: 42rem;
   height: 4.2rem;
@@ -83,7 +83,7 @@
   padding: 0.7rem ;
 }
 
-.createForm__button__submit{
+.createFormButtonSubmit{
   display: block;
   margin-top: 1.4rem;
   margin-left: 35rem;

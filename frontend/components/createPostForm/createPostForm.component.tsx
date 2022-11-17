@@ -54,12 +54,12 @@ const CreatePostForm = () => {
   return (
     <form className={styles.createForm} onSubmit={handleSubmit(onValid, onError)} method="post">
       <label
-        className={styles.label__title}
+        className={styles.labelTitle}
         htmlFor='postTitle'>
         제목
       </label>
       <input
-        className={styles.input__text}
+        className={styles.inputText}
         {...register('postTitle',{maxLength:{value:10, message:'제목은 10글자까지만 가능해용'}}) }
         type='text'
         id='postTitle'
@@ -67,7 +67,7 @@ const CreatePostForm = () => {
         placeholder='모의 면접 제목'
       />
       <label
-        className={styles.label__title}
+        className={styles.labelTitle}
         htmlFor='peopleLimit'>
         최대 인원
       </label>
@@ -78,15 +78,15 @@ const CreatePostForm = () => {
         <option value='5'> 5명 </option>
         <option value='6'> 6명 </option>
       </select>
-      <label className={styles.label__title}>
+      <label className={styles.labelTitle}>
         면접 카테고리
       </label>
       <CategoryTag register = {register}/>
       <label
-        className={styles.label__title}
+        className={styles.labelTitle}
         htmlFor='contact'> 연락 방법 </label>
       <input
-        className={styles.input__text}
+        className={styles.inputText}
         {...register('contact')}
         type='text'
         id='contact'
@@ -94,7 +94,7 @@ const CreatePostForm = () => {
         placeholder='링크를 적어주세요 ! '
       />
       <label
-        className={styles.label__title}
+        className={styles.labelTitle}
         htmlFor='detailContents'>
         모의 면접에 대한 상세 내용을 적어주세요
       </label>
@@ -106,7 +106,7 @@ const CreatePostForm = () => {
         onKeyDown={(e) => disableTab(e)}
       />
       <button
-        className = {styles.createForm__button__submit}
+        className = {styles.createFormButtonSubmit}
         type='submit'> 모집하기
       </button>
     </form>

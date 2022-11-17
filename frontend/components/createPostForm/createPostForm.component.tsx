@@ -60,7 +60,10 @@ const CreatePostForm = () => {
       </label>
       <input
         className={styles.inputText}
-        {...register('postTitle',{maxLength:{value:10, message:'제목은 10글자까지만 가능해용'}}) }
+        {...register('postTitle', {
+          maxLength:{value:256, message:'제목은 256글자까지만 가능해용'},
+          minLength:{value:3, message: '제목은 3글자 이상 써주세용'}
+        })}
         type='text'
         id='postTitle'
         name='postTitle'

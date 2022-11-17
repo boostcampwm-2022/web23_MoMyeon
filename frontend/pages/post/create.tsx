@@ -4,7 +4,7 @@ import React from "react";
 import CreatePostForm from "components/createPostForm/createPostForm.component";
 import Head from "next/head";
 import { GetServerSideProps, NextPage } from "next";
-import { Cookie } from "../../types/auth";
+import {Cookie} from "types/auth";
 
 const Create: NextPage<Cookie> = ({ cookie }) => {
   return (

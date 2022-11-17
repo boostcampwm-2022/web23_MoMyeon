@@ -23,7 +23,7 @@ export function CategoryTag(
   return (
     <div>
       {categories?.map((category : Category)=>{
-        return <CategoryTagItem category ={category} register = {register}/>
+        return <CategoryTagItem key={category.id} category ={category} register = {register}/>
       })}
     </div>
   );

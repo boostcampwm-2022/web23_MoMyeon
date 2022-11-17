@@ -11,7 +11,7 @@ import { InterviewService } from './interview.service';
 import { CreateInterviewDto } from './dto/create-interview.dto';
 import { UpdateInterviewDto } from './dto/update-interview.dto';
 
-@Controller('interview')
+@Controller({ version: '1', path: 'interview' })
 export class InterviewController {
   constructor(private readonly interviewService: InterviewService) {}
 

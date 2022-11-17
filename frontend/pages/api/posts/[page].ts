@@ -2,18 +2,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { data } from "mockData/postData";
 
-type params = {
-  params: { page: string };
-};
-export default function handler(
-  req: NextApiRequest & params,
-  res: NextApiResponse
-) {
-  let { page } = req.params;
-  const pageInt = parseInt(page);
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  let { page } = req.query;
+  const pageInt = parseInt(page as string);
   const OFFSET = 10;
-  console.log(page);
   const result = data.slice(pageInt * OFFSET, (pageInt + 1) * OFFSET);
-  res.json(result);
-  res.status(200).json(data);
+  res.status(200).json(result);
 }

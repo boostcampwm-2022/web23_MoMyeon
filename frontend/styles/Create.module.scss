@@ -9,12 +9,10 @@
   display: flex ;
   position: relative;
   flex-direction: column;
-  padding: 2.5% 10% ;
+  padding: 3% 20% ;
 }
 
 .titleWrapper {
-  display: flex;
-  align-items: center;
   border-bottom: 2px solid #F0F4FA;
   margin-bottom: 2.1rem;
   font-size: 18px;
@@ -58,16 +56,40 @@
   line-height: 3;
 }
 
+.categoryContainer {
+  display: grid;
+  width: 42rem;
+  padding: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 2rem;
+  row-gap: 2rem;
+}
+
 .labelCategory {
-  border: 1px solid color.$GRAY;
-  color: black;
+  color: color.$MAINCOLOR;
+  background-color: color.$SUBCOLOR;
+  border:none;
+  border-radius: 3rem;
+  padding: 1.5rem;
+  height: 5rem;
+  width: 15rem;
+  font-size: 15px;
+  display: inline-block;
+  text-align: center;
 }
 
 .labelCategoryClicked {
-  background-color: color.$MAINCOLOR ;
-  color: white ;
+  background-color: color.$MAINCOLOR;
+  color: color.$SUBCOLOR;
+  border:none;
+  border-radius: 3rem;
+  padding: 1.5rem;
+  height: 5rem;
+  width: 15rem;
+  font-size: 15px;
+  display: inline-block;
+  text-align: center;
 }
-
 
 .inputCheckbox {
   appearance: none;

@@ -21,8 +21,26 @@ export class InterviewService {
     private userInterviewRepository: Repository<UserInterview>,
   ) {}
 
-  create(createInterviewDto: CreateInterviewDto) {
-    return 'This action adds a new interview';
+  async create(createInterviewDto: CreateInterviewDto) {
+    //interview 저장
+    createInterviewDto.max_member = createInterviewDto.maxMember;
+    const newInterview = this.interviewRepository.create(createInterviewDto);
+    const saveInterview = await this.interviewRepository.save(newInterview);
+    const interviewId = saveInterview.id;
+
+    //interviewCategory 저장
+    createInterviewDto.category.forEach((element) => {
+      const createInterviewCategoryData: object = {
+        interview: interviewId,
+        category: element.id,
+      };
+      const newInterviewCategory = this.interviewCategoryRepository.create(
+        createInterviewCategoryData,
+      );
+      this.interviewCategoryRepository.save(newInterviewCategory);
+    });
+
+    return { id: interviewId };
   }
 
   findAll() {

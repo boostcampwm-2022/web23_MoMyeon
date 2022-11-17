@@ -9,7 +9,7 @@ function PostCard({ post }: PostProp) {
     <div className={styles.container}>
       <h1 className={styles.title}>{title}</h1>
       <div className={styles.hashtagContainer}>
-        {hashtag.map((item: string) => {
+        {hashtag?.map((item: string) => {
           return (
             <h4 className={styles.hashtag} key={item}>
               {item}

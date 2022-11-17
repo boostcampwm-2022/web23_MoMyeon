@@ -1,6 +1,9 @@
 import { useState } from "react";
 import type { AppProps } from "next/app";
 import "../styles/globals.css";
+
+import {SSRProvider} from "@react-aria/ssr";
+
 import {
   Hydrate,
   QueryClient,
@@ -11,12 +14,14 @@ import { RecoilRoot } from "recoil";
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
   return (
-    <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <Component {...pageProps} />
-        </Hydrate>
-      </QueryClientProvider>
-    </RecoilRoot>
+    <SSRProvider>
+      <RecoilRoot>
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydratedState}>
+            <Component {...pageProps} />
+          </Hydrate>
+        </QueryClientProvider>
+      </RecoilRoot>
+    </SSRProvider>
   );
 }

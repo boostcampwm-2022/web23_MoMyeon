@@ -14,7 +14,7 @@ import {Cookie} from "types/auth";
 import {convertEpochStringToLocale} from "utils/convertEpochStringToLocale";
 
 interface Props {
-  cookie : Cookie,
+  cookie : string | undefined,
   nickName : string,
   date : string,
   content: string[],
@@ -91,8 +91,8 @@ const PostPage : NextPage<Props> = ({ cookie, nickName, date, content }) =>  {
           <div className={styles.titleContainer}>
             <h4> 상세 내용 </h4>
           </div>
-          { content.map((line)=> {
-            return <p className={styles.contents}> {line} </p>
+          { content.map((line, index)=> {
+            return <p key={index} className={styles.contents}> {line} </p>
           })}
         </section>
       </div>

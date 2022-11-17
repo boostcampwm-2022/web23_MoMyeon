@@ -1,10 +1,6 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
-import { data } from 'mockData/postData'
-import {Post} from "types/posts";
+import { Post } from "types/posts";
 
-
-const data = [
+export const data : Post[] = [
   {
     title: "네이버 1차",
     hashtag: ["네트워크", "운영체제"],
@@ -54,10 +50,3 @@ const data = [
     view: 300,
   },
 ];
-
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  res.status(200).json(data);
-}

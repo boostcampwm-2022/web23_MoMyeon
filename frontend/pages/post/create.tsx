@@ -1,4 +1,4 @@
-import styles from "styles/Create.module.css";
+import styles from "styles/Create.module.scss";
 import Header from "components/header/header.component";
 import React from "react";
 import CreatePostForm from "components/createPostForm/createPostForm.component";
@@ -25,6 +25,15 @@ const Create: NextPage<Cookie> = ({ cookie }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookie = context.req.cookies.auth ? context.req.cookies.auth : null;
+  if(!cookie){
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
   return {
     props: {
       cookie,

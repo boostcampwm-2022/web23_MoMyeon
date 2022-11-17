@@ -1,3 +1,3 @@
 export interface Cookie {
-  cookie: string;
+  cookie: string | undefined;
 }

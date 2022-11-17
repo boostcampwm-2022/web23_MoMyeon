@@ -49,7 +49,8 @@ const CreatePostForm = () => {
     alert(log);
   }
 
-  const { register, handleSubmit, reset, formState: {errors} } = useForm<postFormTypes>();
+  const { register, watch, handleSubmit, reset, formState: {errors} } = useForm<postFormTypes>();
+  console.log(watch());
 
   return (
     <form className={styles.createForm} onSubmit={handleSubmit(onValid, onError)} method="post">
@@ -62,7 +63,8 @@ const CreatePostForm = () => {
         className={styles.inputText}
         {...register('postTitle', {
           maxLength:{value:256, message:'제목은 256글자까지만 가능해용'},
-          minLength:{value:3, message: '제목은 3글자 이상 써주세용'}
+          minLength:{value:3, message: '제목은 3글자 이상 써주세용'},
+          required: '제목을 적어주세요'
         })}
         type='text'
         id='postTitle'

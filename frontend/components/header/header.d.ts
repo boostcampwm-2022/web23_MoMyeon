@@ -1,10 +1,11 @@
 import { StaticImageData } from "next/image";
+import {Cookie} from "types/auth";
 
 export interface Object {
   auth: string;
 }
 export interface Props {
-  cookie: string | undefined;
+  cookie: Cookie ;
 }
 
 export interface ImageInfo {

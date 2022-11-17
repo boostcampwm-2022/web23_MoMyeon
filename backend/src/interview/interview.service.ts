@@ -47,8 +47,38 @@ export class InterviewService {
     return `This action returns all interview`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} interview`;
+  async findOne(id: number) {
+    //interview 정보
+    const interviewData = await this.interviewRepository
+      .createQueryBuilder()
+      .select([
+        'id AS interview_id',
+        'title',
+        'max_member AS maxMember',
+        'contact',
+        'content',
+        // 'count',
+        // 'status AS recruitStatus',
+        'created_at AS date',
+      ])
+      .where({ id })
+      .getRawOne();
+    interviewData['date'] = new Date(interviewData['date']);
+
+    //category 정보
+    const categoryData = await this.interviewCategoryRepository
+      .createQueryBuilder('ic')
+      .leftJoinAndSelect(Category, 'category', 'ic.categoryId = category.id')
+      .select(['category.id AS id', 'category.name AS name'])
+      .where('ic.interviewId = :id', { id: id })
+      .getRawMany();
+    interviewData['category'] = categoryData;
+
+    //user_interview에 따라서 member, isHost, userStatus 로직 추가 필요
+    interviewData['member'] = undefined;
+    interviewData['isHost'] = undefined;
+    interviewData['userStatus'] = undefined;
+    return { interviewData };
   }
 
   update(id: number, updateInterviewDto: UpdateInterviewDto) {

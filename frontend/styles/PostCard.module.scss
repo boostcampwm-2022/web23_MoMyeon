@@ -30,6 +30,9 @@
 
 .title {
   margin-top: 4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .hashtagContainer {

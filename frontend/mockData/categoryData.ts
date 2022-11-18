@@ -16,5 +16,13 @@ export const categoryData : Category[] = [
   {
     id: 4,
     name: '백엔드'
+  },
+  {
+    id: 5,
+    name: '포트폴리오 리뷰'
+  },
+  {
+    id: 6,
+    name: '모바일'
   }
 ];

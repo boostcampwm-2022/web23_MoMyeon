@@ -1104,6 +1104,14 @@ ast-types-flow@^0.0.7:
   resolved "https://registry.yarnpkg.com/ast-types-flow/-/ast-types-flow-0.0.7.tgz#f70b735c6bca1a5c9c22d982c3e39e7feba3bdad"
   integrity sha512-eBvWn1lvIApYMhzQMsu9ciLfkBY499mFZlNqG+/9WR7PVlroQw0vG30cOQQbaKz3sCEc44TAOu2ykzqXSNnwag==
 
+attempt-x@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/attempt-x/-/attempt-x-2.1.2.tgz#75c9c801158b46da7411c6a6e1b85aba56cea13d"
+  integrity sha512-vblT/0yT5dmm2qo8mfBjtiu0BGL/HWhxBFTrqHvkjQQSsXb/sTmpYIi1StJGSN5W/TX2E+FsuX7c23ExMZy2jw==
+  dependencies:
+    simple-call-x "^1.0.3"
+    util-pusher-x "^1.0.3"
+
 axe-core@^4.4.3:
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.5.2.tgz#823fdf491ff717ac3c58a52631d4206930c1d9f7"
@@ -1741,6 +1749,11 @@ has-bigints@^1.0.1, has-bigints@^1.0.2:
   resolved "https://registry.yarnpkg.com/has-bigints/-/has-bigints-1.0.2.tgz#0871bd3e3d51626f6ca0966668ba35d5602d6eaa"
   integrity sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==
 
+has-boxed-string-x@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/has-boxed-string-x/-/has-boxed-string-x-2.1.1.tgz#8356e83786969ab9764009bc435c6ac3f4d86b87"
+  integrity sha512-1MmOo3H8UbI6JQ3e3TaxAXHQmpnyrM5DjYRqRXNvjl/UHZqb2fEyfp0UPvtbzvmOf0+sBzcv4ea/LEw87WNyVA==
+
 has-flag@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
@@ -1753,10 +1766,26 @@ has-property-descriptors@^1.0.0:
   dependencies:
     get-intrinsic "^1.1.1"
 
+has-symbol-support-x@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/has-symbol-support-x/-/has-symbol-support-x-2.1.2.tgz#1e9b8088cb800d41f3855969c34eba09ccaadfdb"
+  integrity sha512-RpWVMhXSkiJCXI7+bavsapHwlS0VD7rCOSwhzcy0yZzFXxr+FznUBK4OkECVH/EOM1ZoVXw8OzABIEvaEFl+Zg==
+  dependencies:
+    attempt-x "^2.1.2"
+    is-symbol "^1.0.2"
+
 has-symbols@^1.0.2, has-symbols@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/has-symbols/-/has-symbols-1.0.3.tgz#bb7b2c4349251dce87b125f7bdf874aa7c8b39f8"
   integrity sha512-l3LCuF6MgDNwTDKkdYGEihYjt5pRPbEg46rtlmnSPlUbgmB8LOIrKJbYYFBSbnPaJexMKtiPO8hmeRjRz2Td+A==
+
+has-to-string-tag-x@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/has-to-string-tag-x/-/has-to-string-tag-x-2.1.2.tgz#23d8074d174149f06352f5a34b619fde286c252f"
+  integrity sha512-xVv4BRcvyT9FAZSzvWD6tzVWj5JHK2d+mcv2wRSIfNBhG534hSfDGPdtx3hHJUE94BufO+pFyVpKbnaC6dsalA==
+  dependencies:
+    has-symbol-support-x "^2.1.2"
+    is-symbol "^1.0.2"
 
 has-tostringtag@^1.0.0:
   version "1.0.0"
@@ -1764,6 +1793,13 @@ has-tostringtag@^1.0.0:
   integrity sha512-kFjcSNhnlGV1kyoGk7OXKSawH5JOb/LzUc5w9B02hOTO0dfFRjbHQKvg1d6cf3HbeUmtU9VbbV3qzZ2Teh97WQ==
   dependencies:
     has-symbols "^1.0.2"
+
+has-working-bind-x@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/has-working-bind-x/-/has-working-bind-x-1.0.1.tgz#ab8294e347d2b0eb9db22365a1cdd5d3bd0d958f"
+  integrity sha512-iVknmNYk7CdVSDsdIyaeyPNPHlhoESfNEztH9J6kUayhj123M1so039HfC91vAOtR4NyLXWyvaFiNaXvmT/JRQ==
+  dependencies:
+    noop-x "^1.2.1"
 
 has@^1.0.3:
   version "1.0.3"
@@ -1897,10 +1933,20 @@ is-number@^7.0.0:
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
 
+is-object@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/is-object/-/is-object-1.0.2.tgz#a56552e1c665c9e950b4a025461da87e72f86fcf"
+  integrity sha512-2rRIahhZr2UWb45fIOuvZGpFtz0TyOZLf32KxBbSoUCeZR495zCKlWUKKUByk3geS2eAs7ZAABt0Y/Rx0GiQGA==
+
 is-path-inside@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/is-path-inside/-/is-path-inside-3.0.3.tgz#d231362e53a07ff2b0e0ea7fed049161ffd16283"
   integrity sha512-Fd4gABb+ycGAmKou8eMftCupSir5lRxqf4aD/vd0cD2qc4HL07OjCeuHMr8Ro4CoMaeCKDB0/ECBOVWjTwUvPQ==
+
+is-primitive-x@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/is-primitive-x/-/is-primitive-x-1.0.1.tgz#0e9b8e4f1bd1ef39d8ad2cc78dbab291b4e7380a"
+  integrity sha512-Z29Qi/aRkELj6LO3LnnSAPN1929UIpY0h0yha5zULYo3VY1Q8hr2ocAE/fVZf22D8LFwoDoGSZwepbk7nvv+Ag==
 
 is-regex@^1.1.4:
   version "1.1.4"
@@ -1917,7 +1963,7 @@ is-shared-array-buffer@^1.0.2:
   dependencies:
     call-bind "^1.0.2"
 
-is-string@^1.0.5, is-string@^1.0.7:
+is-string@^1.0.4, is-string@^1.0.5, is-string@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/is-string/-/is-string-1.0.7.tgz#0dd12bf2006f255bb58f695110eff7491eebc0fd"
   integrity sha512-tE2UXzivje6ofPW7l23cjDOMa09gb7xlAqG6jG5ej6uPV32TlWP3NKPigtaGeHNu9fohccRYvIiZMfOOnOYUtg==
@@ -1931,6 +1977,14 @@ is-symbol@^1.0.2, is-symbol@^1.0.3:
   dependencies:
     has-symbols "^1.0.2"
 
+is-urlsearchparams@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/is-urlsearchparams/-/is-urlsearchparams-1.0.2.tgz#6735b7618af299346e6d664446407218bec2a667"
+  integrity sha512-RrqCHNnM6q7PJ0h0zFaRc7mFGDXoJod2FTIfcSZpjsbLelY47H2js7SY1oc9uS2LMJ1hYBAwnRA3QskuwzcC7Q==
+  dependencies:
+    has-to-string-tag-x "^2.1.2"
+    is-object "^1.0.2"
+
 is-weakref@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/is-weakref/-/is-weakref-1.0.2.tgz#9529f383a9338205e89765e0392efc2f100f06f2"
@@ -1942,6 +1996,15 @@ isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
+
+isurl@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/isurl/-/isurl-4.0.2.tgz#3f3edeb9d15c894966415a0baa97a887e13bd435"
+  integrity sha512-k7ifDSe8VfHALfwSeIzOV64EvQsENcMZIHioFhHJO1HUF7ZKnbhW+Dv3LntJoX34fxyoHbvB+MQnM7i4qAHyOQ==
+  dependencies:
+    has-to-string-tag-x "^2.1.2"
+    is-object "^1.0.2"
+    is-urlsearchparams "^1.0.2"
 
 js-sdsl@^4.1.4:
   version "4.1.5"
@@ -2106,6 +2169,11 @@ next@13.0.3:
     "@next/swc-win32-arm64-msvc" "13.0.3"
     "@next/swc-win32-ia32-msvc" "13.0.3"
     "@next/swc-win32-x64-msvc" "13.0.3"
+
+noop-x@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/noop-x/-/noop-x-1.2.1.tgz#bcaba2321798f41839614674b3acf7c809536f50"
+  integrity sha512-X+jn3u2YhlAjteZIfrcVxaDLRfnrMvkzQ+jRatOX8UO7PFqU0QKlcyI2DhvLKEK2K4u1cRrZw9QqK3XruvyH2A==
 
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
@@ -2453,6 +2521,22 @@ side-channel@^1.0.4:
     get-intrinsic "^1.0.2"
     object-inspect "^1.9.0"
 
+simple-bind-x@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/simple-bind-x/-/simple-bind-x-1.0.3.tgz#05fcab023a5d46213e8358a2ac49cc566ec94495"
+  integrity sha512-UNt+DzNdI/a6dfkpJoGTCarOKnBBNxTwcjrCqQWtHQ5NZtI0fdjL4hB4YtYCbOETGnNw5/e69K6URhSs738KLg==
+  dependencies:
+    has-working-bind-x "^1.0.1"
+    util-pusher-x "^1.0.3"
+
+simple-call-x@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/simple-call-x/-/simple-call-x-1.0.3.tgz#01193b0476993f9ed2eaaff522f70d943399ebb5"
+  integrity sha512-f80t0ft82q15coHABjl95mnqCDIkpxLeQzfwdwtc0bx0FTnsS8uKDseyY0Pxa2O6Oh5Lpe2QKG2Q3NXWPjxEMQ==
+  dependencies:
+    simple-bind-x "^1.0.3"
+    util-pusher-x "^1.0.3"
+
 slash@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
@@ -2613,6 +2697,16 @@ use-sync-external-store@1.2.0, use-sync-external-store@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
+
+util-pusher-x@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/util-pusher-x/-/util-pusher-x-1.0.3.tgz#c5b27cb4fe35002ecc96c203bff6dbc01a645285"
+  integrity sha512-+hCPl/DrppZRn/RHYnUcNwckR4h5s06pUELCSGEMhdYSy7N6dIfvozR482w5j2+eKfXvDISL/QNlTnRPB2skDw==
+  dependencies:
+    has-boxed-string-x "^2.1.1"
+    has-working-bind-x "^1.0.1"
+    is-primitive-x "^1.0.1"
+    is-string "^1.0.4"
 
 warning@^4.0.3:
   version "4.0.3"

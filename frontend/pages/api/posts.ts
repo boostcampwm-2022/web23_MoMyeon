@@ -12,7 +12,6 @@ export default function handler(
   let { page } = req.params;
   const pageInt = parseInt(page);
   const OFFSET = 10;
-  console.log(page);
   const result = data.slice(pageInt * OFFSET, (pageInt + 1) * OFFSET);
   res.json(result);
   res.status(200).json(data);

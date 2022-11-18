@@ -1,0 +1,40 @@
+name: nCloud Deployment
+
+on:
+  push:
+    branches: "main"
+  workflow_dispatch:
+
+jobs:
+  deploy-production:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: deploy
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: ${{ secrets.SSH_SCRIPT }}
+
+  deploy-production-front:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy FrontServer
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.SSH_HOST_FRONT}}
+          username: ${{secrets.SSH_USERNAME_FRONT}}
+          password: ${{secrets.SSH_PASSWORD_FRONT}}
+          port: ${{secrets.SSH_PORT_FRONT}}
+          script: |
+            cd ~/web23_MoMyeon/frontend
+            git pull
+            touch .env
+            echo ${{secrets.ENV_CONTENT_FRONT}} >> .env
+            yarn install
+            yarn build
+            pm2 delete front-server
+            pm2 --name 'front-server' start yarn -- start

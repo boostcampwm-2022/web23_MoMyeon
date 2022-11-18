@@ -4,7 +4,7 @@ export interface Object {
   auth: string;
 }
 export interface Props {
-  cookie: string | undefined;
+  cookie: string | undefined ;
 }
 
 export interface ImageInfo {

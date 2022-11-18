@@ -19,14 +19,14 @@ export function CategoryTagItem(
         htmlFor={category.id.toString() + category.name}
         className={
           isChecked ?
-            styles.label__category__clicked :
-            styles.label__category}>
+            styles.labelCategoryClicked :
+            styles.labelCategory}>
         {category.name}
       </label>
       <input
         onClick={handleChange}
         id={category.id.toString() + category.name}
-        className={styles.input__checkbox}
+        className={styles.inputCheckbox}
         key={category.id}
         {...register('category')}
         type='checkbox'

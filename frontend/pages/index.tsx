@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     queryFn: getPosts,
   });
   const hydrate: any = dehydrate(queryClient);
-  hydrate.queries[0].state.data.pageParams[0] = 0;
+  if (hydrate.queries[0]) hydrate.queries[0].state.data.pageParams[0] = 0;
 
   return {
     props: {

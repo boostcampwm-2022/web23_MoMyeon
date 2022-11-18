@@ -9,12 +9,10 @@
   display: flex ;
   position: relative;
   flex-direction: column;
-  padding: 2.5% 10% ;
+  padding: 3% 20% ;
 }
 
 .titleWrapper {
-  display: flex;
-  align-items: center;
   border-bottom: 2px solid #F0F4FA;
   margin-bottom: 2.1rem;
   font-size: 18px;
@@ -52,28 +50,52 @@
   }
 }
 
-.label__title {
+.labelTitle {
   padding-top: 1.4rem ;
   display: block;
   line-height: 3;
 }
 
-.label__category {
-  border: 1px solid color.$GRAY;
-  color: black;
+.categoryContainer {
+  display: grid;
+  width: 42rem;
+  padding: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 2rem;
+  row-gap: 2rem;
 }
 
-.label__category__clicked {
-  background-color: color.$MAINCOLOR ;
-  color: white ;
+.labelCategory {
+  color: color.$MAINCOLOR;
+  background-color: color.$SUBCOLOR;
+  border:none;
+  border-radius: 3rem;
+  padding: 1.5rem;
+  height: 5rem;
+  width: 15rem;
+  font-size: 15px;
+  display: inline-block;
+  text-align: center;
 }
 
+.labelCategoryClicked {
+  background-color: color.$MAINCOLOR;
+  color: color.$SUBCOLOR;
+  border:none;
+  border-radius: 3rem;
+  padding: 1.5rem;
+  height: 5rem;
+  width: 15rem;
+  font-size: 15px;
+  display: inline-block;
+  text-align: center;
+}
 
-.input__checkbox {
+.inputCheckbox {
   appearance: none;
 }
 
-.input__text {
+.inputText {
   font-family: "LINE Seed Sans KR", monospace;
   width: 42rem;
   height: 4.2rem;
@@ -83,7 +105,7 @@
   padding: 0.7rem ;
 }
 
-.createForm__button__submit{
+.createFormButtonSubmit{
   display: block;
   margin-top: 1.4rem;
   margin-left: 35rem;

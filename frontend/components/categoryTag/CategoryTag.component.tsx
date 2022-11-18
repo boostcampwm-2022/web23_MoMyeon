@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import apiKeys from "constants/apiKeys";
 import {Category} from "types/category";
 import {CategoryTagItem} from "./CategoryTagItem.component";
+import styles from "../../styles/Create.module.scss";
 
 export function CategoryTag(
   {register} : any){
@@ -21,7 +22,7 @@ export function CategoryTag(
 
 
   return (
-    <div>
+    <div className={styles.categoryContainer}>
       {categories?.map((category : Category)=>{
         return <CategoryTagItem key={category.id} category ={category} register = {register}/>
       })}

@@ -13,19 +13,8 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     try {
-      const { accessToken, refreshToken } = await this.authService.githubLogin(
-        githubLoginDto,
-      );
-      // TODO: https secure, sameSite 옵션 추가
-      res.cookie('accessToken', accessToken, {
-        httpOnly: true,
-        maxAge: 24 * 60 * 60,
-      });
-      res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 14,
-      });
-      return { message: 'success' };
+      const userData = await this.authService.githubLogin(githubLoginDto);
+      return { userData };
     } catch (err) {
       console.error(err);
       return { message: 'failed' };

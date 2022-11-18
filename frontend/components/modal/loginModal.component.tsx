@@ -14,6 +14,10 @@ const LoginView = ({ setVisible }: ViewProps) => {
   const onClose = () => {
     setVisible(false);
   };
+  const onGithubLogin = () => {
+    const URL = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GIT_ID}`;
+    window.location.assign(URL);
+  };
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -28,6 +32,7 @@ const LoginView = ({ setVisible }: ViewProps) => {
       </div>
       <h1 className={styles.welcome}>모면에 오신것을 환영합니다</h1>
       <Image
+        onClick={onGithubLogin}
         className={styles.gitLogin}
         src={github}
         width={130}

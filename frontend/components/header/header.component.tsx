@@ -6,9 +6,7 @@ import Link from "next/link";
 import LoginModal from "components/modal/loginModal.component";
 import DropDown from "./dropDown";
 import dropDown from "public/icon/dropDown.png";
-import loginUser from "public/icon/loginUser.png";
 import { ImageInfo } from "./header";
-import { Props } from "./header";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { loginModal } from "states/loginModal";
 import { userDataRecoil } from "states/user";
@@ -16,7 +14,7 @@ import { userDataRecoil } from "states/user";
 function Header() {
   const setVisible = useSetRecoilState(loginModal);
   const userData = useRecoilValue(userDataRecoil);
-  const userImage = userData.profile == null ? "" : userData.profile;
+  const userImage = userData.profile ?? "";
   const onClickLogin = () => {
     setVisible(true);
   };

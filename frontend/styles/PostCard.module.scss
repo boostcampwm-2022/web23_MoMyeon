@@ -30,9 +30,13 @@
 
 .title {
   margin-top: 4rem;
-  white-space: nowrap;
+  margin-bottom: 0;
   overflow: hidden;
-  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-break: break-all;
+  min-height: 5rem;
 }
 
 .hashtagContainer {
@@ -41,10 +45,9 @@
   flex-wrap: wrap;
   overflow: hidden;
   white-space: nowrap;
-
   width: 20rem;
   height: 4.5rem;
-  margin-top: 5rem;
+  margin-top: 2.5rem;
   border-bottom: 1px solid color.$GRAY;
 }
 

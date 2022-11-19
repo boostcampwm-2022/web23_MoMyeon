@@ -32,15 +32,21 @@
   margin-top: 4rem;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow:ellipsis;
 }
 
 .hashtagContainer {
   display: flex;
+  object-fit: contain;
+  flex-wrap: wrap;
+  overflow: hidden;
+  white-space: nowrap;
+
   width: 20rem;
   height: 4.5rem;
   margin-top: 5rem;
   border-bottom: 1px solid color.$GRAY;
+
 }
 
 .hashtag {

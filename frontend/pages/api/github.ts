@@ -6,7 +6,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log(req);
   const { code } = req.query;
   const request: any = await axios.post(
     "http://api.momeyon.site:8080/v1/auth/github",

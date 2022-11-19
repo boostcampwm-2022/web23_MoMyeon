@@ -14,16 +14,16 @@ export interface Posts {
 }
 
 export interface PostData {
-  postId : number,
-  title : string,
-  maxMember: number,
-  category: string[],
-  contact: string,
-  content: string,
-  count: number,
-  member: number,
-  date: string,
-  recruitStatus: number,
-  isHost: boolean,
-  userStatus: number
+  postId: number;
+  title: string;
+  maxMember: number;
+  category: string[];
+  contact: string;
+  content: string;
+  count: number;
+  member: number;
+  date: string;
+  recruitStatus: number;
+  isHost: boolean;
+  userStatus: number;
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { AppProps } from "next/app";
 import "../styles/globals.css";
 
-import {SSRProvider} from "@react-aria/ssr";
+import { SSRProvider } from "@react-aria/ssr";
 
 import {
   Hydrate,

@@ -5,9 +5,11 @@ import { ChildComponent } from "types/common";
 import { useSetRecoilState } from "recoil";
 import { userDataRecoil } from "../../states/user";
 import { logoutAxios } from "utils/api/logout";
+import { useRouter } from "next/router";
 
 function DropDown({ children }: ChildComponent) {
   const setUser = useSetRecoilState(userDataRecoil);
+  const router = useRouter();
 
   const menuItems = [
     { key: "이력서", name: "이력서" },
@@ -25,6 +27,7 @@ function DropDown({ children }: ChildComponent) {
   const onLogoutAction = async () => {
     setUser({ profile: null, nickname: null });
     await logoutAxios();
+    await router.reload();
   };
 
   return (

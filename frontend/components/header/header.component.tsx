@@ -29,9 +29,16 @@ function Header() {
         <h1 className={styles.logoText}>모면</h1>
       </Link>
       <div className={styles.menuContainer}>
-        <Link href="/post/create">
-          <div className={styles.menuText}>모의면접 모집</div>
-        </Link>
+        {userData.nickname ? (
+          <Link href="/post/create">
+            <div className={styles.menuText}>모의면접 모집</div>
+          </Link>
+        ) : (
+          <div onClick={onClickLogin}>
+            <div className={styles.menuText}>모의면접 모집</div>
+          </div>
+        )}
+
         {userData.nickname ? (
           <DropDown>
             <div className={styles.loginBox}>

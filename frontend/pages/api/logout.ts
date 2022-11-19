@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import axios from "axios";
 import { setCookie } from "cookies-next";
 
 export default async function handler(
@@ -16,5 +15,5 @@ export default async function handler(
   setCookie("refreshToken", "", cookieOption);
   setCookie("nickname", "", cookieOption);
   setCookie("profile", "", cookieOption);
-  res.redirect("/");
+  res.redirect(302, "/");
 }

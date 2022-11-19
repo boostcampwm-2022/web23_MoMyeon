@@ -1,6 +1,6 @@
 import styles from "styles/Create.module.scss";
 import Header from "components/header/header.component";
-import React from "react";
+import React, { useEffect } from "react";
 import CreatePostForm from "components/createPostForm/createPostForm.component";
 import Head from "next/head";
 import { GetServerSideProps, NextPage } from "next";
@@ -23,8 +23,8 @@ const Create: NextPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookie = context.req.cookies.accessToken ?? null;
-  if (!cookie) {
+  const accessToken = context.req.cookies.accessToken ?? null;
+  if (!accessToken) {
     return {
       redirect: {
         destination: "/",
@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      cookie,
+      accessToken,
     },
   };
 };

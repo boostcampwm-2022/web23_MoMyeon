@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "prettier": "prettier --write ./**/*.{js,ts,tsx,css,scss}"
+    "lint": "next lint"
   },
   "dependencies": {
     "@nextui-org/react": "^1.0.0-beta.10",

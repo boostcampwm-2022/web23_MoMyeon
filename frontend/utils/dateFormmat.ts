@@ -1,4 +1,4 @@
-export const convertEpochStringToLocale = (epoch: string): string => {
+const convertEpochStringToLocale = (epoch: string): string => {
   const parsedEpoch = Number.parseInt(epoch);
   if (isNaN(parsedEpoch)) {
     return "";
@@ -8,3 +8,5 @@ export const convertEpochStringToLocale = (epoch: string): string => {
     "ko-KR"
   )} ${date.getHours()}:${date.getMinutes()}`;
 };
+
+export { convertEpochStringToLocale };

@@ -42,7 +42,7 @@ const PostPage : NextPage<Props> = ({ cookie, nickName, date, content }) =>  {
   return (
     <div className={styles.postPageContainer}>
       <PostPageHead/>
-      <Header cookie={cookie}/>
+      <Header/>
       <div className={styles.postContainer}>
         <section className={styles.titleContainer}>
           <h2> { recruitingData.title } </h2>

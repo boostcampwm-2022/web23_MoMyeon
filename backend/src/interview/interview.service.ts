@@ -50,7 +50,7 @@ export class InterviewService {
   async findQuery(selectInterviewDto: SelectInterviewDto) {
     const limit = 18;
     //자료형 변환
-    const category = [] as number[];
+    const category: number[] = [];
     if (selectInterviewDto.category !== '') {
       selectInterviewDto.category.split(',').forEach((element) => {
         category.push(parseInt(element));
@@ -145,7 +145,11 @@ export class InterviewService {
 
   async update(id: number, updateInterviewDto: UpdateInterviewDto) {
     //interview 저장
+    //기존과 인원이 바꾸려고 할 때, 신청자 승인자 보다 적게는 수정이 불가하도록
     updateInterviewDto.max_member = updateInterviewDto.maxMember;
+    updateInterviewDto.categoryList = `${JSON.stringify(
+      updateInterviewDto.category,
+    )}`;
     const category = updateInterviewDto.category;
     delete updateInterviewDto['maxMember'];
     delete updateInterviewDto['category'];
@@ -169,7 +173,6 @@ export class InterviewService {
       );
       this.interviewCategoryRepository.save(newInterviewCategory);
     });
-
     return { interview_id: id };
   }
 

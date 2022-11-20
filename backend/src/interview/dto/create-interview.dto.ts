@@ -14,4 +14,5 @@ export class CreateInterviewDto {
   content: string;
 
   category: Array<Category>;
+  categoryList: string;
 }

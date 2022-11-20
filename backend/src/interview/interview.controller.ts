@@ -24,7 +24,7 @@ export class InterviewController {
 
   @Get()
   findAll(@Query() selectInterviewDto: SelectInterviewDto) {
-    return this.interviewService.findAll(selectInterviewDto);
+    return this.interviewService.findQuery(selectInterviewDto);
   }
 
   @Get(':id')

@@ -3,5 +3,5 @@ export class SelectInterviewDto {
 
   page: number;
 
-  category: Array<number>;
+  category: string;
 }

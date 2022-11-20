@@ -25,6 +25,9 @@ export class InterviewService {
   async create(createInterviewDto: CreateInterviewDto) {
     //interview 저장
     createInterviewDto.max_member = createInterviewDto.maxMember;
+    createInterviewDto.categoryList = `${JSON.stringify(
+      createInterviewDto.category,
+    )}`;
     const newInterview = this.interviewRepository.create(createInterviewDto);
     const saveInterview = await this.interviewRepository.save(newInterview);
     const interviewId = saveInterview.id;
@@ -44,9 +47,66 @@ export class InterviewService {
     return { id: interviewId };
   }
 
-  async findAll(selectInterviewDto: SelectInterviewDto) {
-    //작업중
-    return selectInterviewDto;
+  async findQuery(selectInterviewDto: SelectInterviewDto) {
+    const limit = 18;
+    //자료형 변환
+    const category = [] as number[];
+    if (selectInterviewDto.category !== '') {
+      selectInterviewDto.category.split(',').forEach((element) => {
+        category.push(parseInt(element));
+      });
+    }
+
+    const where = { sql: ``, value: {} };
+    if (selectInterviewDto.search === '' && category.length > 0) {
+      category.forEach((element, index) => {
+        where.sql +=
+          index === 0
+            ? `categoryList LIKE '%:${element},%'`
+            : `OR categoryList LIKE '%:${element},%'`;
+      });
+    } else if (selectInterviewDto.search !== '' && category.length === 0) {
+      where.sql = '(title LIKE (:search) OR contact LIKE (:search))';
+      where.value = {
+        search: `%${selectInterviewDto.search}%`,
+      };
+    } else if (selectInterviewDto.search !== '' && category.length > 0) {
+      where.sql = '(title LIKE (:search) OR contact LIKE (:search))';
+      where.value = {
+        search: `%${selectInterviewDto.search}%`,
+      };
+      category.forEach((element, index) => {
+        where.sql +=
+          index === 0
+            ? `AND (categoryList LIKE '%:${element},%'`
+            : `OR categoryList LIKE '%:${element},%'`;
+      });
+      where.sql += ')';
+    }
+    const interviewData = await this.interviewRepository
+      .createQueryBuilder()
+      .select([
+        'id AS interview_id',
+        'title',
+        'max_member AS maxMember',
+        'contact',
+        'content',
+        // 'count',
+        // 'status AS recruitStatus',
+        'created_at AS date',
+        'categoryList AS category',
+      ])
+      .where(where.sql, where.value)
+      .orderBy('date', 'DESC')
+      .limit(limit)
+      .offset(limit * selectInterviewDto.page)
+      .getRawMany();
+
+    //출력형태 조정
+    interviewData.forEach((element) => {
+      element.category = JSON.parse(element.category);
+    });
+    return interviewData;
   }
 
   async findOne(id: number) {

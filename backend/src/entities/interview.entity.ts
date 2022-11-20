@@ -35,6 +35,12 @@ export class Interview extends BaseEntity {
   @Column({ type: 'text' })
   categoryList: string;
 
+  @Column({ default: 0 })
+  count: number;
+
+  @Column({ default: 0 })
+  status: number;
+
   @CreateDateColumn()
   created_at: Date;
 

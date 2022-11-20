@@ -15,4 +15,7 @@ export class CreateInterviewDto {
 
   category: Array<Category>;
   categoryList: string;
+
+  count: number;
+  status: number;
 }

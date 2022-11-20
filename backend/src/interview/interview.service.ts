@@ -91,8 +91,8 @@ export class InterviewService {
         'max_member AS maxMember',
         'contact',
         'content',
-        // 'count',
-        // 'status AS recruitStatus',
+        'count',
+        'status AS recruitStatus',
         'created_at AS date',
         'categoryList AS category',
       ])
@@ -119,8 +119,8 @@ export class InterviewService {
         'max_member AS maxMember',
         'contact',
         'content',
-        // 'count',
-        // 'status AS recruitStatus',
+        'count',
+        'status AS recruitStatus',
         'created_at AS date',
       ])
       .where({ id })

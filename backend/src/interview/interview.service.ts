@@ -22,13 +22,26 @@ export class InterviewService {
     private userInterviewRepository: Repository<UserInterview>,
   ) {}
 
+  interviewSelect = [
+    'id AS interview_id',
+    'title',
+    'max_member AS maxMember',
+    'contact',
+    'content',
+    'count',
+    'status AS recruitStatus',
+    'created_at AS date',
+    'categoryList AS category',
+  ];
+
   async create(createInterviewDto: CreateInterviewDto) {
     //interview 저장
-    createInterviewDto.max_member = createInterviewDto.maxMember;
-    createInterviewDto.categoryList = `${JSON.stringify(
-      createInterviewDto.category,
-    )}`;
-    const newInterview = this.interviewRepository.create(createInterviewDto);
+    const createInterviewData = {
+      max_member: createInterviewDto.maxMember,
+      ...createInterviewDto,
+      categoryList: `${JSON.stringify(createInterviewDto.category)}`,
+    };
+    const newInterview = this.interviewRepository.create(createInterviewData);
     const saveInterview = await this.interviewRepository.save(newInterview);
     const interviewId = saveInterview.id;
 
@@ -49,35 +62,36 @@ export class InterviewService {
 
   async findQuery(selectInterviewDto: SelectInterviewDto) {
     const limit = 18;
-    selectInterviewDto.page = selectInterviewDto.page || 0;
-    selectInterviewDto.search = selectInterviewDto.search || '';
-    selectInterviewDto.category = selectInterviewDto.category || '';
-    console.log(selectInterviewDto);
+    const selectInterviewData = {
+      page: selectInterviewDto.page || 0,
+      search: selectInterviewDto.search || '',
+      category: selectInterviewDto.category || '',
+    };
     //자료형 변환
     const category: number[] = [];
-    if (selectInterviewDto.category !== '') {
-      selectInterviewDto.category.split(',').forEach((element) => {
+    if (selectInterviewData.category !== '') {
+      selectInterviewData.category.split(',').forEach((element) => {
         category.push(parseInt(element));
       });
     }
 
     const where = { sql: ``, value: {} };
-    if (selectInterviewDto.search === '' && category.length > 0) {
+    if (selectInterviewData.search === '' && category.length > 0) {
       category.forEach((element, index) => {
         where.sql +=
           index === 0
             ? `categoryList LIKE '%:${element},%'`
             : `OR categoryList LIKE '%:${element},%'`;
       });
-    } else if (selectInterviewDto.search !== '' && category.length === 0) {
+    } else if (selectInterviewData.search !== '' && category.length === 0) {
       where.sql = '(title LIKE (:search) OR contact LIKE (:search))';
       where.value = {
-        search: `%${selectInterviewDto.search}%`,
+        search: `%${selectInterviewData.search}%`,
       };
-    } else if (selectInterviewDto.search !== '' && category.length > 0) {
+    } else if (selectInterviewData.search !== '' && category.length > 0) {
       where.sql = '(title LIKE (:search) OR contact LIKE (:search))';
       where.value = {
-        search: `%${selectInterviewDto.search}%`,
+        search: `%${selectInterviewData.search}%`,
       };
       category.forEach((element, index) => {
         where.sql +=
@@ -87,24 +101,15 @@ export class InterviewService {
       });
       where.sql += ')';
     }
+
     const startTime = new Date().getTime();
     const interviewData = await this.interviewRepository
       .createQueryBuilder()
-      .select([
-        'id AS interview_id',
-        'title',
-        'max_member AS maxMember',
-        'contact',
-        'content',
-        'count',
-        'status AS recruitStatus',
-        'created_at AS date',
-        'categoryList AS category',
-      ])
+      .select(this.interviewSelect)
       .where(where.sql, where.value)
       .orderBy('date', 'DESC')
       .limit(limit)
-      .offset(limit * selectInterviewDto.page)
+      .offset(limit * selectInterviewData.page)
       .getRawMany();
     const endTime = new Date().getTime();
     //출력형태 조정
@@ -118,16 +123,7 @@ export class InterviewService {
     //interview 정보
     const interviewData = await this.interviewRepository
       .createQueryBuilder()
-      .select([
-        'id AS interview_id',
-        'title',
-        'max_member AS maxMember',
-        'contact',
-        'content',
-        'count',
-        'status AS recruitStatus',
-        'created_at AS date',
-      ])
+      .select(this.interviewSelect)
       .where({ id })
       .getRawOne();
     interviewData['date'] = new Date(interviewData['date']);
@@ -145,20 +141,21 @@ export class InterviewService {
     interviewData['member'] = undefined;
     interviewData['isHost'] = undefined;
     interviewData['userStatus'] = undefined;
+    //0: 신청하기 전 1: 신청 후 승인 대기중 2: 승인 3: 거부
     return { interviewData };
   }
 
   async update(id: number, updateInterviewDto: UpdateInterviewDto) {
     //interview 저장
     //기존과 인원이 바꾸려고 할 때, 신청자 승인자 보다 적게는 수정이 불가하도록
-    updateInterviewDto.max_member = updateInterviewDto.maxMember;
-    updateInterviewDto.categoryList = `${JSON.stringify(
-      updateInterviewDto.category,
-    )}`;
-    const category = updateInterviewDto.category;
-    delete updateInterviewDto['maxMember'];
-    delete updateInterviewDto['category'];
-    this.interviewRepository.update(id, updateInterviewDto);
+    const updateInterviewData = {
+      title: updateInterviewDto.title,
+      max_member: updateInterviewDto.maxMember,
+      contact: updateInterviewDto.contact,
+      content: updateInterviewDto.content,
+      categoryList: `${JSON.stringify(updateInterviewDto.category)}`,
+    };
+    this.interviewRepository.update(id, updateInterviewData);
 
     //interviewCategory 삭제
     this.interviewCategoryRepository
@@ -168,7 +165,7 @@ export class InterviewService {
       .execute();
 
     //interviewCategory 저장
-    category.forEach((element) => {
+    updateInterviewDto.category.forEach((element) => {
       const createInterviewCategoryData: object = {
         interview: id,
         category: element.id,

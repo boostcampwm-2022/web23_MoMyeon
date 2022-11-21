@@ -49,6 +49,10 @@ export class InterviewService {
 
   async findQuery(selectInterviewDto: SelectInterviewDto) {
     const limit = 18;
+    selectInterviewDto.page = selectInterviewDto.page || 0;
+    selectInterviewDto.search = selectInterviewDto.search || '';
+    selectInterviewDto.category = selectInterviewDto.category || '';
+    console.log(selectInterviewDto);
     //자료형 변환
     const category: number[] = [];
     if (selectInterviewDto.category !== '') {
@@ -83,6 +87,7 @@ export class InterviewService {
       });
       where.sql += ')';
     }
+    const startTime = new Date().getTime();
     const interviewData = await this.interviewRepository
       .createQueryBuilder()
       .select([
@@ -101,12 +106,12 @@ export class InterviewService {
       .limit(limit)
       .offset(limit * selectInterviewDto.page)
       .getRawMany();
-
+    const endTime = new Date().getTime();
     //출력형태 조정
     interviewData.forEach((element) => {
       element.category = JSON.parse(element.category);
     });
-    return interviewData;
+    return { queryTime: endTime - startTime, interviews: interviewData };
   }
 
   async findOne(id: number) {

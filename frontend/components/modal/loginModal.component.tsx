@@ -46,7 +46,7 @@ const LoginView = ({ setVisible }: ViewProps) => {
 
 function LoginModal() {
   const [visible, setVisible] = useRecoilState(loginModal);
-  const onCloseMoal = () => {
+  const onCloseModal = () => {
     setVisible(false);
   };
   const modalStyle = {
@@ -66,7 +66,7 @@ function LoginModal() {
     },
   };
   return (
-    <Modal style={modalStyle} isOpen={visible} onRequestClose={onCloseMoal}>
+    <Modal style={modalStyle} isOpen={visible} onRequestClose={onCloseModal}>
       <LoginView setVisible={setVisible} />
     </Modal>
   );

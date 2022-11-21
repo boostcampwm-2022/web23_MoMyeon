@@ -30,12 +30,9 @@ const Home: NextPage<UserDataProps> = ({ userData }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const nickname = context.req.cookies.nickname
-    ? context.req.cookies.nickname
-    : null;
-  const profile = context.req.cookies.profile
-    ? context.req.cookies.profile
-    : null;
+  const nickname = context.req.cookies.nickname ?? null;
+  const profile = context.req.cookies.profile ?? null;
+
   const userData = { profile, nickname };
   const queryClient = new QueryClient();
   await queryClient.prefetchInfiniteQuery({

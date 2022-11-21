@@ -4,7 +4,6 @@ import React from "react";
 import CreatePostForm from "components/createPostForm/createPostForm.component";
 import Head from "next/head";
 import { GetServerSideProps, NextPage } from "next";
-import { Cookie } from "types/auth";
 
 const Create: NextPage = () => {
   return (
@@ -24,9 +23,7 @@ const Create: NextPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookie = context.req.cookies.accessToken
-    ? context.req.cookies.accessToken
-    : null;
+  const cookie = context.req.cookies.accessToken ?? null;
   if (!cookie) {
     return {
       redirect: {

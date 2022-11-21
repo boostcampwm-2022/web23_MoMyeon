@@ -9,7 +9,7 @@ export interface Props {
 
 export interface ImageInfo {
   style: string;
-  src: StaticImageData;
+  src: StaticImageData | string;
   w: number;
   h: number;
   alt: string;

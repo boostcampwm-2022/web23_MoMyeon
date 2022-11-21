@@ -1,32 +1,50 @@
-import { Suspense, useState } from "react";
 import styles from "styles/Home.module.scss";
 import Header from "components/header/header.component";
 import HomeHead from "head/home";
-import PostContainer from "components/mainPost/postContainer.component";
 import getPosts from "utils/api/getPosts";
-import { Post, Posts } from "types/posts";
-import { GetServerSideProps, NextPage } from "next";
-import { Cookie } from "types/auth";
+import PostContainer from "components/mainPost/postContainer.component";
 
-const Home: NextPage<Posts & Cookie> = ({ posts, cookie }) => {
+import { Posts } from "types/posts";
+import { GetServerSideProps, NextPage } from "next";
+import { UserDataProps } from "types/auth";
+import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { userDataRecoil } from "states/user";
+
+const Home: NextPage<UserDataProps> = ({ userData }) => {
+  const setUser = useSetRecoilState(userDataRecoil);
+
+  useEffect(() => {
+    if (userData && userData.nickname) {
+      setUser(userData);
+    }
+  }, [setUser, userData]);
   return (
     <div className={styles.main}>
       <HomeHead />
-      <Header cookie={cookie} />
-      <Suspense fallback={<div>로딩중</div>}>
-        <PostContainer posts={posts} />
-      </Suspense>
+      <Header />
+      <PostContainer />
     </div>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const data: Post[] = await getPosts();
-  const cookie = context.req.cookies.auth ? context.req.cookies.auth : null;
+  const nickname = context.req.cookies.nickname ?? null;
+  const profile = context.req.cookies.profile ?? null;
+
+  const userData = { profile, nickname };
+  const queryClient = new QueryClient();
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ["posts"],
+    queryFn: getPosts,
+  });
+  const hydrate: any = dehydrate(queryClient);
+  if (hydrate.queries[0]) hydrate.queries[0].state.data.pageParams[0] = 0;
   return {
     props: {
-      posts: data,
-      cookie,
+      dehydratedState: hydrate,
+      userData,
     },
   };
 };

@@ -1,60 +1,18 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Post } from "types/posts";
+import { data } from "mockData/postData";
 
-const data = [
-  {
-    title: "네이버 1차",
-    hashtag: ["네트워크", "운영체제"],
-    user: "hyodori",
-    view: 300,
-  },
-  {
-    title: "카카오 1차",
-    hashtag: ["네트워크", "운영체제"],
-    user: "hyodori",
-    view: 300,
-  },
-  {
-    title: "라인 1차",
-    hashtag: ["네트워크", "운영체제"],
-    user: "hyodori",
-    view: 300,
-  },
-  {
-    title: "쿠팡 1차",
-    hashtag: ["네트워크", "운영체제"],
-    user: "hyodori",
-    view: 300,
-  },
-  {
-    title: "배민 1차",
-    hashtag: ["네트워크", "운영체제"],
-    user: "hyodori",
-    view: 300,
-  },
-  {
-    title: "토스 1차",
-    hashtag: ["네트워크", "운영체제"],
-    user: "hyodori",
-    view: 300,
-  },
-  {
-    title: "당근 1차",
-    hashtag: ["네트워크", "운영체제"],
-    user: "hyodori",
-    view: 300,
-  },
-  {
-    title: "직방 1차",
-    hashtag: ["네트워크", "운영체제"],
-    user: "hyodori",
-    view: 300,
-  },
-];
+type params = {
+  params: { page: string };
+};
 export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Post[]>
+  req: NextApiRequest & params,
+  res: NextApiResponse
 ) {
+  let { page } = req.params;
+  const pageInt = parseInt(page);
+  const OFFSET = 10;
+  const result = data.slice(pageInt * OFFSET, (pageInt + 1) * OFFSET);
+  res.json(result);
   res.status(200).json(data);
 }

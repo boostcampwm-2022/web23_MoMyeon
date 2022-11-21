@@ -90,8 +90,7 @@ const CreatePostForm = () => {
       <label className={styles.labelTitle}>면접 카테고리</label>
       <CategoryTag register={register} />
       <label className={styles.labelTitle} htmlFor="contact">
-        {" "}
-        연락 방법{" "}
+        연락 방법
       </label>
       <input
         className={styles.inputText}
@@ -112,7 +111,6 @@ const CreatePostForm = () => {
         onKeyDown={(e) => disableTab(e)}
       />
       <button className={styles.createFormButtonSubmit} type="submit">
-        {" "}
         모집하기
       </button>
     </form>

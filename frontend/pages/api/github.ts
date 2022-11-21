@@ -14,7 +14,7 @@ export default async function handler(
     }
   );
   const data = request.data;
-  const { accessToken, refreshToken, nickname, profile } = data.userData;
+  const { accessToken, refreshToken, nickname, profile } = data.userData || {};
   const cookieOption = {
     req,
     res,

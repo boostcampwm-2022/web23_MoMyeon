@@ -68,8 +68,8 @@ const CreatePostForm = () => {
       <input
         className={styles.inputText}
         {...register("postTitle", {
-          maxLength: { value: 256, message: "제목은 256글자까지만 가능해용" },
-          minLength: { value: 3, message: "제목은 3글자 이상 써주세용" },
+          maxLength: { value: 256, message: "제목은 256글자까지만 가능해요" },
+          minLength: { value: 3, message: "제목은 3글자 이상 써주세요" },
           required: "제목을 적어주세요",
         })}
         type="text"
@@ -80,7 +80,14 @@ const CreatePostForm = () => {
       <label className={styles.labelTitle} htmlFor="peopleLimit">
         최대 인원
       </label>
-      <select {...register("peopleLimit")} id="peopleLimit">
+      <select
+        {...register("peopleLimit", {
+          required: "최대 인원을 입력해주세요",
+          max: { value: 6, message: "최대 인원은 6명이에요" },
+          min: { value: 2, message: "2명은 필요해요 ! " },
+        })}
+        id="peopleLimit"
+      >
         <option value="2"> 2명 </option>
         <option value="3"> 3명 </option>
         <option value="4"> 4명 </option>

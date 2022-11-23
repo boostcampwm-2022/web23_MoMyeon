@@ -45,7 +45,11 @@ const CreatePostForm = () => {
 
   const onError = (errors: FieldErrors) => {
     let log: string = "";
-    log += errors.postTitle?.message;
+    log += `${errors.postTitle?.message}\n\n`;
+
+    if (errors.peopleLimit?.message) {
+      log += `${errors.peopleLimit?.message}\n\n`;
+    }
     alert(log);
   };
 

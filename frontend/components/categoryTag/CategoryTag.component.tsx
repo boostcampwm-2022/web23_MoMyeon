@@ -1,30 +1,27 @@
-import { useState, useEffect } from "react";
-import apiKeys from "constants/apiKeys";
-import {Category} from "types/category";
-import {CategoryTagItem} from "./CategoryTagItem.component";
-import styles from "../../styles/Create.module.scss";
+import { Category } from "types/category";
+import { CategoryTagItem } from "./CategoryTagItem.component";
+import styles from "styles/Create.module.scss";
+import { useCategoryQuery } from "utils/hooks/useCategoryQuery";
+import { UseFormRegister } from "react-hook-form";
+import { postFormTypes } from "components/createPostForm/createPostForm";
 
-export function CategoryTag(
-  {register} : any){
-  const [categories, setCategories] = useState([]);
-
-  useEffect(()=> {
-    const controller = new AbortController();
-    fetch(apiKeys.GET_CATEGORIES)
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data);
-      });
-    return () => {
-      controller.abort();
-    }
-  },[]);
-
+export function CategoryTag({
+  register,
+}: {
+  register: UseFormRegister<postFormTypes>;
+}) {
+  const categories = useCategoryQuery();
 
   return (
     <div className={styles.categoryContainer}>
-      {categories?.map((category : Category)=>{
-        return <CategoryTagItem key={category.id} category ={category} register = {register}/>
+      {categories?.map((category: Category) => {
+        return (
+          <CategoryTagItem
+            key={category.id}
+            category={category}
+            register={register}
+          />
+        );
       })}
     </div>
   );

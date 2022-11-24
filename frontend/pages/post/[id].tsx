@@ -10,6 +10,7 @@ import PostPageHead from "head/postPage";
 import { recruitingData } from "mockData/postPageData";
 import { useRouter } from "next/router";
 import { convertEpochStringToLocale } from "utils/dateFormmat";
+import { InterviewJoinButton } from "../../components/button/interviewJoinButton";
 
 interface Props {
   cookie: string | undefined;
@@ -20,6 +21,11 @@ interface Props {
 
 const PostPage: NextPage<Props> = ({ cookie, nickName, date, content }) => {
   const router = useRouter();
+  const buttonAttributes = [
+    { name: "참여자 관리", isVisible: true /* isHost */ },
+    { name: "질문 관리", isVisible: true /* userState === 2 (참여자) */ },
+    { name: "피드백", isVisible: false /* 모의 면접 종료 후 */ },
+  ];
 
   const title = router.query.id;
   if (typeof title === "string") {
@@ -47,7 +53,7 @@ const PostPage: NextPage<Props> = ({ cookie, nickName, date, content }) => {
               <span> {nickName}</span>
               <span> {date} </span>
             </div>
-            <button className={styles.postPageButton}> 신청중 </button>
+            <InterviewJoinButton initialUserState={0 /* userState */} />
           </div>
         </section>
         <section className={styles.postInfoContainer}>
@@ -73,15 +79,19 @@ const PostPage: NextPage<Props> = ({ cookie, nickName, date, content }) => {
             </li>
           </ul>
           <ul>
-            <li className={styles.postButtonLi}>
-              <button className={styles.postPageButton}> 참여자 관리 </button>
-            </li>
-            <li className={styles.postButtonLi}>
-              <button className={styles.postPageButton}> 질문 관리 </button>
-            </li>
-            <li className={styles.postButtonLi}>
-              <button className={styles.postPageButton}> 피드백 </button>
-            </li>
+            {buttonAttributes?.map((attribute) => {
+              if (!attribute.isVisible) {
+                return;
+              }
+              return (
+                <li className={styles.postButtonLi} key={attribute.name}>
+                  <button className={styles.postPageButton}>
+                    {" "}
+                    {attribute.name}{" "}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </section>
         <section>

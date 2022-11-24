@@ -97,8 +97,19 @@
   padding: 4rem 0;
 }
 
+.joinButton {
+  background-color: #4bbd84;
+  color: color.$SUBCOLOR;
+  border: none;
+  border-radius: 3rem;
+  padding: 1.5rem;
+  min-height: 2rem;
+  min-width: 10rem;
+  font-size: 18px;
+}
+
 .postPageButton {
-  background-color: color.$MAINCOLOR;
+  background-color: color.$MAINCOLOR ;
   color: color.$SUBCOLOR;
   border: none;
   border-radius: 3rem;

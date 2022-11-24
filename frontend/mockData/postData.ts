@@ -284,7 +284,7 @@ export const data: Post[] = [
     view: 300,
   },
   {
-    title: "직방 1차",
+    title: "END 1차",
     hashtag: ["네트워크", "운영체제"],
     user: "hyodori",
     view: 300,

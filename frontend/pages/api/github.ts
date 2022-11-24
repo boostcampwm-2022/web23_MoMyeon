@@ -7,7 +7,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { code } = req.query;
-  console.log(code);
   const request: any = await axios.post(
     "http://api.momeyon.site:8080/v1/auth/github",
     {
@@ -15,7 +14,7 @@ export default async function handler(
     }
   );
   const data = request.data;
-  const { accessToken, refreshToken, nickname, profile } = data.userData;
+  const { accessToken, refreshToken, nickname, profile } = data.userData || {};
   const cookieOption = {
     req,
     res,

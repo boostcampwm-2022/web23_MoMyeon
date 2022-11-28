@@ -1,4 +1,4 @@
-import apiKeys from "../../constants/apiKeys";
+import apiKeys from "constants/apiKeys";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 

@@ -9,7 +9,7 @@ export default async function handler(
   const { code } = req.query;
   console.log();
   const request: any = await axios.post(
-    "http://api.momyeon.site:8080/v1/auth/github",
+    "https://api.momyeon.site/v1/auth/github",
     {
       code,
     }

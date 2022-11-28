@@ -12,7 +12,6 @@ export class UserController {
   @UseGuards(JwtGuard)
   async getUserInfo(@UserData() userData: UserPayload) {
     try {
-      console.log(userData);
       return userData;
     } catch (err) {
       console.error(err);

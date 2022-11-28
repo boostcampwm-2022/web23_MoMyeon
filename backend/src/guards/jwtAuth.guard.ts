@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Observable } from 'rxjs';
+import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 
@@ -14,7 +14,7 @@ import { Repository } from 'typeorm';
 export class JwtGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -23,14 +23,23 @@ export class JwtGuard implements CanActivate {
       const token = request.cookies?.['accessToken'];
       if (!token) throw new UnauthorizedException('토큰 정보 없음');
 
-      const payload = this.jwtService.verify(token);
-      console.log('guard received payload:', payload);
-      const [user] = await this.userRepository.findBy(payload);
-      console.log('guard found user:', user);
+      const jwtPayload = this.jwtService.verify(token);
+      const { oauth_provider, oauth_uid } = jwtPayload;
 
-      const { oauth_provider, oauth_uid } = user;
-
-      request.user = { oauth_provider, oauth_uid };
+      const [user] = await this.userRepository.findBy({
+        oauth_provider,
+        oauth_uid,
+      });
+      if (!user) {
+        throw new UnauthorizedException('회원 정보 없음');
+      }
+      const { nickname, profile } = user;
+      request.user = {
+        oauth_provider,
+        oauth_uid: oauth_uid.toString(),
+        nickname,
+        profile,
+      };
 
       return true;
     } catch (err) {

@@ -10,6 +10,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors({
     origin: ['http://localhost:3000', 'https://www.momyeon.site'],
+    credentials: true,
   });
   const config = app.get(ConfigService);
 

@@ -1,15 +1,14 @@
 import styles from "styles/Create.module.scss";
 import Header from "components/header/header.component";
-import React from "react";
+import React, { useEffect } from "react";
 import CreatePostForm from "components/createPostForm/createPostForm.component";
 import Head from "next/head";
 import { GetServerSideProps, NextPage } from "next";
-import {Cookie} from "types/auth";
 
-const Create: NextPage<Cookie> = ({ cookie }) => {
+const Create: NextPage = () => {
   return (
     <div className={styles.createPageContainer}>
-      <Header cookie={cookie} />
+      <Header />
       <Head>
         <title>모두의 면접</title>
       </Head>
@@ -24,19 +23,19 @@ const Create: NextPage<Cookie> = ({ cookie }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookie = context.req.cookies.auth ? context.req.cookies.auth : null;
-  if(!cookie){
+  const accessToken = context.req.cookies.accessToken ?? null;
+  if (!accessToken) {
     return {
       redirect: {
-        destination: '/',
-        permanent: false
-      }
-    }
+        destination: "/",
+        permanent: false,
+      },
+    };
   }
 
   return {
     props: {
-      cookie,
+      accessToken,
     },
   };
 };

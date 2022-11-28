@@ -1,6 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { InterviewModule } from './interview/interview.module';
 
 import { CategoryModule } from './category/category.module';
 import { UserModule } from './user/user.module';
@@ -33,11 +34,14 @@ const env = process.env.NODE_ENV;
       inject: [ConfigService],
     }),
 
+    InterviewModule,
+
     CategoryModule,
 
     UserModule,
 
     AuthModule,
+
   ],
   controllers: [],
   providers: [],

@@ -6,20 +6,21 @@ import Link from "next/link";
 import LoginModal from "components/modal/loginModal.component";
 import DropDown from "./dropDown";
 import dropDown from "public/icon/dropDown.png";
-import loginUser from "public/icon/loginUser.png";
 import { ImageInfo } from "./header";
-import { Props } from "./header";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import { loginModal } from "states/loginModal";
+import { userDataRecoil } from "states/user";
 
-function Header({ cookie }: Props) {
+function Header() {
   const setVisible = useSetRecoilState(loginModal);
+  const userData = useRecoilValue(userDataRecoil);
+  const userImage = userData.profile ?? "";
   const onClickLogin = () => {
     setVisible(true);
   };
   const loginImage = [
+    { style: styles.userIcon, src: userImage, w: 38, h: 38, alt: "user" },
     { style: styles.dropDown, src: dropDown, w: 48, h: 48, alt: "dropDown" },
-    { style: styles.userIcon, src: loginUser, w: 28, h: 28, alt: "user" },
   ];
   return (
     <div className={styles.container}>
@@ -28,10 +29,17 @@ function Header({ cookie }: Props) {
         <h1 className={styles.logoText}>모면</h1>
       </Link>
       <div className={styles.menuContainer}>
-        <Link href="/post/create">
-          <div className={styles.menuText}>모의면접 모집</div>
-        </Link>
-        {cookie ? (
+        {userData.nickname ? (
+          <Link href="/post/create">
+            <div className={styles.menuText}>모의면접 모집</div>
+          </Link>
+        ) : (
+          <div onClick={onClickLogin}>
+            <div className={styles.menuText}>모의면접 모집</div>
+          </div>
+        )}
+
+        {userData.nickname ? (
           <DropDown>
             <div className={styles.loginBox}>
               {loginImage.map((item: ImageInfo) => {

@@ -1,3 +1,12 @@
 export interface Cookie {
-  cookie: string ;
+  cookie: string;
+}
+
+export interface UserData {
+  profile: string | null;
+  nickname: string | null;
+}
+
+export interface UserDataProps {
+  userData: UserData;
 }

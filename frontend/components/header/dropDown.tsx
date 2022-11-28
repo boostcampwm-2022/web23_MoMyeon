@@ -1,23 +1,40 @@
 import { Dropdown } from "@nextui-org/react";
 import { DropDownInfo } from "./header";
-import React from "react";
+import React, { Key } from "react";
 import { ChildComponent } from "types/common";
-import styles from "styles/Header.module.scss";
+import { useSetRecoilState } from "recoil";
+import { userDataRecoil } from "../../states/user";
+import { logoutAxios } from "utils/api/logout";
+import { useRouter } from "next/router";
 
 function DropDown({ children }: ChildComponent) {
+  const setUser = useSetRecoilState(userDataRecoil);
+  const router = useRouter();
+
   const menuItems = [
     { key: "이력서", name: "이력서" },
     { key: "내질문", name: "내질문" },
     { key: "면접관리", name: "면접관리" },
     { key: "로그아웃", name: "로그아웃" },
   ];
+
+  const handleAction = async (key: Key) => {
+    if (key === "로그아웃") {
+      await onLogoutAction();
+    }
+  };
+
+  const onLogoutAction = async () => {
+    setUser({ profile: null, nickname: null });
+    await logoutAxios();
+    await router.reload();
+  };
+
   return (
     <Dropdown>
       <Dropdown.Trigger>{children}</Dropdown.Trigger>
       <Dropdown.Menu
-        onAction={(key) => {
-          console.log(key);
-        }}
+        onAction={(key) => handleAction(key)}
         css={{ height: "13rem" }}
         aria-label="Dynamic Actions"
       >

@@ -28,6 +28,9 @@ export class User extends BaseEntity {
   @Column({ length: 50, nullable: true })
   nickname: string;
 
+  @Column({ nullable: true })
+  profile: string;
+
   @CreateDateColumn()
   created_at: Date;
 

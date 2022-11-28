@@ -44,7 +44,11 @@ export class AuthService {
       const exUser = await this.userRepository.findOneBy(payload);
 
       if (!exUser) {
-        const newUser = this.userRepository.create(payload);
+        const newUser = this.userRepository.create({
+          ...payload,
+          nickname,
+          profile,
+        });
         await this.userRepository.save(newUser);
       }
 

@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { User } from 'src/entities/user.entity';
 import { JwtGuard } from 'src/guards/jwtAuth.guard';
+import { UserPayload } from 'src/interfaces/user.interface';
 import { UserData } from './user.decorator';
 import { UserService } from './user.service';
 
@@ -8,9 +8,15 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get()
+  @Get('info')
   @UseGuards(JwtGuard)
-  getUser(@UserData() user: User) {
-    return user;
+  async getUserInfo(@UserData() userData: UserPayload) {
+    try {
+      console.log(userData);
+      return userData;
+    } catch (err) {
+      console.error(err);
+      return { message: 'failed' };
+    }
   }
 }

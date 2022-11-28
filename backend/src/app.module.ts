@@ -41,7 +41,6 @@ const env = process.env.NODE_ENV;
     UserModule,
 
     AuthModule,
-
   ],
   controllers: [],
   providers: [],

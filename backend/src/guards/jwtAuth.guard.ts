@@ -7,20 +7,31 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
+import { User } from 'src/entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly userRepository: Repository<User>,
+  ) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
       const request = context.switchToHttp().getRequest();
       const token = request.cookies?.['accessToken'];
       if (!token) throw new UnauthorizedException('토큰 정보 없음');
 
-      request.user = this.jwtService.verify(token);
+      const payload = this.jwtService.verify(token);
+      console.log('guard received payload:', payload);
+      const [user] = await this.userRepository.findBy(payload);
+      console.log('guard found user:', user);
+
+      const { oauth_provider, oauth_uid } = user;
+
+      request.user = { oauth_provider, oauth_uid };
+
       return true;
     } catch (err) {
       console.error(err);

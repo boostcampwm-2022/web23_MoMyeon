@@ -1,5 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GithubLoginDto } from './dto/github-login.dto';
 
@@ -8,10 +7,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('github')
-  async githubLogin(
-    @Body() githubLoginDto: GithubLoginDto,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  async githubLogin(@Body() githubLoginDto: GithubLoginDto) {
     try {
       const userData = await this.authService.githubLogin(githubLoginDto);
       return { userData };

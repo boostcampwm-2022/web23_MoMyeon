@@ -12,6 +12,7 @@ import {
   UserQuestionController,
 } from './question.controller';
 import { User } from 'src/entities/user.entity';
+import { UserQuestion } from 'src/entities/userQuestion.entity';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { User } from 'src/entities/user.entity';
     TypeOrmModule.forFeature([InterviewCategory]),
     TypeOrmModule.forFeature([Category]),
     TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([UserQuestion]),
   ],
   controllers: [QuestionController, UserQuestionController],
   providers: [QuestionService, UserQuestionService],

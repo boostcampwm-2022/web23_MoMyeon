@@ -12,8 +12,8 @@ import { UpdateQuestionDto } from './dto/update-question.dto';
 import { UserInterviewStatus } from 'src/enum/userInterviewStatus.enum';
 import { User } from 'src/entities/user.entity';
 import { QuestionType } from 'src/enum/questionType.enum';
-import { UpdateUserQuestionDto } from './dto/update-user-question.dto';
 import { CreateUserQuestionDto } from './dto/create-user-question.dto';
+import { UserQuestion } from 'src/entities/userQuestion.entity';
 
 @Injectable()
 export class QuestionService {
@@ -136,23 +136,51 @@ export class QuestionService {
 
 @Injectable()
 export class UserQuestionService {
-  create(createUserQuestionDto: CreateUserQuestionDto) {
-    return 'This action adds a new userQuestion';
+  constructor(
+    @InjectRepository(UserQuestion)
+    private UserQuestionRepository: Repository<UserQuestion>,
+  ) {}
+  async create(createUserQuestionDto: CreateUserQuestionDto) {
+    const createUserQuestionData = { ...createUserQuestionDto };
+    // 로그인 userId
+    createUserQuestionData['user'] = 1;
+    const userQuestion = await this.UserQuestionRepository.find({
+      where: createUserQuestionData,
+    });
+    if (userQuestion.length) {
+      return { msg: '이미 나의 질문에 등록되었습니다.', userQuestion };
+    } else {
+      const newUserQuestion = this.UserQuestionRepository.create(
+        createUserQuestionData,
+      );
+      const saveUserQuestion = await this.UserQuestionRepository.save(
+        newUserQuestion,
+      );
+      return { id: saveUserQuestion.id };
+    }
   }
 
   findAll() {
-    return `This action returns all userQuestion`;
+    // 로그인 userId 사용 조회
+    const userId = 1; //로그인 인증 관련
+    const userQuestion = this.UserQuestionRepository.createQueryBuilder()
+      .select(['id', 'content AS contents'])
+      .where('userId = :userId', { userId: userId })
+      .getRawMany();
+    return userQuestion;
   }
 
   findOne(id: number) {
     return `This action returns a #${id} userQuestion`;
   }
 
-  update(id: number, updateUserQuestionDto: UpdateUserQuestionDto) {
-    return `This action updates a #${id} userQuestion`;
-  }
-
   remove(id: number) {
-    return `This action removes a #${id} userQuestion`;
+    // 로그인 userId, id 기반조회 후 삭제
+    const userId = 1; //로그인 인증 관련
+    // 출력 형태 변경
+    return this.UserQuestionRepository.createQueryBuilder('')
+      .softDelete()
+      .where('id = :id AND userId = :userId', { id: id, userId: userId })
+      .execute();
   }
 }

@@ -1,1 +1,4 @@
-export class CreateUserQuestionDto {}
+export class CreateUserQuestionDto {
+  content: string;
+  userId: number;
+}

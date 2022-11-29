@@ -11,7 +11,6 @@ import { QuestionService, UserQuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { CreateUserQuestionDto } from './dto/create-user-question.dto';
-import { UpdateUserQuestionDto } from './dto/update-user-question.dto';
 
 @Controller({ version: '1', path: 'question' })
 export class QuestionController {
@@ -63,14 +62,6 @@ export class UserQuestionController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userQuestionService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateUserQuestionDto: UpdateUserQuestionDto,
-  ) {
-    return this.userQuestionService.update(+id, updateUserQuestionDto);
   }
 
   @Delete(':id')

@@ -6,17 +6,32 @@ import PostContainer from "components/mainPost/postContainer.component";
 import { GetServerSideProps, NextPage } from "next";
 import { GithubCodeProps, UserDataProps } from "types/auth";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
-
-import { useGithubLoginQuery } from "../utils/hooks/useGithubLoginQuery";
+import { useGithubLoginMutation } from "../utils/hooks/useGithubLoginMutation";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Home: NextPage<GithubCodeProps> = ({ code }) => {
-  useGithubLoginQuery(code);
+  const mutation = useGithubLoginMutation(code);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (code !== null) {
+      mutation.mutate(code);
+    }
+  }, []);
+
+  useEffect(() => {
+    const reload = async () => {
+      await router.replace("/");
+    };
+    reload();
+  }, [mutation.isSuccess]);
 
   return (
     <div className={styles.main}>
       <HomeHead />
       <Header />
-      <PostContainer />
+      {/*<PostContainer> */}
     </div>
   );
 };

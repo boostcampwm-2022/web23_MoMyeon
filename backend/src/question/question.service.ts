@@ -90,13 +90,25 @@ export class QuestionService {
       .where(where.sql)
       .getRawMany();
     //3. 출력가공
-    const questions = userInterviewData;
+    let questions;
+    if (userInterviewData.length) {
+      questions = userInterviewData;
+    } else {
+      questions = [
+        { userId: '1', userName: 'userA' },
+        { userId: '2', userName: 'userB' },
+        { userId: '3', userName: 'userC' },
+        { userId: '4', userName: 'userD' },
+        { userId: '5', userName: 'userE' },
+        { userId: '6', userName: 'userF' },
+      ].slice(0, interviewData['Interview_max_member']);
+    }
     const userSimpleQuestionData = simpleQuestionData.map((object) => {
       object['type'] = QuestionType.SIMPLE;
       object['feedback'] = '';
       return object;
     });
-    userInterviewData.forEach((element) => {
+    questions.forEach((element) => {
       const questionsCount = 5;
       const begin = Math.floor(
         Math.random() * (userSimpleQuestionData.length - questionsCount),

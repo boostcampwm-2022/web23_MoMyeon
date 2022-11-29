@@ -1,7 +1,8 @@
 import { useState } from "react";
 import type { AppProps } from "next/app";
 import "../styles/globals.css";
-
+import axios from "axios";
+import https from "https"
 import { SSRProvider } from "@react-aria/ssr";
 
 import {
@@ -11,7 +12,13 @@ import {
 } from "@tanstack/react-query";
 import { RecoilRoot } from "recoil";
 
+if (process.env.NEXT_PUBLIC_DEV_MODE === "true") {
+  axios.defaults.httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+  });
+}
 export default function App({ Component, pageProps }: AppProps) {
+  
   const [queryClient] = useState(() => new QueryClient());
   return (
     <SSRProvider>

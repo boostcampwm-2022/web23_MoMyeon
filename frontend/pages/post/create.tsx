@@ -16,7 +16,6 @@ const Create: NextPage = () => {
       const prevent = async () => {
         await router.push("/");
       };
-
       prevent();
     }
   }, [isError]);
@@ -40,24 +39,5 @@ const Create: NextPage = () => {
     </div>
   );
 };
-
-/*
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const accessToken = context.req.cookies.accessToken ?? null;
-  if (!accessToken) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      accessToken,
-    },
-  };
-};*/
 
 export default Create;

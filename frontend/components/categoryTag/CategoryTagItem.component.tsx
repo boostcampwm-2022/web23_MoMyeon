@@ -33,7 +33,7 @@ export function CategoryTagItem({
         key={category.id}
         {...register("category")}
         type="checkbox"
-        value={category.name}
+        value={`{"id": ${category.id}, "name": "${category.name}"}`}
       />
     </div>
   );

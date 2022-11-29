@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SimpleQuestion } from 'src/entities/simpleQuestion.entity';
@@ -140,29 +140,27 @@ export class UserQuestionService {
     @InjectRepository(UserQuestion)
     private UserQuestionRepository: Repository<UserQuestion>,
   ) {}
+
   async create(createUserQuestionDto: CreateUserQuestionDto) {
-    const createUserQuestionData = { ...createUserQuestionDto };
-    // 로그인 userId
-    createUserQuestionData['user'] = 1;
-    const userQuestion = await this.UserQuestionRepository.find({
-      where: createUserQuestionData,
-    });
-    if (userQuestion.length) {
-      return { msg: '이미 나의 질문에 등록되었습니다.', userQuestion };
-    } else {
+    try {
+      const userQuestion = await this.UserQuestionRepository.find({
+        where: createUserQuestionDto,
+      });
+      if (userQuestion.length)
+        throw new BadRequestException('이미 등록된 질문입니다.');
       const newUserQuestion = this.UserQuestionRepository.create(
-        createUserQuestionData,
+        createUserQuestionDto,
       );
       const saveUserQuestion = await this.UserQuestionRepository.save(
         newUserQuestion,
       );
       return { id: saveUserQuestion.id };
+    } catch (err) {
+      throw err;
     }
   }
 
-  findAll() {
-    // 로그인 userId 사용 조회
-    const userId = 1; //로그인 인증 관련
+  findAll(userId: number) {
     const userQuestion = this.UserQuestionRepository.createQueryBuilder()
       .select(['id', 'content AS contents'])
       .where('userId = :userId', { userId: userId })
@@ -170,17 +168,18 @@ export class UserQuestionService {
     return userQuestion;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} userQuestion`;
-  }
-
-  remove(id: number) {
-    // 로그인 userId, id 기반조회 후 삭제
-    const userId = 1; //로그인 인증 관련
-    // 출력 형태 변경
-    return this.UserQuestionRepository.createQueryBuilder('')
-      .softDelete()
-      .where('id = :id AND userId = :userId', { id: id, userId: userId })
-      .execute();
+  async remove(id: number, userId: number) {
+    try {
+      const userQueryDeleteData =
+        await this.UserQuestionRepository.createQueryBuilder('')
+          .softDelete()
+          .where('id = :id AND userId = :userId', { id: id, userId: userId })
+          .execute();
+      if (!userQueryDeleteData.affected)
+        throw new BadRequestException('삭제할 수 없습니다.');
+      return userQueryDeleteData;
+    } catch (err) {
+      throw err;
+    }
   }
 }

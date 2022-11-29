@@ -6,11 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { QuestionService, UserQuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { CreateUserQuestionDto } from './dto/create-user-question.dto';
+import { JwtGuard } from 'src/guards/jwtAuth.guard';
+import { UserData } from 'src/user/user.decorator';
+import { UserInfo, UserPayload } from 'src/interfaces/user.interface';
 
 @Controller({ version: '1', path: 'question' })
 export class QuestionController {
@@ -49,23 +53,25 @@ export class QuestionController {
 export class UserQuestionController {
   constructor(private readonly userQuestionService: UserQuestionService) {}
 
+  @UseGuards(JwtGuard)
   @Post()
-  create(@Body() createUserQuestionDto: CreateUserQuestionDto) {
+  create(
+    @Body() createUserQuestionDto: CreateUserQuestionDto,
+    @UserData() userData: UserInfo,
+  ) {
+    createUserQuestionDto['user'] = userData.id;
     return this.userQuestionService.create(createUserQuestionDto);
   }
 
+  @UseGuards(JwtGuard)
   @Get()
-  findAll() {
-    return this.userQuestionService.findAll();
+  findAll(@UserData() userData: UserInfo) {
+    return this.userQuestionService.findAll(userData.id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userQuestionService.findOne(+id);
-  }
-
+  @UseGuards(JwtGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userQuestionService.remove(+id);
+  remove(@Param('id') id: string, @UserData() userData: UserInfo) {
+    return this.userQuestionService.remove(+id, userData.id);
   }
 }

@@ -13,9 +13,11 @@ import {
 } from './question.controller';
 import { User } from 'src/entities/user.entity';
 import { UserQuestion } from 'src/entities/userQuestion.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     TypeOrmModule.forFeature([SimpleQuestion]),
     TypeOrmModule.forFeature([Feedback]),
     TypeOrmModule.forFeature([Interview]),

@@ -12,6 +12,8 @@ import { UpdateQuestionDto } from './dto/update-question.dto';
 import { UserInterviewStatus } from 'src/enum/userInterviewStatus.enum';
 import { User } from 'src/entities/user.entity';
 import { QuestionType } from 'src/enum/questionType.enum';
+import { UpdateUserQuestionDto } from './dto/update-user-question.dto';
+import { CreateUserQuestionDto } from './dto/create-user-question.dto';
 
 @Injectable()
 export class QuestionService {
@@ -129,5 +131,28 @@ export class QuestionService {
 
   remove(id: number) {
     return `This action removes a #${id} question`;
+  }
+}
+
+@Injectable()
+export class UserQuestionService {
+  create(createUserQuestionDto: CreateUserQuestionDto) {
+    return 'This action adds a new userQuestion';
+  }
+
+  findAll() {
+    return `This action returns all userQuestion`;
+  }
+
+  findOne(id: number) {
+    return `This action returns a #${id} userQuestion`;
+  }
+
+  update(id: number, updateUserQuestionDto: UpdateUserQuestionDto) {
+    return `This action updates a #${id} userQuestion`;
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} userQuestion`;
   }
 }

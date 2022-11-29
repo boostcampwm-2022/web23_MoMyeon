@@ -6,8 +6,11 @@ import { Interview } from 'src/entities/interview.entity';
 import { UserInterview } from 'src/entities/userInterview.entity';
 import { InterviewCategory } from 'src/entities/interviewCategory.entity';
 import { Category } from 'src/entities/category.entity';
-import { QuestionService } from './question.service';
-import { QuestionController } from './question.controller';
+import { QuestionService, UserQuestionService } from './question.service';
+import {
+  QuestionController,
+  UserQuestionController,
+} from './question.controller';
 import { User } from 'src/entities/user.entity';
 
 @Module({
@@ -20,7 +23,7 @@ import { User } from 'src/entities/user.entity';
     TypeOrmModule.forFeature([Category]),
     TypeOrmModule.forFeature([User]),
   ],
-  controllers: [QuestionController],
-  providers: [QuestionService],
+  controllers: [QuestionController, UserQuestionController],
+  providers: [QuestionService, UserQuestionService],
 })
 export class QuestionModule {}

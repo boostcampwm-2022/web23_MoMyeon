@@ -11,7 +11,7 @@ import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 
-@Controller('question')
+@Controller({ version: '1', path: 'question' })
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
@@ -27,7 +27,7 @@ export class QuestionController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.questionService.findOne(+id);
+    return this.questionService.findTemporaryRoomQuestion(+id);
   }
 
   @Patch(':id')

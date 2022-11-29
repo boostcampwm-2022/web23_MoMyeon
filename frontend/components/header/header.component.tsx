@@ -10,10 +10,27 @@ import { ImageInfo } from "./header";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { loginModal } from "states/loginModal";
 import { userDataRecoil } from "states/user";
+import { useUserDataQuery } from "utils/hooks/useUserDataQuery";
+import { UserData } from "types/auth";
+
+import axios from "axios";
+import apiKeys from "../../constants/apiKeys";
 
 function Header() {
   const setVisible = useSetRecoilState(loginModal);
-  const userData = useRecoilValue(userDataRecoil);
+  //const userData = useRecoilValue(userDataRecoil);
+
+  const { data, isError, error } = useUserDataQuery();
+
+  const userData: UserData = { profile: null, nickname: null };
+  userData.nickname = data?.data.profile;
+  userData.profile = data?.data.nickname;
+
+  if (!isError) {
+    userData.nickname = data?.data.nickname;
+    userData.profile = data?.data.profile;
+  }
+
   const userImage = userData.profile ?? "";
   const onClickLogin = () => {
     setVisible(true);

@@ -4,10 +4,15 @@ const HOST =
     : process.env.NEXT_PUBLIC_API_HOST_PRODUCT;
 
 export const apiKeys = {
-  GET_POSTS: `http://${HOST}:3000/api/posts`,
-  CREATE_POSTS: `http://${HOST}:3000/api/v1/interview`,
-  GET_CATEGORIES: `http://${HOST}:3000/api/v1/category`,
+  GET_USER_INFO: `https://api.momyeon.site/v1/user/info`,
+  GITHUB_LOGIN_AUTH_REQUEST: `https://api.momyeon.site/v1/auth/github`,
+
   LOGOUT: `http://${HOST}:3000/api/logout`,
+
+  GET_POSTS: `http://localhost:3000/api/posts`,
+  CREATE_POSTS: `http://${HOST}:3000/api/v1/interview`,
+
+  GET_CATEGORIES: "https://api.momyeon.site/v1/category",
 };
 
 export default apiKeys;

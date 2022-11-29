@@ -1,14 +1,17 @@
 import apiKeys from "constants/apiKeys";
-import { Post } from "../../types/posts";
-
-async function getPosts(data : Post) {
-
+export interface Post {
+  title: string;
+  hashtag: string[];
+  user: string;
+  view: number;
+}
+async function getPosts(data: Post) {
   const response = await fetch(apiKeys.CREATE_POSTS, {
     method: "POST",
     body: JSON.stringify({ data: data }),
     headers: {
-      'Content-type' : 'application/json'
-    }
+      "Content-type": "application/json",
+    },
   });
 
   return await response.json();

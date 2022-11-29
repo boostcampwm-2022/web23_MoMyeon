@@ -3,10 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { FieldErrors, useForm } from "react-hook-form";
 import { postFormTypes } from "./createPostForm";
-import { Post } from "types/posts";
 import createPost from "utils/api/createPost";
 import { CategoryTag } from "components/categoryTag/CategoryTag.component";
-
+export interface Post {
+  title: string;
+  hashtag: string[];
+  user: string;
+  view: number;
+}
 const CreatePostForm = () => {
   const router = useRouter();
   const [submitted, setSubmitted] = useState(false);

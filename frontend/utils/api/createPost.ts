@@ -3,12 +3,14 @@ import { PostFormTypes } from "components/createPostForm/createPostForm";
 import axios from "axios";
 
 async function createPosts(data: PostFormTypes) {
+  const category = data.category.map((value) => JSON.parse(value));
+
   const res = await axios.post(
     apiKeys.CREATE_POSTS,
     {
       title: data.postTitle,
       maxMember: data.peopleLimit,
-      category: data.category,
+      category,
       contact: data.contact,
       content: data.detailContents,
     },

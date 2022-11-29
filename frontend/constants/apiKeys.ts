@@ -9,7 +9,8 @@ export const apiKeys = {
 
   LOGOUT: `http://${HOST}:3000/api/logout`,
 
-  GET_POSTS: `http://localhost:3000/api/posts`,
+  GET_POSTS: `https://api.momyeon.site/v1/interview?`,
+  GET_POST: `https://api.momyeon.site/v1/interview`,
   CREATE_POSTS: `https://api.momyeon.site/v1/interview`,
 
   GET_CATEGORIES: "https://api.momyeon.site/v1/category",

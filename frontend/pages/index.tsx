@@ -5,10 +5,8 @@ import getPosts from "utils/api/getPosts";
 import PostContainer from "components/mainPost/postContainer.component";
 import { GetServerSideProps, NextPage } from "next";
 import { GithubCodeProps, UserDataProps } from "types/auth";
-import { dehydrate, QueryClient, useMutation } from "@tanstack/react-query";
-import apiKeys from "constants/apiKeys";
-import axios from "axios";
-import { useEffect } from "react";
+import { dehydrate, QueryClient } from "@tanstack/react-query";
+
 import { useGithubLoginQuery } from "../utils/hooks/useGithubLoginQuery";
 
 const Home: NextPage<GithubCodeProps> = ({ code }) => {

@@ -4,8 +4,27 @@ import React, { useEffect } from "react";
 import CreatePostForm from "components/createPostForm/createPostForm.component";
 import Head from "next/head";
 import { GetServerSideProps, NextPage } from "next";
+import { useUserDataQuery } from "../../utils/hooks/useUserDataQuery";
+import { useRouter } from "next/router";
 
 const Create: NextPage = () => {
+  const { isLoading, isError } = useUserDataQuery();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && isError) {
+      const prevent = async () => {
+        await router.push("/");
+      };
+
+      prevent();
+    }
+  }, [isError]);
+
+  if (isLoading) {
+    return <div></div>;
+  }
+
   return (
     <div className={styles.createPageContainer}>
       <Header />
@@ -22,6 +41,7 @@ const Create: NextPage = () => {
   );
 };
 
+/*
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const accessToken = context.req.cookies.accessToken ?? null;
   if (!accessToken) {
@@ -38,6 +58,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       accessToken,
     },
   };
-};
+};*/
 
 export default Create;

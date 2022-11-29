@@ -18,7 +18,6 @@ import apiKeys from "../../constants/apiKeys";
 
 function Header() {
   const setVisible = useSetRecoilState(loginModal);
-  //const userData = useRecoilValue(userDataRecoil);
 
   const { data, isError, error } = useUserDataQuery();
 

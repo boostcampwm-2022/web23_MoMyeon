@@ -1,9 +1,18 @@
 //TODO:: API 나오면 변경
 export interface Post {
+  interview_id : number;
   title: string;
-  hashtag: string[];
-  user: string;
-  view: number;
+  maxMember: number;
+  contact: string;
+  content : string;
+  recruitStatue: number;
+  date: string;
+  category: Category[];
+}
+
+export interface Category {
+  id: number;
+  name: string
 }
 export interface PostProp {
   post: Post;

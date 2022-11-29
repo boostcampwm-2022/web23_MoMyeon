@@ -4,9 +4,10 @@ import styles from "styles/PostCard.module.scss";
 import userImage from "public/icon/user.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import {Category} from 'types/posts';
 
 function PostCard({ post }: PostProp) {
-  const { title, hashtag, user, view } = post;
+  const {interview_id, title, category, maxMember } = post;
   const router = useRouter() ;
 
   //FIXME::
@@ -15,17 +16,18 @@ function PostCard({ post }: PostProp) {
   // 고려사항:: interview_id가 아직 API 설계에 없다
 
   const handlePostCardClick = async () => {
-    await router.push(`/post/${title}`);
+    await router.push(`/post/${interview_id}`);
   }
 
   return (
     <div className={styles.container} onClick = { handlePostCardClick }>
       <h1 className={styles.title}>{title}</h1>
       <div className={styles.hashtagContainer}>
-        {hashtag?.map((item: string) => {
+        {category?.map((item:Category ) => {
+          const {id, name} = item
           return (
-            <h4 className={styles.hashtag} key={item}>
-              {item}
+            <h4 className={styles.hashtag} key={id}>
+              {name}
             </h4>
           );
         })}
@@ -33,10 +35,8 @@ function PostCard({ post }: PostProp) {
       <div className={styles.footer}>
         <div className={styles.user}>
           <Image src={userImage} alt="user" width={30} height={30} />
-
-          <p>{user}</p>
         </div>
-        <p>{view}</p>
+        <p>모집인원 {maxMember}</p>
       </div>
     </div>
   );

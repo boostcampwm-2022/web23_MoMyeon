@@ -1,17 +1,25 @@
 import apiKeys from "constants/apiKeys";
-import { Post } from "../../types/posts";
+import { PostFormTypes } from "components/createPostForm/createPostForm";
+import axios from "axios";
 
-async function getPosts(data : Post) {
-
-  const response = await fetch(apiKeys.CREATE_POSTS, {
-    method: "POST",
-    body: JSON.stringify({ data: data }),
-    headers: {
-      'Content-type' : 'application/json'
+async function createPosts(data: PostFormTypes) {
+  const res = await axios.post(
+    apiKeys.CREATE_POSTS,
+    {
+      title: data.postTitle,
+      maxMember: data.peopleLimit,
+      category: data.category,
+      contact: data.contact,
+      content: data.detailContents,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
-  });
+  );
 
-  return await response.json();
+  return await res.data;
 }
 
-export default getPosts;
+export default createPosts;

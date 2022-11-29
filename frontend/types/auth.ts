@@ -10,3 +10,7 @@ export interface UserData {
 export interface UserDataProps {
   userData: UserData;
 }
+
+export interface GithubCodeProps {
+  code: string | null;
+}

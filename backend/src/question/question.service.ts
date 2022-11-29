@@ -47,14 +47,8 @@ export class QuestionService {
    * @returns 분야 참여자
    */
   async findTemporaryRoomQuestion(id: number) {
-    // feedback에 interviewId 조회 해당 값들로 출력.
-    const questionData = await this.feedbackRepository
-      .createQueryBuilder()
-      .where('interviewId = :id', { id: id })
-      .getRawMany();
-    if (questionData.length) {
-      return questionData;
-    }
+    // userId로 캐싱한 값이 있는지 확인(로직 추가 필요)
+
     // 0. id -> interview(방정보 가져오기)
     const interviewData = await this.interviewRepository
       .createQueryBuilder()

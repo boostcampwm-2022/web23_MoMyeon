@@ -5,9 +5,9 @@ import getPosts from "utils/api/getPosts";
 import getAllCategory from "utils/api/getAllCategory";
 import PostContainer from "components/mainPost/postContainer.component";
 import CategoryContainer from "components/mainFilter/categoryContainer.component";
-import { Posts } from "types/posts";
+
 import { GetServerSideProps, NextPage } from "next";
-import { UserDataProps } from "types/auth";
+import { GithubCodeProps } from "types/auth";
 import { CategoryProps } from "types/category";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -15,11 +15,12 @@ import { useEffect } from "react";
 import { useGithubLoginMutation } from "../utils/hooks/useGithubLoginMutation";
 import { useRouter } from "next/router";
 
-
-const Home: NextPage<GithubCodeProps & CategoryProps> = ({ code, category}) => {
+const Home: NextPage<GithubCodeProps & CategoryProps> = ({
+  code,
+  category,
+}) => {
   const mutation = useGithubLoginMutation(code);
   const router = useRouter();
-
 
   useEffect(() => {
     if (code !== null) {

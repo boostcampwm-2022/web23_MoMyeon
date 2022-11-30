@@ -1,19 +1,19 @@
-import { Category } from "./category";
+import { Category as CategoryGet } from "./category";
 
 export interface Post {
-  interview_id : number;
+  interview_id: number;
   title: string;
   maxMember: number;
   contact: string;
-  content : string;
+  content: string;
   recruitStatue: number;
   date: string;
-  category: Category[];
+  category: CategoryGet[];
 }
 
 export interface Category {
   id: number;
-  name: string
+  name: string;
 }
 export interface PostProp {
   post: Post;

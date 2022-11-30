@@ -57,10 +57,10 @@ export class AuthService {
 
       // TODO: refreshToken을 User 테이블에 저장
 
-      return { accessToken, refreshToken, nickname, profile };
+      return { accessToken, refreshToken };
     } catch (err) {
       console.error(err);
-      throw new InternalServerErrorException('서버 내부 에러');
+      throw new InternalServerErrorException('깃허브 로그인 에러');
     }
   }
 

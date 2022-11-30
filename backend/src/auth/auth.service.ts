@@ -26,9 +26,9 @@ export class AuthService {
   async githubLogin(githubLoginDto: GithubLoginDto) {
     try {
       const { code } = githubLoginDto;
-
       const githubAccessData = await this.getGithubAccessData(code);
       const githubAccessToken = githubAccessData.access_token;
+
       const githubUserData = await this.getGithubUserData(githubAccessToken);
       const {
         id: uid,
@@ -97,7 +97,6 @@ export class AuthService {
           },
         }),
       );
-
       return githubUserResponse.data;
     } catch (err) {
       console.error(err);

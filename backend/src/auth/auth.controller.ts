@@ -10,7 +10,7 @@ export class AuthController {
   @Post('github')
   async githubLogin(
     @Body() githubLoginDto: GithubLoginDto,
-    @Res() res: Response,
+    @Res({ passthrough: true }) res: Response,
   ) {
     try {
       const userData = await this.authService.githubLogin(githubLoginDto);

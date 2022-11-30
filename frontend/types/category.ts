@@ -1,13 +1,13 @@
 export interface Category {
   id: number;
   name: string;
-  subjecj: string;
+  subject: string;
 }
 
 export interface CategoryProps {
-  category : Category[]
+  category: Category[];
 }
 
 export interface CategoryTable {
-  [key:string] : Category[]
+  [key: string]: Category[];
 }

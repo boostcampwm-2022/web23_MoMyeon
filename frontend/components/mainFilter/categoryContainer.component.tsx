@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
-import styles from "styles/CategoryFilter.module.scss";
-import { CategoryProps, Category, CategoryTable } from "types/category";
-import CategoryParent from "./categoryParent.component";
-import CategoryElement from "./category.component";
-import { categoryArray } from "states/categoryArray";
-import { useRecoilState } from "recoil";
+import React, { useEffect, useState, useCallback } from 'react';
+import styles from 'styles/CategoryFilter.module.scss';
+import { CategoryProps, Category, CategoryTable } from 'types/category';
+import CategoryParent from './categoryParent.component';
+import CategoryElement from './category.component';
+import { categoryArray } from 'states/categoryArray';
+import { useRecoilState } from 'recoil';
 function CategoryContainer({ category }: CategoryProps) {
   const [categoryArr, setCategoryArr] = useRecoilState(categoryArray);
   const [table, setTable] = useState<CategoryTable>({});
@@ -16,13 +16,13 @@ function CategoryContainer({ category }: CategoryProps) {
   useEffect(() => {
     if (keyTemp.length < 1) {
       category.forEach((item: Category) => {
-        const { id, name, subjecj } = item;
-        if (tableTemp[subjecj]) {
-          tableTemp[subjecj] = [...tableTemp[subjecj], { id, name, subjecj }];
+        const { id, name, subject } = item;
+        if (tableTemp[subject]) {
+          tableTemp[subject] = [...tableTemp[subject], { id, name, subject }];
           return;
         }
-        tableTemp[subjecj] = [{ id, name, subjecj }];
-        keyTemp.push(subjecj);
+        tableTemp[subject] = [{ id, name, subject }];
+        keyTemp.push(subject);
       });
       setTable(tableTemp);
       setKey(keyTemp);

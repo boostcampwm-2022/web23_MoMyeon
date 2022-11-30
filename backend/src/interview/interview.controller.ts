@@ -56,8 +56,9 @@ export class InterviewController {
     return this.interviewService.update(+id, userData.id, updateInterviewDto);
   }
 
+  @UseGuards(JwtGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.interviewService.remove(+id);
+  remove(@Param('id') id: string, @UserData() userData: UserInfo) {
+    return this.interviewService.remove(+id, userData.id);
   }
 }

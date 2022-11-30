@@ -301,8 +301,19 @@ export class InterviewService {
     }
   }
 
-  remove(id: number) {
-    return this.interviewRepository.softDelete(id);
+  async remove(id: number, userId: number) {
+    try {
+      const userQueryDeleteData = await this.interviewRepository
+        .createQueryBuilder('')
+        .softDelete()
+        .where('id = :id AND userId = :userId', { id: id, userId: userId })
+        .execute();
+      if (!userQueryDeleteData.affected)
+        throw new BadRequestException('삭제할 수 없습니다.');
+      return userQueryDeleteData;
+    } catch (err) {
+      throw err;
+    }
   }
 
   async validateCategory(categoryList: any) {

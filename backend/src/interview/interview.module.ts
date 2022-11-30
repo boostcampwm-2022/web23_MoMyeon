@@ -7,9 +7,13 @@ import { Category } from 'src/entities/category.entity';
 import { InterviewCategory } from 'src/entities/interviewCategory.entity';
 import { UserInterview } from 'src/entities/userInterview.entity';
 import { Resume } from 'src/entities/resume.entity';
+import { AuthModule } from 'src/auth/auth.module';
+import { User } from 'src/entities/user.entity';
 
 @Module({
   imports: [
+    AuthModule,
+    TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([Interview]),
     TypeOrmModule.forFeature([Category]),
     TypeOrmModule.forFeature([InterviewCategory]),

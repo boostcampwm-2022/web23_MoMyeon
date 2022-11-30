@@ -46,6 +46,8 @@ export class InterviewService {
       ...createInterviewDto,
       categoryList: `${JSON.stringify(createInterviewDto.category)}`,
     };
+    console.log(createInterviewData);
+
     const newInterview = this.interviewRepository.create(createInterviewData);
     const saveInterview = await this.interviewRepository.save(newInterview);
     const interviewId = saveInterview.id;

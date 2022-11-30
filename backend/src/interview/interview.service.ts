@@ -28,15 +28,16 @@ export class InterviewService {
   ) {}
 
   interviewSelect = [
-    'id AS interview_id',
-    'title',
-    'max_member AS maxMember',
-    'contact',
-    'content',
-    'count',
-    'status AS recruitStatus',
-    'created_at AS date',
-    'categoryList AS category',
+    'interview.id AS interview_id',
+    'interview.title AS title',
+    'interview.max_member AS maxMember',
+    'interview.contact AS contact',
+    'interview.content AS content',
+    'interview.count AS count',
+    'interview.status AS recruitStatus',
+    'interview.created_at AS date',
+    'interview.categoryList AS category',
+    'user.nickname AS host',
   ];
 
   async create(createInterviewDto: CreateInterviewDto) {
@@ -46,7 +47,6 @@ export class InterviewService {
       ...createInterviewDto,
       categoryList: `${JSON.stringify(createInterviewDto.category)}`,
     };
-    console.log(createInterviewData);
 
     const newInterview = this.interviewRepository.create(createInterviewData);
     const saveInterview = await this.interviewRepository.save(newInterview);
@@ -68,62 +68,78 @@ export class InterviewService {
   }
 
   async findQuery(selectInterviewDto: SelectInterviewDto) {
-    const limit = 18;
-    const selectInterviewData = {
-      page: selectInterviewDto.page || 0,
-      search: selectInterviewDto.search || '',
-      category: selectInterviewDto.category || '',
-    };
-    //자료형 변환
-    const category: number[] = [];
-    if (selectInterviewData.category !== '') {
-      selectInterviewData.category.split(',').forEach((element) => {
-        category.push(parseInt(element));
-      });
-    }
-
-    const where = { sql: ``, value: {} };
-    if (selectInterviewData.search === '' && category.length > 0) {
-      category.forEach((element, index) => {
-        where.sql +=
-          index === 0
-            ? `categoryList LIKE '%:${element},%'`
-            : `OR categoryList LIKE '%:${element},%'`;
-      });
-    } else if (selectInterviewData.search !== '' && category.length === 0) {
-      where.sql = '(title LIKE (:search) OR contact LIKE (:search))';
-      where.value = {
-        search: `%${selectInterviewData.search}%`,
+    try {
+      const INFINITY_SCROLL_LIMIT = 18;
+      const selectInterviewData = {
+        page: selectInterviewDto.page || 0,
+        search: selectInterviewDto.search || '',
+        category: selectInterviewDto.category || '',
       };
-    } else if (selectInterviewData.search !== '' && category.length > 0) {
-      where.sql = '(title LIKE (:search) OR contact LIKE (:search))';
-      where.value = {
-        search: `%${selectInterviewData.search}%`,
-      };
-      category.forEach((element, index) => {
-        where.sql +=
-          index === 0
-            ? `AND (categoryList LIKE '%:${element},%'`
-            : `OR categoryList LIKE '%:${element},%'`;
-      });
-      where.sql += ')';
-    }
+      console.log(selectInterviewData);
 
-    const startTime = new Date().getTime();
-    const interviewData = await this.interviewRepository
-      .createQueryBuilder()
-      .select(this.interviewSelect)
-      .where(where.sql, where.value)
-      .orderBy('date', 'DESC')
-      .limit(limit)
-      .offset(limit * selectInterviewData.page)
-      .getRawMany();
-    const endTime = new Date().getTime();
-    //출력형태 조정
-    interviewData.forEach((element) => {
-      element.category = JSON.parse(element.category);
-    });
-    return { queryTime: endTime - startTime, interviews: interviewData };
+      //자료형 변환
+      const category: number[] = [];
+      if (selectInterviewData.category !== '') {
+        const categoryId = selectInterviewData.category.match(
+          /(?<=\[)(.*?)(?=\])/,
+        )
+          ? selectInterviewData.category.match(/(?<=\[)(.*?)(?=\])/)[0]
+          : selectInterviewData.category;
+        categoryId.split(',').forEach((element) => {
+          if (parseInt(element)) category.push(parseInt(element));
+        });
+      }
+
+      const where = { sql: ``, value: {} };
+      if (selectInterviewData.search === '' && category.length > 0) {
+        category.forEach((element, index) => {
+          where.sql +=
+            index === 0
+              ? `categoryList LIKE '%:${element},%'`
+              : `OR categoryList LIKE '%:${element},%'`;
+        });
+      } else if (selectInterviewData.search !== '' && category.length === 0) {
+        where.sql = '(title LIKE (:search) OR contact LIKE (:search))';
+        where.value = {
+          search: `%${selectInterviewData.search}%`,
+        };
+      } else if (selectInterviewData.search !== '' && category.length > 0) {
+        where.sql = '(title LIKE (:search) OR contact LIKE (:search)) ';
+        where.value = {
+          search: `%${selectInterviewData.search}%`,
+        };
+        category.forEach((element, index) => {
+          where.sql +=
+            index === 0
+              ? `AND (categoryList LIKE '%:${element},%'`
+              : `OR categoryList LIKE '%:${element},%'`;
+        });
+        where.sql += ')';
+      }
+      console.log(where);
+
+      const startTime = new Date().getTime();
+      const interviewData = await this.interviewRepository
+        .createQueryBuilder('interview')
+        .innerJoinAndSelect(User, 'user', 'interview.userId = user.id')
+        .select(this.interviewSelect)
+        .where(where.sql, where.value)
+        .orderBy('date', 'DESC')
+        .limit(INFINITY_SCROLL_LIMIT)
+        .offset(INFINITY_SCROLL_LIMIT * selectInterviewData.page)
+        .getRawMany();
+      const endTime = new Date().getTime();
+      //출력형태 조정
+      if (interviewData.length) {
+        interviewData.forEach((element) => {
+          if (element.category) element.category = JSON.parse(element.category);
+        });
+      }
+      console.log(interviewData);
+      return { queryTime: endTime - startTime, interviews: interviewData };
+    } catch (err) {
+      throw err;
+    }
   }
 
   async findOne(id: number) {

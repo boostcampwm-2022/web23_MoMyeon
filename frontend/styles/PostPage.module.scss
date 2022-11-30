@@ -89,6 +89,25 @@
   display: inline;
 }
 
+.categoryContainer{
+  display: grid;
+  width: 52rem;
+  padding-top: 7rem;
+  padding-bottom: 3rem;
+  padding-left : 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 3rem;
+  row-gap: 3rem;
+  max-width: 100rem;
+}
+
+.categoryItem{
+  font-size: 18px;
+  width: 10rem;
+  color: grey;
+  text-align: center;
+}
+
 .postInfoLi {
   padding: 3rem 0;
 }

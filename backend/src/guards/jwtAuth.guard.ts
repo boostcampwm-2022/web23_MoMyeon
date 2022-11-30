@@ -33,18 +33,19 @@ export class JwtGuard implements CanActivate {
       if (!user) {
         throw new UnauthorizedException('회원 정보 없음');
       }
-      const { nickname, profile } = user;
+      const { id, nickname, profile } = user;
       request.user = {
         oauth_provider,
         oauth_uid: oauth_uid.toString(),
         nickname,
         profile,
+        id,
       };
 
       return true;
     } catch (err) {
       console.error(err);
-      throw new InternalServerErrorException();
+      throw err;
     }
   }
 

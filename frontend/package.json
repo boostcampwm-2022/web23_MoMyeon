@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "https": "node server.js",
     "lint": "next lint"
   },
   "dependencies": {
@@ -31,5 +32,8 @@
     "typescript": "4.8.4"
   },
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "local-ssl-proxy": "^1.3.0"
+  }
 }

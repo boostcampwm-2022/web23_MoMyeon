@@ -1,4 +1,7 @@
-import { Category } from "types/category";
+export interface Category {
+  id: number;
+  name: string;
+}
 
 export const categoryData: Category[] = [
   {

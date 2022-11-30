@@ -1,0 +1,43 @@
+@use "_common";
+@use "_color";
+
+.container {
+  min-width: 70rem;
+  width: 80%;
+  max-width: 100rem;
+  height: 20rem;
+}
+
+.parent {
+  @include common.flexRow;
+}
+
+.child {
+  @include common.flexRow;
+  padding-top: 3rem;
+}
+
+.parentElement {
+  cursor: pointer;
+  padding: 0.6rem;
+  margin-right: 5rem;
+  font-size: 20px;
+}
+
+.focusBottom {
+  border-bottom: 4px solid color.$MAINCOLOR;
+}
+
+.category {
+  cursor: pointer;
+  font-size: 16px;
+  padding-inline: 1rem;
+  padding-block: 0.8rem;
+  border: 1px solid color.$GRAY;
+  border-radius: 3rem;
+  margin-right: 1rem;
+}
+
+.focusCategory {
+  background-color: color.$SUBCOLOR;
+}

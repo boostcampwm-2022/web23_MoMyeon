@@ -3,12 +3,12 @@ import { CategoryTagItem } from "./CategoryTagItem.component";
 import styles from "styles/Create.module.scss";
 import { useCategoryQuery } from "utils/hooks/useCategoryQuery";
 import { UseFormRegister } from "react-hook-form";
-import { postFormTypes } from "components/createPostForm/createPostForm";
+import { PostFormTypes } from "components/createPostForm/createPostForm";
 
 export function CategoryTag({
   register,
 }: {
-  register: UseFormRegister<postFormTypes>;
+  register: UseFormRegister<PostFormTypes>;
 }) {
   const categories = useCategoryQuery();
 

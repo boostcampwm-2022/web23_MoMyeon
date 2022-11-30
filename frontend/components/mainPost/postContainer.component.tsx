@@ -4,12 +4,16 @@ import PostCard from "./postCard.component";
 import styles from "styles/PostCard.module.scss";
 import useObserver from "utils/hooks/useObserver";
 import { useInfiniteQuery } from "@tanstack/react-query";
-
+import { categoryArray } from "states/categoryArray";
+import { useRecoilValue } from "recoil";
 import getPosts from "utils/api/getPosts";
 
 function PostContainer() {
-  const OFFSET = 10;
+  const OFFSET = 18;
   const bottom = useRef<null | HTMLDivElement>(null);
+
+  const categoryArr = useRecoilValue(categoryArray);
+
   const {
     data,
     status,
@@ -18,8 +22,9 @@ function PostContainer() {
     isFetchingNextPage,
     isFetching,
   } = useInfiniteQuery({
-    queryKey: ["posts"],
-    queryFn: getPosts,
+    queryKey: ["posts", ...categoryArr],
+    queryFn: ({ pageParam }) =>
+      getPosts({ pageParam, category: categoryArr, search: "" }),
     getNextPageParam: (lastPage, page) => {
       return lastPage.length === OFFSET ? page.length : undefined;
     },
@@ -42,14 +47,10 @@ function PostContainer() {
     <div>
       <div className={styles.outerContainer}>
         {data?.pages &&
-          data.pages.map((item: any, index: number) => {
-            return item?.map((post: Post, outIndex: number) => {
-              return (
-                <PostCard
-                  key={post.title + `${index}+${outIndex}`}
-                  post={post}
-                />
-              );
+          data.pages?.map((item: any) => {
+            return item?.map((post: Post) => {
+              const { interview_id: id } = post;
+              return <PostCard key={id} post={post} />;
             });
           })}
       </div>

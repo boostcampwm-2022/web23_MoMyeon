@@ -1,0 +1,18 @@
+@use "_common";
+@use "_color";
+
+.container {
+  overflow-y: scroll;
+  width: 55rem;
+  height: 34rem;
+  padding-block: 2rem;
+  padding-inline: 2rem;
+  border: 1px solid color.$GRAY;
+  border-radius: 20px;
+}
+
+.text {
+  font-size: 16px;
+  margin-left: 1.1rem;
+  padding-block: 0.7rem;
+}

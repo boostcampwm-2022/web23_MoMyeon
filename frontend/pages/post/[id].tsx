@@ -1,41 +1,49 @@
 import React from "react";
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps } from "next";
 import { useState, useEffect } from "react";
 // @ts-ignore
 import isURL from "isurl";
-
 import styles from "styles/PostPage.module.scss";
 import Header from "components/header/header.component";
 import PostPageHead from "head/postPage";
-import { recruitingData } from "mockData/postPageData";
 import { useRouter } from "next/router";
-import { convertEpochStringToLocale } from "utils/dateFormmat";
-import { InterviewJoinButton } from "../../components/button/interviewJoinButton";
+import { InterviewJoinButton } from "components/button/interviewJoinButton";
+import { PostData } from "types/posts";
+import getPostById from "utils/api/getPostById";
 
-interface Props {
-  cookie: string | undefined;
-  nickName: string;
-  date: string;
-  content: string[];
-}
-
-const PostPage: NextPage<Props> = ({ cookie, nickName, date, content }) => {
+const PostPage = ({ postData }: { postData: PostData | null }) => {
   const router = useRouter();
-  const buttonAttributes = [
-    { name: "참여자 관리", isVisible: true /* isHost */ },
-    { name: "질문 관리", isVisible: true /* userState === 2 (참여자) */ },
-    { name: "피드백", isVisible: false /* 모의 면접 종료 후 */ },
-  ];
 
-  const title = router.query.id;
-  if (typeof title === "string") {
-    recruitingData.title = title;
-  }
+  useEffect(() => {
+    if (postData === null) {
+      router.replace("/");
+    }
+  }, []);
+
+  const buttonAttributes = [
+    {
+      name: "참여자 관리",
+      isVisible: true /* isHost */,
+      /* postData?.isHost ?? false */
+    },
+    {
+      name: "질문 관리",
+      isVisible: true,
+      /* postData?.userStatus !== undefined && postData?.userStatus === 2, */
+      /* userStatus === 2 => 승인 */
+    },
+    {
+      name: "피드백",
+      isVisible: true,
+      /* postData?.recruitStatus !== undefined && postData?.recruitStatus === 1,*/
+      /* 모의 면접 종료 후 */
+    },
+  ];
 
   const [isContactURL, setIsContactURL] = useState(false);
   useEffect(() => {
     try {
-      if (isURL(new URL(recruitingData.contact))) {
+      if (postData?.contact && isURL(new URL(postData?.contact))) {
         setIsContactURL(true);
       }
     } catch {}
@@ -47,34 +55,44 @@ const PostPage: NextPage<Props> = ({ cookie, nickName, date, content }) => {
       <Header />
       <div className={styles.postContainer}>
         <section className={styles.titleContainer}>
-          <h2> {recruitingData.title} </h2>
+          <h2> {postData?.title} </h2>
           <div className={styles.titleInfoContainer}>
             <div className={styles.titleInfoCenter}>
-              <span> {nickName}</span>
-              <span> {date} </span>
+              <span> {postData?.host}</span>
+              <span> {postData?.date} </span>
             </div>
-            <InterviewJoinButton initialUserState={0 /* userState */} />
+            <InterviewJoinButton initialUserState={postData?.userStatus ?? 0} />
           </div>
         </section>
         <section className={styles.postInfoContainer}>
           <ul>
             <li className={styles.postInfoLi}>
               <span> 카테고리 </span>
+              <div className={styles.categoryContainer}>
+                {postData?.category.map((item) => {
+                  return (
+                    <div className={styles.categoryItem} key={item.id}>
+                      {" "}
+                      {item.name}{" "}
+                    </div>
+                  );
+                })}
+              </div>
             </li>
             <li className={styles.postInfoLi}>
               <span> 신청 현황 </span>
               <div className={styles.textWrapper}>
-                <h6 className={styles.mainText}> {recruitingData.member} </h6>
+                <h6 className={styles.mainText}> {postData?.member} </h6>
                 <h6 className={styles.subText}> / </h6>
-                <h6 className={styles.subText}> {recruitingData.maxMember} </h6>
+                <h6 className={styles.subText}> {postData?.maxMember} </h6>
               </div>
             </li>
             <li className={styles.postInfoLi}>
               <span> 연락 방법 </span>
               {isContactURL ? (
-                <a href={recruitingData.contact}> {recruitingData.contact} </a>
+                <a href={postData?.contact}> {postData?.contact} </a>
               ) : (
-                <p> {recruitingData.contact} </p>
+                <p> {postData?.contact} </p>
               )}
             </li>
           </ul>
@@ -98,11 +116,10 @@ const PostPage: NextPage<Props> = ({ cookie, nickName, date, content }) => {
           <div className={styles.titleContainer}>
             <h4> 상세 내용 </h4>
           </div>
-          {content.map((line, index) => {
+          {postData?.content.map((line, index) => {
             return (
               <p key={index} className={styles.contents}>
-                {" "}
-                {line}{" "}
+                {line}
               </p>
             );
           })}
@@ -113,20 +130,32 @@ const PostPage: NextPage<Props> = ({ cookie, nickName, date, content }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  //API request
   const postID = context.query.id;
-  const date = convertEpochStringToLocale(recruitingData.date);
-  const content: string[] = recruitingData.content.split("\n");
-  const nickName: string = "blind cat";
 
-  const cookie = context.req.cookies.accessToken ?? null;
+  //서버에서 리다이렉트 해주면 알림 메시지 주기 어려울 수 있다.
+  //클라이언트에서 리다이렉트 하면 알림 메시지 줄 수 있지만, 불필요한 렌더링이 있을 수 있다.
+  if (typeof postID !== "string") {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  const postData = await getPostById(postID);
+  if (postData === null) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {
-      cookie,
-      nickName,
-      date,
-      content,
+      postData,
     },
   };
 };

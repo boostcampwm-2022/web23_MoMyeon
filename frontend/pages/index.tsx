@@ -3,48 +3,54 @@ import Header from "components/header/header.component";
 import HomeHead from "head/home";
 import getPosts from "utils/api/getPosts";
 import PostContainer from "components/mainPost/postContainer.component";
-
-import { Posts } from "types/posts";
 import { GetServerSideProps, NextPage } from "next";
-import { UserDataProps } from "types/auth";
-import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
+import { GithubCodeProps, UserDataProps } from "types/auth";
+import { dehydrate, QueryClient } from "@tanstack/react-query";
+import { useGithubLoginMutation } from "../utils/hooks/useGithubLoginMutation";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
-import { userDataRecoil } from "states/user";
 
-const Home: NextPage<UserDataProps> = ({ userData }) => {
-  const setUser = useSetRecoilState(userDataRecoil);
+const Home: NextPage<GithubCodeProps> = ({ code }) => {
+  const mutation = useGithubLoginMutation(code);
+  const router = useRouter();
 
   useEffect(() => {
-    if (userData && userData.nickname) {
-      setUser(userData);
+    if (code !== null) {
+      mutation.mutate(code);
     }
-  }, [setUser, userData]);
+  }, []);
+
+  useEffect(() => {
+    const reload = async () => {
+      await router.replace("/");
+    };
+    reload();
+  }, [mutation.isSuccess]);
+
   return (
     <div className={styles.main}>
       <HomeHead />
       <Header />
-      <PostContainer />
+      {/*<PostContainer> */}
     </div>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const nickname = context.req.cookies.nickname ?? null;
-  const profile = context.req.cookies.profile ?? null;
+  const code = context.query.code ?? null;
 
-  const userData = { profile, nickname };
   const queryClient = new QueryClient();
   await queryClient.prefetchInfiniteQuery({
     queryKey: ["posts"],
     queryFn: getPosts,
   });
+
   const hydrate: any = dehydrate(queryClient);
   if (hydrate.queries[0]) hydrate.queries[0].state.data.pageParams[0] = 0;
   return {
     props: {
       dehydratedState: hydrate,
-      userData,
+      code: code,
     },
   };
 };

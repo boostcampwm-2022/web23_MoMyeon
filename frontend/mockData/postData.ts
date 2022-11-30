@@ -1,5 +1,9 @@
-import { Post } from "types/posts";
-
+export interface Post {
+  title: string;
+  hashtag: string[];
+  user: string;
+  view: number;
+}
 export const data: Post[] = [
   {
     title: "네이버 1차",

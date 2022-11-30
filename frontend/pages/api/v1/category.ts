@@ -1,6 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { categoryData } from "mockData/categoryData";
-import { Category } from "types/category";
+export interface Category {
+  id: number;
+  name: string;
+}
 
 export default function handler(
   req: NextApiRequest,

@@ -32,6 +32,11 @@ export class InterviewController {
     return this.interviewService.findOne(+id);
   }
 
+  @Get('members/:interviewId')
+  getMembers(@Param('interviewId') interviewId: string) {
+    return this.interviewService.getMembers(interviewId);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

@@ -2,11 +2,15 @@ import styles from "styles/Create.module.scss";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { FieldErrors, useForm } from "react-hook-form";
-import { postFormTypes } from "./createPostForm";
-import { Post } from "types/posts";
+import { PostFormTypes } from "./createPostForm";
 import createPost from "utils/api/createPost";
 import { CategoryTag } from "components/categoryTag/CategoryTag.component";
-
+export interface Post {
+  title: string;
+  hashtag: string[];
+  user: string;
+  view: number;
+}
 const CreatePostForm = () => {
   const router = useRouter();
   const [submitted, setSubmitted] = useState(false);
@@ -21,7 +25,7 @@ const CreatePostForm = () => {
     }
   };
 
-  const onValid = async (data: postFormTypes) => {
+  const onValid = async (data: PostFormTypes) => {
     if (submitted) {
       return;
     }
@@ -31,21 +35,21 @@ const CreatePostForm = () => {
       data.category = [];
     }
 
-    const postData: Post = {
-      title: data.postTitle,
-      hashtag: data.category,
-      user: "Blind Cat",
-      view: 100,
-    };
-
-    await createPost(postData);
-    reset();
-    await router.push("/");
+    const res = await createPost(data);
+    if (res !== null) {
+      reset();
+      //replace created page//
+      await router.replace("/");
+    }
   };
 
   const onError = (errors: FieldErrors) => {
     let log: string = "";
-    log += errors.postTitle?.message;
+    log += `${errors.postTitle?.message}\n\n`;
+
+    if (errors.peopleLimit?.message) {
+      log += `${errors.peopleLimit?.message}\n\n`;
+    }
     alert(log);
   };
 
@@ -54,7 +58,7 @@ const CreatePostForm = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<postFormTypes>();
+  } = useForm<PostFormTypes>();
 
   return (
     <form

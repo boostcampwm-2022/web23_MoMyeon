@@ -8,6 +8,9 @@ import { Category } from 'src/entities/category.entity';
 import { InterviewCategory } from 'src/entities/interviewCategory.entity';
 import { UserInterview } from 'src/entities/userInterview.entity';
 import { SelectInterviewDto } from './dto/select-interview.dto';
+import { User } from 'src/entities/user.entity';
+import { Resume } from 'src/entities/resume.entity';
+import { Item } from 'src/entities/item.entity';
 
 @Injectable()
 export class InterviewService {
@@ -20,6 +23,8 @@ export class InterviewService {
     private interviewCategoryRepository: Repository<InterviewCategory>,
     @InjectRepository(UserInterview)
     private userInterviewRepository: Repository<UserInterview>,
+    @InjectRepository(Resume)
+    private resumeRepository: Repository<Resume>,
   ) {}
 
   interviewSelect = [
@@ -143,6 +148,56 @@ export class InterviewService {
     interviewData['userStatus'] = undefined;
     //0: 신청하기 전 1: 신청 후 승인 대기중 2: 승인 3: 거부
     return { interviewData };
+  }
+
+  async getMembers(interviewId: string) {
+    // 모의면접 신청이 승인된 멤버들 조회 + 멤버들의 이력서 조회
+
+    const members = await this.userInterviewRepository
+      .createQueryBuilder('ui')
+      .innerJoinAndSelect(User, 'user', 'ui.userId = user.id')
+      .where('ui.interviewId = :id', { id: interviewId })
+      .select(['user.id as userId', 'nickname'])
+      .getRawMany();
+
+    const memberIds = members.map((member) => member.userId + '');
+    const rawResumes = await this.resumeRepository
+      .createQueryBuilder('resume')
+      .innerJoinAndSelect(Item, 'item', 'resume.itemId = item.id')
+      .where('resume.userId in (:id)', { id: memberIds })
+      .select(['resume.userId as userId', 'title', 'content'])
+      .getRawMany();
+
+    const resumes = this.extractResumes(rawResumes);
+
+    Object.entries(resumes).forEach(([rId, resume]) => {
+      const found = members.find((member) => member.userId === +rId);
+      found.resume = resume;
+    });
+
+    return { members };
+  }
+
+  extractResumes(rawResumes) {
+    return rawResumes.reduce((acc, cur) => {
+      const { userId, title, content } = cur;
+      if (!acc[userId]) {
+        acc[userId] = [{ title, content }];
+        return acc;
+      }
+
+      const [found] = acc[userId].filter(
+        ({ title: _title }) => _title === title,
+      );
+
+      if (!found) {
+        acc[userId].push({ title, content });
+        return acc;
+      }
+      if (!found.content) found.content = content;
+      else found.content += '\n' + content;
+      return acc;
+    }, {});
   }
 
   async update(id: number, updateInterviewDto: UpdateInterviewDto) {

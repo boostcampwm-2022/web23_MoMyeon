@@ -20,8 +20,8 @@ if (process.env.NEXT_PUBLIC_DEV_MODE === "true") {
     rejectUnauthorized: false,
   });
 }
-
 export default function App({ Component, pageProps }: AppProps) {
+  
   const [queryClient] = useState(() => new QueryClient());
   return (
     <SSRProvider>

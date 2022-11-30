@@ -29,8 +29,12 @@ const Home: NextPage<GithubCodeProps & CategoryProps> = ({
   }, []);
 
   useEffect(() => {
+    if(!mutation.isSuccess){
+      return ;
+    }
     const reload = async () => {
-      await router.replace("/");
+	await router.replace('/');
+	await router.reload();
     };
     reload();
   }, [mutation.isSuccess]);
@@ -57,6 +61,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }),
     getAllCategory(),
   ]);
+
   const hydrate: any = dehydrate(queryClient);
   if (hydrate.queries[0]) {
     hydrate.queries[0].state.data.pageParams[0] = 0;

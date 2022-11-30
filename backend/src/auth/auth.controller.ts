@@ -13,7 +13,7 @@ export class AuthController {
       return { userData };
     } catch (err) {
       console.error(err);
-      return { message: 'failed' };
+      throw err;
     }
   }
 }

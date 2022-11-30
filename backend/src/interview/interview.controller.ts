@@ -36,6 +36,16 @@ export class InterviewController {
     return this.interviewService.findQuery(selectInterviewDto);
   }
 
+  @UseGuards(JwtGuard)
+  @Get('login/:id')
+  loginFindOne(@Param('id') id: string, @UserData() userData: UserInfo) {
+    return this.interviewService.loginFindOne(
+      +id,
+      userData.id,
+      userData.nickname,
+    );
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.interviewService.findOne(+id);

@@ -16,6 +16,7 @@ import { SelectInterviewDto } from './dto/select-interview.dto';
 import { User } from 'src/entities/user.entity';
 import { Resume } from 'src/entities/resume.entity';
 import { Item } from 'src/entities/item.entity';
+import { UserInterviewStatus } from 'src/enum/userInterviewStatus.enum';
 
 @Injectable()
 export class InterviewService {
@@ -166,7 +167,8 @@ export class InterviewService {
   async findOne(id: number) {
     //interview 정보
     const interviewData = await this.interviewRepository
-      .createQueryBuilder()
+      .createQueryBuilder('interview')
+      .innerJoinAndSelect(User, 'user', 'interview.userId = user.id')
       .select(this.interviewSelect)
       .where({ id })
       .getRawOne();
@@ -181,11 +183,27 @@ export class InterviewService {
       .getRawMany();
     interviewData['category'] = categoryData;
 
-    //user_interview에 따라서 member, isHost, userStatus 로직 추가 필요
-    interviewData['member'] = undefined;
-    interviewData['isHost'] = undefined;
-    interviewData['userStatus'] = undefined;
+    const interviewMember = await this.interviewMember(id);
+    interviewData['member'] = interviewMember.get(UserInterviewStatus.ACCEPTED);
+    interviewData['isHost'] = false;
+    interviewData['userStatus'] = 0;
     //0: 신청하기 전 1: 신청 후 승인 대기중 2: 승인 3: 거부
+    return { interviewData };
+  }
+
+  async loginFindOne(id: number, userId: number, userName: string) {
+    //interview 정보
+    const { interviewData } = await this.findOne(id);
+    const userStatus = await this.userInterviewRepository
+      .createQueryBuilder()
+      .select('status')
+      .where('interviewId = :id AND userId = :userId', {
+        id: id,
+        userId: userId,
+      })
+      .getRawOne();
+    interviewData['isHost'] = interviewData.host === userName;
+    interviewData['userStatus'] = (userStatus && userStatus.status) || 0;
     return { interviewData };
   }
 
@@ -254,12 +272,6 @@ export class InterviewService {
     updateInterviewDto: UpdateInterviewDto,
   ) {
     try {
-      const userInterviewData = await this.userInterviewRepository
-        .createQueryBuilder()
-        .where('interviewId = (:id)', { id: id })
-        .select()
-        .getRawMany();
-
       const validateCategory = await this.validateCategory(
         updateInterviewDto.category,
       );
@@ -329,5 +341,20 @@ export class InterviewService {
       check = check && map.get(element.id) === element.name;
     });
     return check;
+  }
+
+  async interviewMember(interviewId: number) {
+    const userInterviewData = await this.userInterviewRepository
+      .createQueryBuilder()
+      .where('interviewId = (:id)', { id: interviewId })
+      .select('status AS status')
+      .addSelect('COUNT(*) AS count')
+      .groupBy('status')
+      .getRawMany();
+    const map = new Map();
+    userInterviewData.forEach((element) => {
+      map.set(element.status, element.count);
+    });
+    return map;
   }
 }

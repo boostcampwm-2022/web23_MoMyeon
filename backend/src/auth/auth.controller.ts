@@ -20,13 +20,13 @@ export class AuthController {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-        maxAge: 24 * 60 * 60,
+        maxAge: 24 * 60 * 60 * 1000,
       });
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-        maxAge: 24 * 60 * 60 * 14,
+        maxAge: 24 * 60 * 60 * 14 * 1000,
       });
 
       return { accessToken, refreshToken };

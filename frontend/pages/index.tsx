@@ -57,6 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }),
     getAllCategory(),
   ]);
+
   const hydrate: any = dehydrate(queryClient);
   if (hydrate.queries[0]) {
     hydrate.queries[0].state.data.pageParams[0] = 0;
@@ -64,7 +65,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const value =
     category.status === "fulfilled"
       ? category.value
-      : { id: -1, name: "잘못된응답", subjecj: "잘못된응답" };
+      : [{ id: -1, name: "잘못된응답", subjecj: "잘못된응답" }];
   return {
     props: {
       dehydratedState: hydrate,

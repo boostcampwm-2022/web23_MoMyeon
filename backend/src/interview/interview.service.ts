@@ -303,14 +303,14 @@ export class InterviewService {
 
   async remove(id: number, userId: number) {
     try {
-      const userQueryDeleteData = await this.interviewRepository
+      const interviewDeleteData = await this.interviewRepository
         .createQueryBuilder('')
         .softDelete()
         .where('id = :id AND userId = :userId', { id: id, userId: userId })
         .execute();
-      if (!userQueryDeleteData.affected)
+      if (!interviewDeleteData.affected)
         throw new BadRequestException('삭제할 수 없습니다.');
-      return userQueryDeleteData;
+      return interviewDeleteData;
     } catch (err) {
       throw err;
     }

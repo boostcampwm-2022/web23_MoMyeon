@@ -173,13 +173,14 @@ export class InterviewService {
         .getRawMany();
 
       const resumes = this.extractResumes(rawResumes);
-
-      Object.entries(resumes).forEach(([rId, resume]) => {
-        const found = members.find((member) => member.userId === +rId);
-        found.resume = resume;
+      const membersData = members.map((member) => {
+        const found = Object.entries(resumes).find(
+          ([rid]) => +rid === member.userId,
+        );
+        return { ...member, resume: found ?? [] };
       });
 
-      return { members };
+      return membersData;
     } catch (err) {
       console.error(err);
       throw new InternalServerErrorException('DB 오류');

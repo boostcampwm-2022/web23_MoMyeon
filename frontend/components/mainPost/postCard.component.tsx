@@ -4,11 +4,11 @@ import styles from "styles/PostCard.module.scss";
 import userImage from "public/icon/user.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import {Category} from 'types/posts';
+import { Category } from "types/posts";
 
 function PostCard({ post }: PostProp) {
-  const {interview_id, title, category, maxMember } = post;
-  const router = useRouter() ;
+  const { interview_id, title, category, maxMember } = post;
+  const router = useRouter();
 
   //FIXME::
   // 문제:: title은 중복이 가능해서, 라우팅 정책 바꿔야 함,
@@ -17,14 +17,14 @@ function PostCard({ post }: PostProp) {
 
   const handlePostCardClick = async () => {
     await router.push(`/post/${interview_id}`);
-  }
+  };
 
   return (
-    <div className={styles.container} onClick = { handlePostCardClick }>
+    <div className={styles.container} onClick={handlePostCardClick}>
       <h1 className={styles.title}>{title}</h1>
       <div className={styles.hashtagContainer}>
-        {category?.map((item:Category ) => {
-          const {id, name} = item
+        {category?.map((item: Category) => {
+          const { id, name } = item;
           return (
             <h4 className={styles.hashtag} key={id}>
               {name}

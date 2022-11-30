@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateInterviewDto } from './dto/create-interview.dto';
@@ -41,30 +46,45 @@ export class InterviewService {
   ];
 
   async create(createInterviewDto: CreateInterviewDto) {
-    //interview 저장
-    const createInterviewData = {
-      max_member: createInterviewDto.maxMember,
-      ...createInterviewDto,
-      categoryList: `${JSON.stringify(createInterviewDto.category)}`,
-    };
-
-    const newInterview = this.interviewRepository.create(createInterviewData);
-    const saveInterview = await this.interviewRepository.save(newInterview);
-    const interviewId = saveInterview.id;
-
-    //interviewCategory 저장
-    createInterviewDto.category.forEach((element) => {
-      const createInterviewCategoryData: object = {
-        interview: interviewId,
-        category: element.id,
+    try {
+      const createInterviewData = {
+        max_member: createInterviewDto.maxMember,
+        ...createInterviewDto,
+        categoryList: `${JSON.stringify(createInterviewDto.category)}`,
       };
-      const newInterviewCategory = this.interviewCategoryRepository.create(
-        createInterviewCategoryData,
-      );
-      this.interviewCategoryRepository.save(newInterviewCategory);
-    });
 
-    return { id: interviewId };
+      const validateCategory = await this.validateCategory(
+        createInterviewDto.category,
+      );
+      if (!validateCategory) {
+        throw new BadRequestException('카테고리 입력에 이상이 있습니다.');
+      }
+      if (
+        createInterviewDto.maxMember > 6 ||
+        createInterviewDto.maxMember < 1
+      ) {
+        throw new BadRequestException('인원에 이상이 있습니다.');
+      }
+
+      const newInterview = this.interviewRepository.create(createInterviewData);
+      const saveInterview = await this.interviewRepository.save(newInterview);
+      const interviewId = saveInterview.id;
+
+      createInterviewDto.category.forEach((element) => {
+        const createInterviewCategoryData: object = {
+          interview: interviewId,
+          category: element.id,
+        };
+        const newInterviewCategory = this.interviewCategoryRepository.create(
+          createInterviewCategoryData,
+        );
+        this.interviewCategoryRepository.save(newInterviewCategory);
+      });
+
+      return { id: interviewId };
+    } catch (err) {
+      throw err;
+    }
   }
 
   async findQuery(selectInterviewDto: SelectInterviewDto) {
@@ -129,6 +149,7 @@ export class InterviewService {
         .offset(INFINITY_SCROLL_LIMIT * selectInterviewData.page)
         .getRawMany();
       const endTime = new Date().getTime();
+
       //출력형태 조정
       if (interviewData.length) {
         interviewData.forEach((element) => {
@@ -227,40 +248,75 @@ export class InterviewService {
     }, {});
   }
 
-  async update(id: number, updateInterviewDto: UpdateInterviewDto) {
-    //interview 저장
-    //기존과 인원이 바꾸려고 할 때, 신청자 승인자 보다 적게는 수정이 불가하도록
-    const updateInterviewData = {
-      title: updateInterviewDto.title,
-      max_member: updateInterviewDto.maxMember,
-      contact: updateInterviewDto.contact,
-      content: updateInterviewDto.content,
-      categoryList: `${JSON.stringify(updateInterviewDto.category)}`,
-    };
-    this.interviewRepository.update(id, updateInterviewData);
+  async update(
+    id: number,
+    userId: number,
+    updateInterviewDto: UpdateInterviewDto,
+  ) {
+    try {
+      const userInterviewData = await this.userInterviewRepository
+        .createQueryBuilder()
+        .where('interviewId = (:id)', { id: id })
+        .select()
+        .getRawMany();
 
-    //interviewCategory 삭제
-    this.interviewCategoryRepository
-      .createQueryBuilder('users')
-      .softDelete()
-      .where('interviewId = :id', { id: id })
-      .execute();
-
-    //interviewCategory 저장
-    updateInterviewDto.category.forEach((element) => {
-      const createInterviewCategoryData: object = {
-        interview: id,
-        category: element.id,
-      };
-      const newInterviewCategory = this.interviewCategoryRepository.create(
-        createInterviewCategoryData,
+      const validateCategory = await this.validateCategory(
+        updateInterviewDto.category,
       );
-      this.interviewCategoryRepository.save(newInterviewCategory);
-    });
-    return { interview_id: id };
+      if (!validateCategory) {
+        throw new BadRequestException('카테고리 입력에 이상이 있습니다.');
+      }
+
+      const updateInterviewData = {
+        title: updateInterviewDto.title,
+        max_member: updateInterviewDto.maxMember,
+        contact: updateInterviewDto.contact,
+        content: updateInterviewDto.content,
+        categoryList: `${JSON.stringify(updateInterviewDto.category)}`,
+      };
+      this.interviewRepository.update(id, updateInterviewData);
+      console.log(id, userId);
+
+      //interviewCategory 삭제
+      this.interviewCategoryRepository
+        .createQueryBuilder()
+        .softDelete()
+        .where('interviewId = :id', { id: id })
+        .execute();
+
+      //interviewCategory 저장
+      updateInterviewDto.category.forEach((element) => {
+        const createInterviewCategoryData: object = {
+          interview: id,
+          category: element.id,
+        };
+        const newInterviewCategory = this.interviewCategoryRepository.create(
+          createInterviewCategoryData,
+        );
+        this.interviewCategoryRepository.save(newInterviewCategory);
+      });
+      return { interview_id: id };
+    } catch (err) {
+      throw err;
+    }
   }
 
   remove(id: number) {
     return this.interviewRepository.softDelete(id);
+  }
+
+  async validateCategory(categoryList: any) {
+    const category = await this.categoryRepository.find({
+      select: { id: true, name: true },
+    });
+    const map = new Map();
+    category.forEach((element) => {
+      map.set(element.id, element.name);
+    });
+    let check = true;
+    categoryList.forEach((element) => {
+      check = check && map.get(element.id) === element.name;
+    });
+    return check;
   }
 }

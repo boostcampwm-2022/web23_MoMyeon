@@ -46,12 +46,14 @@ export class InterviewController {
     return this.interviewService.getMembers(interviewId);
   }
 
+  @UseGuards(JwtGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
+    @UserData() userData: UserInfo,
     @Body() updateInterviewDto: UpdateInterviewDto,
   ) {
-    return this.interviewService.update(+id, updateInterviewDto);
+    return this.interviewService.update(+id, userData.id, updateInterviewDto);
   }
 
   @Delete(':id')

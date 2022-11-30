@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 
 import { AppLoggerMiddleware } from './middlewares/appLoger.middleware';
+import { QuestionModule } from './question/question.module';
 
 const env = process.env.NODE_ENV;
 
@@ -41,6 +42,8 @@ const env = process.env.NODE_ENV;
     UserModule,
 
     AuthModule,
+
+    QuestionModule,
   ],
   controllers: [],
   providers: [],

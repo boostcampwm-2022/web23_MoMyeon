@@ -1,5 +1,6 @@
 export enum UserInterviewStatus {
-  WAITING = 0,
+  NOT_APPLIED = 0,
+  WAITING,
   ACCEPTED,
   REJECTED,
 }

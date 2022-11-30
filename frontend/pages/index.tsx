@@ -5,26 +5,35 @@ import getPosts from "utils/api/getPosts";
 import getAllCategory from "utils/api/getAllCategory";
 import PostContainer from "components/mainPost/postContainer.component";
 import CategoryContainer from "components/mainFilter/categoryContainer.component";
-
 import { Posts } from "types/posts";
 import { GetServerSideProps, NextPage } from "next";
 import { UserDataProps } from "types/auth";
 import { CategoryProps } from "types/category";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
-import { userDataRecoil } from "states/user";
-const Home: NextPage<UserDataProps & CategoryProps> = ({
-  userData,
-  category,
-}) => {
-  const setUser = useSetRecoilState(userDataRecoil);
+
+import { useGithubLoginMutation } from "../utils/hooks/useGithubLoginMutation";
+import { useRouter } from "next/router";
+
+
+const Home: NextPage<GithubCodeProps & CategoryProps> = ({ code, category}) => {
+  const mutation = useGithubLoginMutation(code);
+  const router = useRouter();
+
 
   useEffect(() => {
-    if (userData && userData.nickname) {
-      setUser(userData);
+    if (code !== null) {
+      mutation.mutate(code);
     }
-  }, [setUser, userData]);
+  }, []);
+
+  useEffect(() => {
+    const reload = async () => {
+      await router.replace("/");
+    };
+    reload();
+  }, [mutation.isSuccess]);
+
   return (
     <div className={styles.main}>
       <HomeHead />
@@ -36,11 +45,10 @@ const Home: NextPage<UserDataProps & CategoryProps> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const nickname = context.req.cookies.nickname ?? null;
-  const profile = context.req.cookies.profile ?? null;
+  const code = context.query.code ?? null;
 
-  const userData = { profile, nickname };
   const queryClient = new QueryClient();
+
   const [_, category] = await Promise.allSettled([
     queryClient.prefetchInfiniteQuery({
       queryKey: ["posts", []],
@@ -59,8 +67,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       dehydratedState: hydrate,
-      userData,
       category: value,
+      code: code,
     },
   };
 };

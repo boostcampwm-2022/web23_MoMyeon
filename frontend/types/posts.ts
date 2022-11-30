@@ -1,4 +1,5 @@
-//TODO:: API 나오면 변경
+import { Category } from "./category";
+
 export interface Post {
   interview_id : number;
   title: string;
@@ -26,13 +27,14 @@ export interface PostData {
   postId: number;
   title: string;
   maxMember: number;
-  category: string[];
+  category: Category[];
   contact: string;
-  content: string;
+  content: string[];
   count: number;
   member: number;
   date: string;
   recruitStatus: number;
   isHost: boolean;
   userStatus: number;
+  host: string;
 }

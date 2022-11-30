@@ -64,7 +64,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const value =
     category.status === "fulfilled"
       ? category.value
-      : { id: -1, name: "잘못된응답", subjecj: "잘못된응답" };
+      : [{ id: -1, name: "잘못된응답", subjecj: "잘못된응답" }];
   return {
     props: {
       dehydratedState: hydrate,

@@ -15,8 +15,8 @@ function PostCard({ post }: PostProp) {
   // 의견:: 데이터 요청할 때도 interview_id가 필요해서 interview_id로 하는 것이 좋아 보인다
   // 고려사항:: interview_id가 아직 API 설계에 없다
 
-  const handlePostCardClick = async () => {
-    await router.push(`/post/${interview_id}`);
+  const handlePostCardClick = () => {
+    router.push(`/post/${interview_id}`);
   }
 
   return (

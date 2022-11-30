@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateInterviewDto } from './dto/create-interview.dto';
@@ -152,30 +152,39 @@ export class InterviewService {
 
   async getMembers(interviewId: string) {
     // 모의면접 신청이 승인된 멤버들 조회 + 멤버들의 이력서 조회
+    try {
+      const members = await this.userInterviewRepository
+        .createQueryBuilder('ui')
+        .innerJoinAndSelect(User, 'user', 'ui.userId = user.id')
+        .where('ui.interviewId = :id', { id: interviewId })
+        .select(['user.id as userId', 'nickname'])
+        .getRawMany();
 
-    const members = await this.userInterviewRepository
-      .createQueryBuilder('ui')
-      .innerJoinAndSelect(User, 'user', 'ui.userId = user.id')
-      .where('ui.interviewId = :id', { id: interviewId })
-      .select(['user.id as userId', 'nickname'])
-      .getRawMany();
+      if (!members.length) {
+        return { members };
+      }
 
-    const memberIds = members.map((member) => member.userId + '');
-    const rawResumes = await this.resumeRepository
-      .createQueryBuilder('resume')
-      .innerJoinAndSelect(Item, 'item', 'resume.itemId = item.id')
-      .where('resume.userId in (:id)', { id: memberIds })
-      .select(['resume.userId as userId', 'title', 'content'])
-      .getRawMany();
+      const memberIds = members.map((member) => member.userId + '');
+      const rawResumes = await this.resumeRepository
+        .createQueryBuilder('resume')
+        .innerJoinAndSelect(Item, 'item', 'resume.itemId = item.id')
+        .where('resume.userId in (:id)', { id: memberIds })
+        .select(['resume.userId as userId', 'title', 'content'])
+        .getRawMany();
 
-    const resumes = this.extractResumes(rawResumes);
+      const resumes = this.extractResumes(rawResumes);
+      const membersData = members.map((member) => {
+        const found = Object.entries(resumes).find(
+          ([rid]) => +rid === member.userId,
+        );
+        return { ...member, resume: found ?? [] };
+      });
 
-    Object.entries(resumes).forEach(([rId, resume]) => {
-      const found = members.find((member) => member.userId === +rId);
-      found.resume = resume;
-    });
-
-    return { members };
+      return membersData;
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException('DB 오류');
+    }
   }
 
   extractResumes(rawResumes) {

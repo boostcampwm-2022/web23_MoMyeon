@@ -11,7 +11,7 @@ function QAContainer({ id }: { id: string }) {
   if (data === undefined) {
     return <div>로딩중</div>;
   }
-  if (data.length === 0) {
+  if (data.length === 0 || cur === -1) {
     return <div>데이터 없음</div>;
   }
 

@@ -8,7 +8,6 @@ import {
   Delete,
   Query,
   UseGuards,
-  ExecutionContext,
   Req,
 } from '@nestjs/common';
 import { InterviewService } from './interview.service';
@@ -64,7 +63,7 @@ export class InterviewController {
       return this.interviewService.loginFindOne(+id, user.id, user.nickname);
     } catch (err) {
       console.error(err);
-      throw err;
+      return this.interviewService.findOne(+id);
     }
   }
 

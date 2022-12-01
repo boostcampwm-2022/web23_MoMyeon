@@ -10,7 +10,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors({
     origin: [
-      'https://localhost:3000',
+      'https://dev.momyeon.site',
       'http://localhost:3000',
       'https://www.momyeon.site',
     ],

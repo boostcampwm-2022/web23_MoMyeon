@@ -1,22 +1,30 @@
-.localVideo {
-  background-color: teal;
-  margin: 2px 0;
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #333333 ;
 }
 
-.remoteVideo {
-  background-color: salmon;
-  margin: 2px 0 ;
+.videoContainer {
+  max-width: 60%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: column;
+  overflow-x: auto;
+  row-gap: 3rem;
+  column-gap: 2rem;
+
 }
+
+.videos {
+  width: 400px;
+  height: 400px;
+  margin: 2px;
+}
+
 
 .tr {
   vertical-align: top;
-}
-
-.sharedBtns {
-  padding: 5px;
-  background-color: papayawhip;
-  display: flex;
-  justify-content: center;
 }
 
 .button {

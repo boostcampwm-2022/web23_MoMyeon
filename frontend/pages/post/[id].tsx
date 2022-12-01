@@ -63,7 +63,10 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
 
               <span className={styles.date}> {postData?.date} </span>
             </div>
-            <InterviewJoinButton initialUserState={postData?.userStatus ?? 0} />
+            <InterviewJoinButton
+              initialUserState={postData?.userStatus ?? 0}
+              postId={postData?.postId}
+            />
           </div>
         </section>
         <section className={styles.postInfoContainer}>

@@ -33,7 +33,6 @@ const getPostById = async (postId: string) => {
     postData.date += ` / ${data.date.substring(11, 16)}`;
   }
 
-  console.log(postData.category, data.category);
 
   return postData;
 };

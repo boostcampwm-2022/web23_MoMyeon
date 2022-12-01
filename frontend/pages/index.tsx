@@ -1,19 +1,17 @@
-import styles from "styles/Home.module.scss";
-import Header from "components/header/header.component";
-import HomeHead from "head/home";
-import getPosts from "utils/api/getPosts";
-import getAllCategory from "utils/api/getAllCategory";
-import PostContainer from "components/mainPost/postContainer.component";
-import CategoryContainer from "components/mainFilter/categoryContainer.component";
-
+import styles from 'styles/Home.module.scss';
+import Header from 'components/header/header.component';
+import HomeHead from 'head/home';
+import getPosts from 'utils/api/getPosts';
+import getAllCategory from 'utils/api/getAllCategory';
+import PostContainer from 'components/mainPost/postContainer.component';
+import CategoryContainer from 'components/mainFilter/categoryContainer.component';
 import { GetServerSideProps, NextPage } from "next";
 import { GithubCodeProps } from "types/auth";
 import { CategoryProps, Category, CategoryParentProps } from "types/category";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-
-import { useGithubLoginMutation } from "../utils/hooks/useGithubLoginMutation";
-import { useRouter } from "next/router";
+import { useGithubLoginMutation } from '../utils/hooks/useGithubLoginMutation';
+import { useRouter } from 'next/router';
 
 const Home: NextPage<GithubCodeProps & CategoryProps & CategoryParentProps> = ({
   code,
@@ -30,8 +28,12 @@ const Home: NextPage<GithubCodeProps & CategoryProps & CategoryParentProps> = ({
   }, []);
 
   useEffect(() => {
+    if (!mutation.isSuccess) {
+      return;
+    }
     const reload = async () => {
-      await router.replace("/");
+      await router.replace('/');
+      await router.reload();
     };
     reload();
   }, [mutation.isSuccess]);
@@ -65,7 +67,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const value =
-    category.status === "fulfilled"
+    category.status === 'fulfilled'
       ? category.value
       : [{ id: -1, name: "잘못된응답", subjecj: "잘못된응답" }];
 

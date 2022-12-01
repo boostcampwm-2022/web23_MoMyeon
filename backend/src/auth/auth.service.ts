@@ -26,9 +26,9 @@ export class AuthService {
   async githubLogin(githubLoginDto: GithubLoginDto) {
     try {
       const { code } = githubLoginDto;
-
       const githubAccessData = await this.getGithubAccessData(code);
       const githubAccessToken = githubAccessData.access_token;
+
       const githubUserData = await this.getGithubUserData(githubAccessToken);
       const {
         id: uid,
@@ -57,10 +57,10 @@ export class AuthService {
 
       // TODO: refreshToken을 User 테이블에 저장
 
-      return { accessToken, refreshToken, nickname, profile };
+      return { accessToken, refreshToken };
     } catch (err) {
       console.error(err);
-      throw new InternalServerErrorException('서버 내부 에러');
+      throw new InternalServerErrorException('깃허브 로그인 에러');
     }
   }
 
@@ -97,7 +97,6 @@ export class AuthService {
           },
         }),
       );
-
       return githubUserResponse.data;
     } catch (err) {
       console.error(err);

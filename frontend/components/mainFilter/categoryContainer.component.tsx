@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "styles/CategoryFilter.module.scss";
 import {
@@ -15,9 +16,9 @@ function CategoryContainer({
   category,
   categoryKey,
 }: CategoryProps & CategoryParentProps) {
+
   const [categoryArr, setCategoryArr] = useRecoilState(categoryArray);
   const [current, setCurrent] = useRecoilState(categoryParent);
-
   const onClickParent = useCallback((idx: number) => {
     setCurrent(idx);
   }, []);

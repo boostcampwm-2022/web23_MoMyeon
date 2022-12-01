@@ -19,6 +19,7 @@ function PostCard({ post }: PostProp) {
     await router.push(`/post/${interview_id}`);
   };
 
+
   return (
     <div className={styles.container} onClick={handlePostCardClick}>
       <h1 className={styles.title}>{title}</h1>

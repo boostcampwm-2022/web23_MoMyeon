@@ -8,6 +8,8 @@ import {
   Delete,
   Query,
   UseGuards,
+  ExecutionContext,
+  Req,
 } from '@nestjs/common';
 import { InterviewService } from './interview.service';
 import { CreateInterviewDto } from './dto/create-interview.dto';
@@ -16,10 +18,19 @@ import { SelectInterviewDto } from './dto/select-interview.dto';
 import { JwtGuard } from 'src/guards/jwtAuth.guard';
 import { UserInfo } from 'src/interfaces/user.interface';
 import { UserData } from 'src/user/user.decorator';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Controller({ version: '1', path: 'interview' })
 export class InterviewController {
-  constructor(private readonly interviewService: InterviewService) {}
+  constructor(
+    private readonly interviewService: InterviewService,
+    private readonly jwtService: JwtService,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
   @UseGuards(JwtGuard)
   @Post()
@@ -36,19 +47,25 @@ export class InterviewController {
     return this.interviewService.findQuery(selectInterviewDto);
   }
 
-  @UseGuards(JwtGuard)
-  @Get('login/:id')
-  loginFindOne(@Param('id') id: string, @UserData() userData: UserInfo) {
-    return this.interviewService.loginFindOne(
-      +id,
-      userData.id,
-      userData.nickname,
-    );
-  }
-
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.interviewService.findOne(+id);
+  async loginFindOne(@Param('id') id: string, @Req() req: any) {
+    try {
+      if (!req.cookies) return this.interviewService.findOne(+id);
+
+      const jwtPayload = this.jwtService.verify(req.cookies.accessToken);
+      const { oauth_provider, oauth_uid } = jwtPayload;
+
+      const [user] = await this.userRepository.findBy({
+        oauth_provider,
+        oauth_uid,
+      });
+      if (!user) return this.interviewService.findOne(+id);
+
+      return this.interviewService.loginFindOne(+id, user.id, user.nickname);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
   }
 
   @Get('members/:interviewId')

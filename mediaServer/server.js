@@ -269,7 +269,7 @@ io.on("connection", async (socket) => {
       // Send back to the client the Producer's id
       callback({
         id: producer.id,
-        producerExist: producers.length > 1,
+        producersExist: producers.length > 1,
       });
     }
   );

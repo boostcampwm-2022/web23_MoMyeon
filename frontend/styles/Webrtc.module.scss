@@ -1,0 +1,17 @@
+.localVideo {
+  width: 400px;
+  height: 400px;
+  background-color: antiquewhite;
+}
+
+.remoteVideo {
+  width: 400px;
+  height: 400px;
+  background-color: beige;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

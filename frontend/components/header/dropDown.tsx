@@ -23,7 +23,7 @@ function DropDown({ children }: ChildComponent) {
 
   const onLogoutAction = async () => {
     await logoutAxios();
-    await router.reload();
+    router.reload();
   };
 
   return (

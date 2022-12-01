@@ -6,6 +6,7 @@ const HOST =
 export const apiKeys = {
   GET_USER_INFO: `https://${HOST}/v1/user/info`,
   GITHUB_LOGIN_AUTH_REQUEST: `https://${HOST}/v1/auth/github`,
+  LOGOUT: `https://${HOST}/v1/auth/logout`,
 
   GET_CATEGORIES: `https://${HOST}/v1/category`,
 
@@ -15,8 +16,6 @@ export const apiKeys = {
 
   GET_INTERVIEW_QUESTIONS: `https://${HOST}/v1/question/`,
   GET_INTERVIEW_MEMBERS: `https://${HOST}/v1/interview/members/`,
-
-  LOGOUT: `http://localhost:3000/api/logout`,
 };
 
 export default apiKeys;

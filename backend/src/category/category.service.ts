@@ -21,7 +21,7 @@ export class CategoryService {
       select: ['id', 'sub_category', 'name'],
     });
     category.forEach((element, index) => {
-      category[index]['subjecj'] = element['sub_category'];
+      category[index]['subject'] = element['sub_category'];
       delete category[index]['sub_category'];
     });
     const result = { category };

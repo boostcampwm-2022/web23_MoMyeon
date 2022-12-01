@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module';
 
 import { AppLoggerMiddleware } from './middlewares/appLoger.middleware';
 import { QuestionModule } from './question/question.module';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { FeedbackModule } from './feedback/feedback.module';
 
 const env = process.env.NODE_ENV;
 
@@ -34,16 +36,24 @@ const env = process.env.NODE_ENV;
       }),
       inject: [ConfigService],
     }),
+    RedisModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => ({
+        config: {
+          host: config.get('REDIS_HOST'),
+          port: config.get('REDIS_PORT'),
+          password: config.get('REDIS_PW'),
+        },
+      }),
+      inject: [ConfigService],
+    }),
 
     InterviewModule,
-
     CategoryModule,
-
     UserModule,
-
     AuthModule,
-
     QuestionModule,
+    FeedbackModule,
   ],
   controllers: [],
   providers: [],

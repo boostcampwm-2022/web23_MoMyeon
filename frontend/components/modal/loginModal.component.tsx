@@ -5,8 +5,7 @@ import Image from "next/image";
 import modalExit from "public/icon/modalExit.png";
 import github from "public/icon/github.png";
 import { ViewProps, ModalProps } from "./loginModal";
-import { useRecoilState } from "recoil";
-import { loginModal } from "states/loginModal";
+import { loginModatState } from "states/loginModal";
 
 Modal.setAppElement("div");
 
@@ -45,7 +44,7 @@ const LoginView = ({ setVisible }: ViewProps) => {
 };
 
 function LoginModal() {
-  const [visible, setVisible] = useRecoilState(loginModal);
+  const [visible, setVisible] = loginModatState();
   const onCloseModal = () => {
     setVisible(false);
   };

@@ -7,18 +7,38 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
+  ExecutionContext,
+  Req,
 } from '@nestjs/common';
 import { InterviewService } from './interview.service';
 import { CreateInterviewDto } from './dto/create-interview.dto';
 import { UpdateInterviewDto } from './dto/update-interview.dto';
 import { SelectInterviewDto } from './dto/select-interview.dto';
+import { JwtGuard } from 'src/guards/jwtAuth.guard';
+import { UserInfo } from 'src/interfaces/user.interface';
+import { UserData } from 'src/user/user.decorator';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Controller({ version: '1', path: 'interview' })
 export class InterviewController {
-  constructor(private readonly interviewService: InterviewService) {}
+  constructor(
+    private readonly interviewService: InterviewService,
+    private readonly jwtService: JwtService,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
+  @UseGuards(JwtGuard)
   @Post()
-  create(@Body() createInterviewDto: CreateInterviewDto) {
+  create(
+    @Body() createInterviewDto: CreateInterviewDto,
+    @UserData() userData: UserInfo,
+  ) {
+    createInterviewDto['user'] = userData.id;
     return this.interviewService.create(createInterviewDto);
   }
 
@@ -28,8 +48,24 @@ export class InterviewController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.interviewService.findOne(+id);
+  async loginFindOne(@Param('id') id: string, @Req() req: any) {
+    try {
+      if (!req.cookies) return this.interviewService.findOne(+id);
+
+      const jwtPayload = this.jwtService.verify(req.cookies.accessToken);
+      const { oauth_provider, oauth_uid } = jwtPayload;
+
+      const [user] = await this.userRepository.findBy({
+        oauth_provider,
+        oauth_uid,
+      });
+      if (!user) return this.interviewService.findOne(+id);
+
+      return this.interviewService.loginFindOne(+id, user.id, user.nickname);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
   }
 
   @Get('members/:interviewId')
@@ -37,16 +73,19 @@ export class InterviewController {
     return this.interviewService.getMembers(interviewId);
   }
 
+  @UseGuards(JwtGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
+    @UserData() userData: UserInfo,
     @Body() updateInterviewDto: UpdateInterviewDto,
   ) {
-    return this.interviewService.update(+id, updateInterviewDto);
+    return this.interviewService.update(+id, userData.id, updateInterviewDto);
   }
 
+  @UseGuards(JwtGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.interviewService.remove(+id);
+  remove(@Param('id') id: string, @UserData() userData: UserInfo) {
+    return this.interviewService.remove(+id, userData.id);
   }
 }

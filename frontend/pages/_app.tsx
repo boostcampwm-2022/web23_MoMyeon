@@ -12,17 +12,19 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { RecoilRoot } from "recoil";
+import ApiKeys from "../constants/apiKeys";
 
 //https://stackoverflow.com/questions/51363855/how-to-configure-axios-to-use-ssl-certificate
 //https API 요청하는 Axios가 개발환경에서 SSL 못찾아서 발생
-if (process.env.NEXT_PUBLIC_DEV_MODE === "true") {
+if (process.env.NEXT_PUBLIC_TEMP === "true") {
   axios.defaults.httpsAgent = new https.Agent({
     rejectUnauthorized: false,
   });
 }
+
 export default function App({ Component, pageProps }: AppProps) {
-  
   const [queryClient] = useState(() => new QueryClient());
+
   return (
     <SSRProvider>
       <RecoilRoot>

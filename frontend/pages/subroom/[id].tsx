@@ -70,13 +70,11 @@ export default function Home({ roomId }: any) {
 
   useEffect(() => {
     if (socketRef.current === null) {
-      if (!process.env.NEXT_PUBLIC_SOCKET_ACCESS) {
-        console.log("Env 파일 확인해주세요");
-        return;
+      let to = "http://localhost:8443";
+      if (process.env.NEXT_PUBLIC_IS_DEPLOYMENT === "true") {
+        to = "https://www.momyeon.site:8443";
       }
-
-      const socket = io(process.env.NEXT_PUBLIC_SOCKET_ACCESS);
-      socketRef.current = socket;
+      socketRef.current = io(to);
       socketRef.current.on("connection-success", ({ socketId }) => {
         console.log(socketId);
       });

@@ -22,11 +22,10 @@ export default function Room({ roomName }: any) {
   const [remoteVideoList, setRemoteVideoList] = useState<any[]>(["1"]);
 
   useEffect(() => {
-   
     //const to : any = process.env.NEXT_PUBLIC_SOCKET_ACCESS;
-    let to = 'http://localhost:8000';
-    if(process.env.NEXT_PUBLIC_IS_DEPLOYMENT === 'true'){
-       to = 'https://www.momyeon.site:8443';
+    let to = "http://localhost:8443";
+    if (process.env.NEXT_PUBLIC_IS_DEPLOYMENT === "true") {
+      to = "https://www.momyeon.site:8443";
     }
     socketRef.current = io(to);
 

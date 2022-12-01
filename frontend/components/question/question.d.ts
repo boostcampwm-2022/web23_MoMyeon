@@ -13,3 +13,7 @@ export interface QAItem {
   userName: string;
   question: Question[];
 }
+
+export interface Username {
+  username: striing;
+}

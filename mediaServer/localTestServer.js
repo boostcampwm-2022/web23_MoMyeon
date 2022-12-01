@@ -1,31 +1,26 @@
-import express from "express";
+// 미디어서버 로컬 개발 실행용
 
+import express from "express";
 const app = express();
 import http from "http";
-import https from "https";
 import fs from "fs";
 import path from "path";
 const __dirname = path.resolve();
 import { Server } from "socket.io";
-import mediasoup from "mediasoup";
+import mediasoup, { getSupportedRtpCapabilities } from "mediasoup";
 
 app.get("/", (req, res) => {
   res.send("hi");
 });
 
-const options = {
-  key: fs.readFileSync("/home/kabosumy3a/momyeon/private.key", "utf-8"),
-  cert: fs.readFileSync("/home/kabosumy3a/momyeon/certificate.crt", "utf-8"),
-};
-
-const httpsServer = https.createServer(options, app);
-httpsServer.listen(8443, () => {
+const httpServer = http.createServer(app);
+httpServer.listen(8000, () => {
   console.log("listening");
 });
 
-const io = new Server(httpsServer, {
+const io = new Server(httpServer, {
   cors: {
-    origin: "https://www.momyeon.site",
+    origin: "http://localhost:3000",
   },
 });
 
@@ -395,8 +390,7 @@ const createWebRtcTransport = async (router) => {
       const webRtcTransport_options = {
         listenIps: [
           {
-            ip: "0.0.0.0",
-            announcedIp: "27.96.135.105",
+            ip: "127.0.0.1",
           },
         ],
         enableUdp: true,

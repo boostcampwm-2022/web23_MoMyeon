@@ -8,15 +8,14 @@ import {
 } from "types/category";
 import CategoryParent from "./categoryParent.component";
 import CategoryElement from "./category.component";
-import { categoryArray } from "states/categoryArray";
-import { categoryParent } from "states/categoryParent";
-import { useRecoilState } from "recoil";
+import { categoryArrayState } from "states/categoryArray";
+import { categoryParentState } from "states/categoryParent";
 function CategoryContainer({
   category,
   categoryKey,
 }: CategoryProps & CategoryParentProps) {
-  const [categoryArr, setCategoryArr] = useRecoilState(categoryArray);
-  const [current, setCurrent] = useRecoilState(categoryParent);
+  const [categoryArr, setCategoryArr] = categoryArrayState();
+  const [current, setCurrent] = categoryParentState();
 
   const onClickParent = useCallback((idx: number) => {
     setCurrent(idx);

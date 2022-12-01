@@ -4,21 +4,20 @@ import { ResumeT } from "types/resume";
 import Image from "next/image";
 import user from "public/icon/user.png";
 import styles from "styles/Interview.module.scss";
-import { interviewUser } from "states/user";
-import { useRecoilState } from "recoil";
+import { interviewUserSet } from "states/user";
 
 function InterviewUser({ id }: { id: string }) {
   const { data } = useMemberQuery({ id });
-  const [_, setCur] = useRecoilState(interviewUser);
+  const setCur = interviewUserSet();
 
   useEffect(() => {
-    if (data && data.length > 0) setCur(data[0].userId);
-    console.log(data);
+    if (data !== undefined && data.length > 0) setCur(data[0].userId);
   }, [data]);
 
   if (data === undefined) {
     return <div>loading</div>;
   }
+
   if (data.length === 0) {
     return <div>유저정보가 없습니다.</div>;
   }

@@ -18,25 +18,6 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
   const producerRef = useRef<any>(null);
   const consumerRef = useRef<any>(null);
 
-  /*
-  const [remoteVideoList, setRemoteVideoList] = useState<any[]>([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-  ]);*/
-
-  /*
-  const [remoteRefActivated, setRemoteRefActivated] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);*/
-
   useEffect(() => {
     let to = "http://localhost:8443";
     if (process.env.NEXT_PUBLIC_IS_DEPLOYMENT === "true") {
@@ -346,7 +327,7 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
   return (
     <div className={styles.videoContainer}>
       <video ref={localVideoRef} muted autoPlay className={styles.videos} />
-      {[0, 1, 2, 3, 4, 5].map((remote) => {
+      {[0, 1, 2, 3, 4, 5, 6].map((remote) => {
         return (
           <video
             ref={(elem) => (remoteVideoRef.current[remote] = elem)}

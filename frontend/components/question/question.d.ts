@@ -7,3 +7,9 @@ export interface Question {
 export interface QuestionProp {
   data: Question;
 }
+
+export interface QAItem {
+  userId: number;
+  userName: string;
+  question: Question[];
+}

@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateInterviewDto } from './dto/create-interview.dto';
@@ -11,6 +16,7 @@ import { SelectInterviewDto } from './dto/select-interview.dto';
 import { User } from 'src/entities/user.entity';
 import { Resume } from 'src/entities/resume.entity';
 import { Item } from 'src/entities/item.entity';
+import { UserInterviewStatus } from 'src/enum/userInterviewStatus.enum';
 
 @Injectable()
 export class InterviewService {
@@ -28,106 +34,141 @@ export class InterviewService {
   ) {}
 
   interviewSelect = [
-    'id AS interview_id',
-    'title',
-    'max_member AS maxMember',
-    'contact',
-    'content',
-    'count',
-    'status AS recruitStatus',
-    'created_at AS date',
-    'categoryList AS category',
+    'interview.id AS interview_id',
+    'interview.title AS title',
+    'interview.max_member AS maxMember',
+    'interview.contact AS contact',
+    'interview.content AS content',
+    'interview.count AS count',
+    'interview.status AS recruitStatus',
+    'interview.created_at AS date',
+    'interview.categoryList AS category',
+    'user.nickname AS host',
   ];
 
   async create(createInterviewDto: CreateInterviewDto) {
-    //interview 저장
-    const createInterviewData = {
-      max_member: createInterviewDto.maxMember,
-      ...createInterviewDto,
-      categoryList: `${JSON.stringify(createInterviewDto.category)}`,
-    };
-    const newInterview = this.interviewRepository.create(createInterviewData);
-    const saveInterview = await this.interviewRepository.save(newInterview);
-    const interviewId = saveInterview.id;
-
-    //interviewCategory 저장
-    createInterviewDto.category.forEach((element) => {
-      const createInterviewCategoryData: object = {
-        interview: interviewId,
-        category: element.id,
+    try {
+      const createInterviewData = {
+        max_member: createInterviewDto.maxMember,
+        ...createInterviewDto,
+        categoryList: `${JSON.stringify(createInterviewDto.category)}`,
       };
-      const newInterviewCategory = this.interviewCategoryRepository.create(
-        createInterviewCategoryData,
-      );
-      this.interviewCategoryRepository.save(newInterviewCategory);
-    });
 
-    return { id: interviewId };
+      const validateCategory = await this.validateCategory(
+        createInterviewDto.category,
+      );
+      if (!validateCategory) {
+        throw new BadRequestException('카테고리 입력에 이상이 있습니다.');
+      }
+      if (
+        createInterviewDto.maxMember > 6 ||
+        createInterviewDto.maxMember < 1
+      ) {
+        throw new BadRequestException('인원에 이상이 있습니다.');
+      }
+
+      const newInterview = this.interviewRepository.create(createInterviewData);
+      const saveInterview = await this.interviewRepository.save(newInterview);
+      const interviewId = saveInterview.id;
+
+      createInterviewDto.category.forEach((element) => {
+        const createInterviewCategoryData: object = {
+          interview: interviewId,
+          category: element.id,
+        };
+        const newInterviewCategory = this.interviewCategoryRepository.create(
+          createInterviewCategoryData,
+        );
+        this.interviewCategoryRepository.save(newInterviewCategory);
+      });
+
+      return { id: interviewId };
+    } catch (err) {
+      throw err;
+    }
   }
 
   async findQuery(selectInterviewDto: SelectInterviewDto) {
-    const limit = 18;
-    const selectInterviewData = {
-      page: selectInterviewDto.page || 0,
-      search: selectInterviewDto.search || '',
-      category: selectInterviewDto.category || '',
-    };
-    //자료형 변환
-    const category: number[] = [];
-    if (selectInterviewData.category !== '') {
-      selectInterviewData.category.split(',').forEach((element) => {
-        category.push(parseInt(element));
-      });
-    }
-
-    const where = { sql: ``, value: {} };
-    if (selectInterviewData.search === '' && category.length > 0) {
-      category.forEach((element, index) => {
-        where.sql +=
-          index === 0
-            ? `categoryList LIKE '%:${element},%'`
-            : `OR categoryList LIKE '%:${element},%'`;
-      });
-    } else if (selectInterviewData.search !== '' && category.length === 0) {
-      where.sql = '(title LIKE (:search) OR contact LIKE (:search))';
-      where.value = {
-        search: `%${selectInterviewData.search}%`,
+    try {
+      const INFINITY_SCROLL_LIMIT = 18;
+      const selectInterviewData = {
+        page: selectInterviewDto.page || 0,
+        search: selectInterviewDto.search || '',
+        category: selectInterviewDto.category || '',
       };
-    } else if (selectInterviewData.search !== '' && category.length > 0) {
-      where.sql = '(title LIKE (:search) OR contact LIKE (:search))';
-      where.value = {
-        search: `%${selectInterviewData.search}%`,
-      };
-      category.forEach((element, index) => {
-        where.sql +=
-          index === 0
-            ? `AND (categoryList LIKE '%:${element},%'`
-            : `OR categoryList LIKE '%:${element},%'`;
-      });
-      where.sql += ')';
-    }
+      console.log(selectInterviewData);
 
-    const startTime = new Date().getTime();
-    const interviewData = await this.interviewRepository
-      .createQueryBuilder()
-      .select(this.interviewSelect)
-      .where(where.sql, where.value)
-      .orderBy('date', 'DESC')
-      .limit(limit)
-      .offset(limit * selectInterviewData.page)
-      .getRawMany();
-    const endTime = new Date().getTime();
-    //출력형태 조정
-    interviewData.forEach((element) => {
-      element.category = JSON.parse(element.category);
-    });
-    return { queryTime: endTime - startTime, interviews: interviewData };
+      //자료형 변환
+      const category: number[] = [];
+      if (selectInterviewData.category !== '') {
+        const categoryId = selectInterviewData.category.match(
+          /(?<=\[)(.*?)(?=\])/,
+        )
+          ? selectInterviewData.category.match(/(?<=\[)(.*?)(?=\])/)[0]
+          : selectInterviewData.category;
+        categoryId.split(',').forEach((element) => {
+          if (parseInt(element)) category.push(parseInt(element));
+        });
+      }
+
+      const where = { sql: ``, value: {} };
+      if (selectInterviewData.search === '' && category.length > 0) {
+        category.forEach((element, index) => {
+          where.sql +=
+            index === 0
+              ? `categoryList LIKE '%:${element},%'`
+              : `OR categoryList LIKE '%:${element},%'`;
+        });
+      } else if (selectInterviewData.search !== '' && category.length === 0) {
+        where.sql = '(title LIKE (:search) OR contact LIKE (:search))';
+        where.value = {
+          search: `%${selectInterviewData.search}%`,
+        };
+      } else if (selectInterviewData.search !== '' && category.length > 0) {
+        where.sql = '(title LIKE (:search) OR contact LIKE (:search)) ';
+        where.value = {
+          search: `%${selectInterviewData.search}%`,
+        };
+        category.forEach((element, index) => {
+          where.sql +=
+            index === 0
+              ? `AND (categoryList LIKE '%:${element},%'`
+              : `OR categoryList LIKE '%:${element},%'`;
+        });
+        where.sql += ')';
+      }
+      console.log(where);
+
+      const startTime = new Date().getTime();
+      const interviewData = await this.interviewRepository
+        .createQueryBuilder('interview')
+        .innerJoinAndSelect(User, 'user', 'interview.userId = user.id')
+        .select(this.interviewSelect)
+        .where(where.sql, where.value)
+        .orderBy('date', 'DESC')
+        .limit(INFINITY_SCROLL_LIMIT)
+        .offset(INFINITY_SCROLL_LIMIT * selectInterviewData.page)
+        .getRawMany();
+      const endTime = new Date().getTime();
+
+      //출력형태 조정
+      if (interviewData.length) {
+        interviewData.forEach((element) => {
+          if (element.category) element.category = JSON.parse(element.category);
+        });
+      }
+      console.log(interviewData);
+      return { queryTime: endTime - startTime, interviews: interviewData };
+    } catch (err) {
+      throw err;
+    }
   }
 
   async findOne(id: number) {
     //interview 정보
     const interviewData = await this.interviewRepository
-      .createQueryBuilder()
+      .createQueryBuilder('interview')
+      .innerJoinAndSelect(User, 'user', 'interview.userId = user.id')
       .select(this.interviewSelect)
       .where({ id })
       .getRawOne();
@@ -142,11 +183,27 @@ export class InterviewService {
       .getRawMany();
     interviewData['category'] = categoryData;
 
-    //user_interview에 따라서 member, isHost, userStatus 로직 추가 필요
-    interviewData['member'] = undefined;
-    interviewData['isHost'] = undefined;
-    interviewData['userStatus'] = undefined;
+    const interviewMember = await this.interviewMember(id);
+    interviewData['member'] = interviewMember.get(UserInterviewStatus.ACCEPTED);
+    interviewData['isHost'] = false;
+    interviewData['userStatus'] = 0;
     //0: 신청하기 전 1: 신청 후 승인 대기중 2: 승인 3: 거부
+    return { interviewData };
+  }
+
+  async loginFindOne(id: number, userId: number, userName: string) {
+    //interview 정보
+    const { interviewData } = await this.findOne(id);
+    const userStatus = await this.userInterviewRepository
+      .createQueryBuilder()
+      .select('status')
+      .where('interviewId = :id AND userId = :userId', {
+        id: id,
+        userId: userId,
+      })
+      .getRawOne();
+    interviewData['isHost'] = interviewData.host === userName;
+    interviewData['userStatus'] = (userStatus && userStatus.status) || 0;
     return { interviewData };
   }
 
@@ -209,40 +266,95 @@ export class InterviewService {
     }, {});
   }
 
-  async update(id: number, updateInterviewDto: UpdateInterviewDto) {
-    //interview 저장
-    //기존과 인원이 바꾸려고 할 때, 신청자 승인자 보다 적게는 수정이 불가하도록
-    const updateInterviewData = {
-      title: updateInterviewDto.title,
-      max_member: updateInterviewDto.maxMember,
-      contact: updateInterviewDto.contact,
-      content: updateInterviewDto.content,
-      categoryList: `${JSON.stringify(updateInterviewDto.category)}`,
-    };
-    this.interviewRepository.update(id, updateInterviewData);
-
-    //interviewCategory 삭제
-    this.interviewCategoryRepository
-      .createQueryBuilder('users')
-      .softDelete()
-      .where('interviewId = :id', { id: id })
-      .execute();
-
-    //interviewCategory 저장
-    updateInterviewDto.category.forEach((element) => {
-      const createInterviewCategoryData: object = {
-        interview: id,
-        category: element.id,
-      };
-      const newInterviewCategory = this.interviewCategoryRepository.create(
-        createInterviewCategoryData,
+  async update(
+    id: number,
+    userId: number,
+    updateInterviewDto: UpdateInterviewDto,
+  ) {
+    try {
+      const validateCategory = await this.validateCategory(
+        updateInterviewDto.category,
       );
-      this.interviewCategoryRepository.save(newInterviewCategory);
-    });
-    return { interview_id: id };
+      if (!validateCategory) {
+        throw new BadRequestException('카테고리 입력에 이상이 있습니다.');
+      }
+
+      const updateInterviewData = {
+        title: updateInterviewDto.title,
+        max_member: updateInterviewDto.maxMember,
+        contact: updateInterviewDto.contact,
+        content: updateInterviewDto.content,
+        categoryList: `${JSON.stringify(updateInterviewDto.category)}`,
+      };
+      this.interviewRepository.update(id, updateInterviewData);
+      console.log(id, userId);
+
+      //interviewCategory 삭제
+      this.interviewCategoryRepository
+        .createQueryBuilder()
+        .softDelete()
+        .where('interviewId = :id', { id: id })
+        .execute();
+
+      //interviewCategory 저장
+      updateInterviewDto.category.forEach((element) => {
+        const createInterviewCategoryData: object = {
+          interview: id,
+          category: element.id,
+        };
+        const newInterviewCategory = this.interviewCategoryRepository.create(
+          createInterviewCategoryData,
+        );
+        this.interviewCategoryRepository.save(newInterviewCategory);
+      });
+      return { interview_id: id };
+    } catch (err) {
+      throw err;
+    }
   }
 
-  remove(id: number) {
-    return this.interviewRepository.softDelete(id);
+  async remove(id: number, userId: number) {
+    try {
+      const interviewDeleteData = await this.interviewRepository
+        .createQueryBuilder('')
+        .softDelete()
+        .where('id = :id AND userId = :userId', { id: id, userId: userId })
+        .execute();
+      if (!interviewDeleteData.affected)
+        throw new BadRequestException('삭제할 수 없습니다.');
+      return interviewDeleteData;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async validateCategory(categoryList: any) {
+    const category = await this.categoryRepository.find({
+      select: { id: true, name: true },
+    });
+    const map = new Map();
+    category.forEach((element) => {
+      map.set(element.id, element.name);
+    });
+    let check = true;
+    categoryList.forEach((element) => {
+      check = check && map.get(element.id) === element.name;
+    });
+    return check;
+  }
+
+  async interviewMember(interviewId: number) {
+    const userInterviewData = await this.userInterviewRepository
+      .createQueryBuilder()
+      .where('interviewId = (:id)', { id: interviewId })
+      .select('status AS status')
+      .addSelect('COUNT(*) AS count')
+      .groupBy('status')
+      .getRawMany();
+    const map = new Map();
+    userInterviewData.forEach((element) => {
+      map.set(element.status, element.count);
+    });
+    return map;
   }
 }

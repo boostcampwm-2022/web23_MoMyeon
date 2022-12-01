@@ -1,7 +1,7 @@
 export interface Category {
   id: number;
   name: string;
-  subjecj: string;
+  subject: string;
 }
 
 export interface CategoryProps {

@@ -22,6 +22,8 @@ if (process.env.NEXT_PUBLIC_TEMP === "true") {
   });
 }
 
+axios.defaults.withCredentials = true;
+
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
 

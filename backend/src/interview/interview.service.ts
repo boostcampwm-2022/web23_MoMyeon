@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -168,7 +167,7 @@ export class InterviewService {
     //interview 정보
     const interviewData = await this.interviewRepository
       .createQueryBuilder('interview')
-      .innerJoinAndSelect(User, 'user', 'interview.userId = user.id')
+      .leftJoin(User, 'user', 'interview.userId = user.id')
       .select(this.interviewSelect)
       .where({ id })
       .getRawOne();
@@ -234,7 +233,7 @@ export class InterviewService {
         const found = Object.entries(resumes).find(
           ([rid]) => +rid === member.userId,
         );
-        return { ...member, resume: found ?? [] };
+        return { ...member, resume: found ? found[1] : [] };
       });
 
       return membersData;

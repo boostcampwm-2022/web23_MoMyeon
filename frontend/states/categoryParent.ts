@@ -1,6 +1,12 @@
-import { atom } from "recoil";
+import { atom, useRecoilState } from "recoil";
 
-export const categoryParent = atom<number>({
+const categoryParent = atom<number>({
   key: "categoryParent",
   default: 0,
 });
+
+const categoryParentState = () => {
+  return useRecoilState(categoryParent);
+};
+
+export { categoryParent, categoryParentState };

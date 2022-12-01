@@ -7,9 +7,7 @@ import LoginModal from "components/modal/loginModal.component";
 import DropDown from "./dropDown";
 import dropDown from "public/icon/dropDown.png";
 import { ImageInfo } from "./header";
-import { useSetRecoilState, useRecoilValue } from "recoil";
-import { loginModal } from "states/loginModal";
-import { userDataRecoil } from "states/user";
+import { loginModalSet } from "states/loginModal";
 import { useUserDataQuery } from "utils/hooks/useUserDataQuery";
 import { UserData } from "types/auth";
 
@@ -17,7 +15,7 @@ import axios from "axios";
 import apiKeys from "../../constants/apiKeys";
 
 function Header() {
-  const setVisible = useSetRecoilState(loginModal);
+  const setVisible = loginModalSet();
 
   const { data, isError, error } = useUserDataQuery();
 

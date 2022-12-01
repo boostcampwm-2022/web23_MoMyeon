@@ -1,10 +1,9 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { categoryArraySorted } from "states/categoryArray";
-import { useRecoilValue } from "recoil";
+import { categoryArraySortedValue } from "states/categoryArray";
 import getPosts from "utils/api/getPosts";
 
 export default function useMainPost() {
-  const categoryArr = useRecoilValue(categoryArraySorted);
+  const categoryArr = categoryArraySortedValue();
   const OFFSET = 18;
   const {
     data,

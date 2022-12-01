@@ -15,3 +15,4 @@ export interface CategoryTable {
 export interface CategoryParentProps {
   categoryKey: string[];
 }
+

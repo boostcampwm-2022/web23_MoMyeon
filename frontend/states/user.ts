@@ -1,12 +1,15 @@
-import { atom } from "recoil";
-import { UserData } from "types/auth";
+import { atom, useSetRecoilState, useRecoilValue } from "recoil";
 
-export const userDataRecoil = atom<UserData>({
-  key: "userData",
-  default: { profile: null, nickname: null },
-});
-
-export const interviewUser = atom<number>({
+const interviewUser = atom<number>({
   key: "interviewUser",
   default: -1,
 });
+
+const interviewUserSet = () => {
+  return useSetRecoilState(interviewUser);
+};
+const interviewUserValue = () => {
+  return useRecoilValue(interviewUser);
+};
+
+export { interviewUser, interviewUserSet, interviewUserValue };

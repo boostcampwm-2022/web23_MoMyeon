@@ -1,6 +1,16 @@
-import { atom } from "recoil";
+import { atom, useSetRecoilState, useRecoilState } from "recoil";
 
-export const loginModal = atom({
+const loginModal = atom({
   key: "loginModalState",
   default: false,
 });
+
+const loginModalSet = () => {
+  return useSetRecoilState(loginModal);
+};
+
+const loginModatState = () => {
+  return useRecoilState(loginModal);
+};
+
+export { loginModal, loginModalSet, loginModatState };

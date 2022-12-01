@@ -34,7 +34,7 @@ let consumers = [];
 const createWorker = async () => {
   worker = await mediasoup.createWorker({
     rtcMinPort: 2000,
-    rtcMaxPort: 2020,
+    rtcMaxPort: 2200,
   });
 
   console.log(`worker pid ${worker.pid}`);
@@ -264,7 +264,7 @@ io.on("connection", async (socket) => {
       // Send back to the client the Producer's id
       callback({
         id: producer.id,
-        producerExist: producers.length > 1,
+        producersExist: producers.length >= 1,
       });
     }
   );

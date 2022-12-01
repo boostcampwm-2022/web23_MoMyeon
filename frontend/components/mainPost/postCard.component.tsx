@@ -14,11 +14,9 @@ function PostCard({ post }: PostProp) {
   // 문제:: title은 중복이 가능해서, 라우팅 정책 바꿔야 함,
   // 의견:: 데이터 요청할 때도 interview_id가 필요해서 interview_id로 하는 것이 좋아 보인다
   // 고려사항:: interview_id가 아직 API 설계에 없다
-
   const handlePostCardClick = async () => {
     await router.push(`/post/${interview_id}`);
   };
-
 
   return (
     <div className={styles.container} onClick={handlePostCardClick}>

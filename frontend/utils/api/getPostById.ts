@@ -1,6 +1,8 @@
-import ApiKeys, { apiKeys } from "constants/apiKeys";
+import { apiKeys } from "constants/apiKeys";
 import axios from "axios";
 import { PostData } from "types/posts";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
 
 const getPostById = async (postId: string) => {
   const res = await axios.get(`${apiKeys.GET_POST}/${postId}`).catch(() => {
@@ -28,11 +30,8 @@ const getPostById = async (postId: string) => {
     userStatus: data.userStatus ?? 0,
   };
 
-  if (postData.date.length > 16) {
-    postData.date = `${data.date.substring(0, 10)}`;
-    postData.date += ` / ${data.date.substring(11, 16)}`;
-  }
-
+  dayjs.locale("ko");
+  postData.date = dayjs(postData.date).format("YY. MM. DD. HH:mm ");
 
   return postData;
 };

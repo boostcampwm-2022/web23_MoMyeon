@@ -234,7 +234,7 @@ export class InterviewService {
         const found = Object.entries(resumes).find(
           ([rid]) => +rid === member.userId,
         );
-        return { ...member, resume: found ?? [] };
+        return { ...member, resume: found ? found[1] : [] };
       });
 
       return membersData;

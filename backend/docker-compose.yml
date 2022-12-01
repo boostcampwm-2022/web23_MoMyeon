@@ -11,22 +11,35 @@ services:
       - common-net
     depends_on:
       - mysql
+      - redis
 
   mysql:
     container_name: mysql-host
     image: mysql:8.0
-    env_file:
-      - ./src/config/.env.production
+    restart: always
     ports:
       - 3307:3306
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PW}
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - common-net
+
+  redis:
+    container_name: redis-host
+    image: redis:7.0
+    ports:
+      - 6379:6379
+    restart: always
+    env_file:
+      - ./src/config/.env.production
+    command: redis-server /usr/local/conf/redis.conf --requirepass ${REDIS_PW}
     volumes:
-      - ./init.sql:/data/application/init.sql
-    command: --init-file /data/application/init.sql
+      - ./src/config/redis.conf:/usr/local/conf/redis.conf
     networks:
       - common-net
 

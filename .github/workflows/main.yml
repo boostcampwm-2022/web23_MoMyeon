@@ -38,3 +38,7 @@ jobs:
             yarn build
             pm2 delete front-server
             pm2 --name 'front-server' start yarn -- start
+            cd ~/web23_MoMyeon/mediaServer
+            yarn install
+            pm2 delete media-server
+            pm2 --name 'media-server' start node server.js

@@ -5,7 +5,6 @@ import getPosts from 'utils/api/getPosts';
 import getAllCategory from 'utils/api/getAllCategory';
 import PostContainer from 'components/mainPost/postContainer.component';
 import CategoryContainer from 'components/mainFilter/categoryContainer.component';
-
 import { GetServerSideProps, NextPage } from "next";
 import { GithubCodeProps } from "types/auth";
 import { CategoryProps, Category, CategoryParentProps } from "types/category";

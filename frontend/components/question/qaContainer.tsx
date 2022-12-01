@@ -14,6 +14,7 @@ function QAContainer({ id }: { id: string }) {
   if (data.length === 0) {
     return <div>데이터 없음</div>;
   }
+
   const filtered = data.filter((item: QAItem) => item.userId === cur)[0];
   return (
     <div>

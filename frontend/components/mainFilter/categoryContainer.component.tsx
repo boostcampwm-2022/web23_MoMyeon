@@ -11,6 +11,7 @@ import CategoryParent from "./categoryParent.component";
 import CategoryElement from "./category.component";
 import { categoryArrayState } from "states/categoryArray";
 import { categoryParentState } from "states/categoryParent";
+
 function CategoryContainer({
   category,
   categoryKey,

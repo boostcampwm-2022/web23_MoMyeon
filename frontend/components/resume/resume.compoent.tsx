@@ -20,6 +20,7 @@ function Resume({ id }: { id: string }) {
     resume: resumeArr,
   } = data.filter((item: ResumeT) => item.userId === cur)[0] || {};
 
+
   return (
     <div>
       <div className={styles.text}>{nickname} 님의 이력서</div>

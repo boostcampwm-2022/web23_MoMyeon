@@ -29,7 +29,8 @@
     "react-modal": "^3.16.1",
     "recoil": "^0.7.6",
     "sass": "^1.56.1",
-    "typescript": "4.8.4"
+    "typescript": "4.8.4",
+    "dotenv": "16.0.3"
   },
   "main": "index.js",
   "license": "MIT",

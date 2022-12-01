@@ -1,12 +1,8 @@
-import apiKeys from "constants/apiKeys";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import getAllCategory from "utils/api/getAllCategory";
 
 const useCategoryQuery = () => {
-  const { data } = useQuery(["categories"], () =>
-    //axios.get(apiKeys.GET_CATEGORIES)
-    axios.get(apiKeys.GET_CATEGORIES)
-  );
+  const { data } = useQuery(["categories"], () => getAllCategory());
   return data?.data.category;
 };
 

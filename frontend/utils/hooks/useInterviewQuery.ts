@@ -1,22 +1,21 @@
-import apiKeys from "constants/apiKeys";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-
+import getMember from "utils/api/getMember";
+import getQuestion from "utils/api/getQuestion";
 const useQuestionQuery = ({ id }: { id: string }) => {
   const { data, isLoading, error, isFetching } = useQuery(
     ["question", id],
-    () => axios.get(apiKeys.GET_INTERVIEW_QUESTIONS + `${id}`),
+    () => getQuestion(id),
     { refetchOnWindowFocus: false, staleTime: 10000, refetchOnMount: false }
   );
-  return { data: data?.data, isLoading, error, isFetching };
+  return { data, isLoading, error, isFetching };
 };
 
 const useMemberQuery = ({ id }: { id: string }) => {
   const { data, isLoading, error, isFetching } = useQuery(
     ["member", id],
-    () => axios.get(apiKeys.GET_INTERVIEW_MEMBERS + `${id}`),
+    () => getMember(id),
     { refetchOnWindowFocus: false, staleTime: 10000, refetchOnMount: false }
   );
-  return { data: data?.data.members, isLoading, error, isFetching };
+  return { data, isLoading, error, isFetching };
 };
 export { useQuestionQuery, useMemberQuery };

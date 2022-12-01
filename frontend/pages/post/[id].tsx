@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 import { InterviewJoinButton } from "components/button/interviewJoinButton";
 import { PostData } from "types/posts";
 import getPostById from "utils/api/getPostById";
-
 const PostPage = ({ postData }: { postData: PostData | null }) => {
   const router = useRouter();
 

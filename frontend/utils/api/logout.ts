@@ -2,8 +2,10 @@ import apiKeys from "constants/apiKeys";
 import axios from "axios";
 
 async function logoutAxios() {
-  const response = await axios(apiKeys.LOGOUT);
-  return await response.data;
+  console.log(apiKeys.LOGOUT);
+  await axios(apiKeys.LOGOUT, { withCredentials: true }).catch((error) => {
+    console.log(error);
+  });
 }
 
 export { logoutAxios };

@@ -22,12 +22,12 @@ export default function Room({ roomName }: any) {
   const [remoteVideoList, setRemoteVideoList] = useState<any[]>(["1"]);
 
   useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_SOCKET_ACCESS) {
-      console.log("Env 파일 확인해주세요");
-      return;
+   
+    //const to : any = process.env.NEXT_PUBLIC_SOCKET_ACCESS;
+    let to = 'http://localhost:8000';
+    if(process.env.NEXT_PUBLIC_IS_DEPLOYMENT === 'true'){
+       to = 'https://www.momyeon.site:8443';
     }
-    const to: string = process.env.NEXT_PUBLIC_SOCKET_ACCESS;
-
     socketRef.current = io(to);
 
     socketRef.current.on("connection-success", ({ socketId }: any) => {

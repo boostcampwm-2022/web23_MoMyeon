@@ -3,8 +3,10 @@ const { createServer: http } = require('http');
 const { parse } = require('url');
 const next = require('next');
 const fs = require('fs');
+require('dotenv').config();
 
-const app = next();
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
 const handle = app.getRequestHandler();
 
 const ports = {

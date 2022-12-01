@@ -1,15 +1,18 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import styles from 'styles/CategoryFilter.module.scss';
-import { CategoryProps, Category, CategoryTable } from 'types/category';
-import CategoryParent from './categoryParent.component';
-import CategoryElement from './category.component';
-import { categoryArray } from 'states/categoryArray';
-import { useRecoilState } from 'recoil';
+
+import React, { useEffect, useState, useCallback } from "react";
+import styles from "styles/CategoryFilter.module.scss";
+import { CategoryProps, Category, CategoryTable } from "types/category";
+import CategoryParent from "./categoryParent.component";
+import CategoryElement from "./category.component";
+import { categoryArray } from "states/categoryArray";
+import { categoryParent } from "states/categoryParent";
+import { useRecoilState } from "recoil";
+
 function CategoryContainer({ category }: CategoryProps) {
   const [categoryArr, setCategoryArr] = useRecoilState(categoryArray);
   const [table, setTable] = useState<CategoryTable>({});
   const [key, setKey] = useState<string[]>([]);
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useRecoilState(categoryParent);
   const keyTemp: string[] = [];
   const tableTemp: any = {};
 

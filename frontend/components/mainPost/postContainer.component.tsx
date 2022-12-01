@@ -3,16 +3,10 @@ import { Post } from "types/posts";
 import PostCard from "./postCard.component";
 import styles from "styles/PostCard.module.scss";
 import useObserver from "utils/hooks/useObserver";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { categoryArray } from "states/categoryArray";
-import { useRecoilValue } from "recoil";
-import getPosts from "utils/api/getPosts";
+import useMainPost from "utils/hooks/useMainPost";
 
 function PostContainer() {
-  const OFFSET = 18;
   const bottom = useRef<null | HTMLDivElement>(null);
-
-  const categoryArr = useRecoilValue(categoryArray);
 
   const {
     data,
@@ -21,15 +15,7 @@ function PostContainer() {
     fetchNextPage,
     isFetchingNextPage,
     isFetching,
-  } = useInfiniteQuery({
-    queryKey: ["posts", ...categoryArr],
-    queryFn: ({ pageParam }) =>
-      getPosts({ pageParam, category: categoryArr, search: "" }),
-    getNextPageParam: (lastPage, page) => {
-      return lastPage.length === OFFSET ? page.length : undefined;
-    },
-    refetchOnWindowFocus: false,
-  });
+  } = useMainPost();
 
   const onIntersect: IntersectionObserverCallback = useCallback(
     ([entry]: IntersectionObserverEntry[]) => {

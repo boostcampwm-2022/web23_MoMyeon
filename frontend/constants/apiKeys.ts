@@ -10,6 +10,8 @@ export const apiKeys = {
   GET_POSTS: `https://api.momyeon.site/v1/interview?`,
   GET_POST: `https://api.momyeon.site/v1/interview`,
   CREATE_POSTS: `https://api.momyeon.site/v1/interview`,
+  GET_INTERVIEW_QUESTIONS: "https://api.momyeon.site/v1/question/",
+  GET_INTERVIEW_MEMBERS: "https://api.momyeon.site/v1/interview/members/",
   GET_CATEGORIES: "https://api.momyeon.site/v1/category",
 };
 

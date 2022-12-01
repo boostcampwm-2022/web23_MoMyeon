@@ -6,7 +6,6 @@ import getPosts from "utils/api/getPosts";
 export default function useMainPost() {
   const categoryArr = useRecoilValue(categoryArraySorted);
   const OFFSET = 18;
-  console.log(categoryArr);
   const {
     data,
     status,

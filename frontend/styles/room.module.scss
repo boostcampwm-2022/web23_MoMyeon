@@ -1,0 +1,32 @@
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #333333 ;
+}
+
+.videoContainer {
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  //grid-auto-flow: column;
+  //overflow-x: auto;
+  row-gap: 5rem;
+  column-gap: 5rem;
+
+}
+
+.videos {
+  width: 400px;
+  height: 400px;
+  margin: 2px;
+}
+
+
+.tr {
+  vertical-align: top;
+}
+
+.button {
+  margin: 2px ;
+}

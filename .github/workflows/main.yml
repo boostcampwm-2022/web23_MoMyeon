@@ -25,10 +25,10 @@ jobs:
       - name: Deploy FrontServer
         uses: appleboy/ssh-action@master
         with:
-          host: ${{secrets.SSH_HOST_FRONT}}
-          username: ${{secrets.SSH_USERNAME_FRONT}}
-          password: ${{secrets.SSH_PASSWORD_FRONT}}
-          port: ${{secrets.SSH_PORT_FRONT}}
+          host: ${{secrets.SSH_HOST_FRONT_ALPAKA}}
+          username: ${{secrets.SSH_USERNAME_FRONT_ALPAKA}}
+          password: ${{secrets.SSH_PASSWORD_FRONT_ALPAKA}}
+          port: ${{secrets.SSH_PORT_FRONT_ALPAKA}}
           script: |
             cd ~/web23_MoMyeon/frontend
             git pull

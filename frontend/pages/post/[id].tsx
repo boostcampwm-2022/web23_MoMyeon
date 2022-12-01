@@ -1,8 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { useState, useEffect } from "react";
-// @ts-ignore
-import isURL from "isurl";
+import validator from "validator";
 import styles from "styles/PostPage.module.scss";
 import Header from "components/header/header.component";
 import PostPageHead from "head/postPage";
@@ -42,7 +41,10 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
   const [isContactURL, setIsContactURL] = useState(false);
   useEffect(() => {
     try {
-      if (postData?.contact && isURL(new URL(postData?.contact))) {
+      if (
+        postData?.contact &&
+        validator.isURL(postData.contact, { require_protocol: true })
+      ) {
         setIsContactURL(true);
       }
     } catch {}
@@ -58,7 +60,8 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
           <div className={styles.titleInfoContainer}>
             <div className={styles.titleInfoCenter}>
               <span> {postData?.host}</span>
-              <span> {postData?.date} </span>
+
+              <span className={styles.date}> {postData?.date} </span>
             </div>
             <InterviewJoinButton initialUserState={postData?.userStatus ?? 0} />
           </div>

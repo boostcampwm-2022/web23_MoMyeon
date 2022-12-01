@@ -9,7 +9,6 @@ import { interviewUserSet } from "states/user";
 function InterviewUser({ id }: { id: string }) {
   const { data } = useMemberQuery({ id });
   const setCur = interviewUserSet();
-
   useEffect(() => {
     if (data !== undefined && data.length > 0) setCur(data[0].userId);
   }, [data]);

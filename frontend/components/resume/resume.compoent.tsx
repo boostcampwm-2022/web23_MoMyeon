@@ -11,7 +11,7 @@ function Resume({ id }: { id: string }) {
   if (data === undefined) {
     return <div>loading</div>;
   }
-  if (data.length === 0 || !data) {
+  if (data.length === 0 || !data || cur === -1) {
     return <div>이력서가 없습니다</div>;
   }
   const {
@@ -19,7 +19,6 @@ function Resume({ id }: { id: string }) {
     nickname,
     resume: resumeArr,
   } = data.filter((item: ResumeT) => item.userId === cur)[0] || {};
-
 
   return (
     <div>

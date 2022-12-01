@@ -1,17 +1,17 @@
-import styles from 'styles/Home.module.scss';
-import Header from 'components/header/header.component';
-import HomeHead from 'head/home';
-import getPosts from 'utils/api/getPosts';
-import getAllCategory from 'utils/api/getAllCategory';
-import PostContainer from 'components/mainPost/postContainer.component';
-import CategoryContainer from 'components/mainFilter/categoryContainer.component';
+import styles from "styles/Home.module.scss";
+import Header from "components/header/header.component";
+import HomeHead from "head/home";
+import getPosts from "utils/api/getPosts";
+import getAllCategory from "utils/api/getAllCategory";
+import PostContainer from "components/mainPost/postContainer.component";
+import CategoryContainer from "components/mainFilter/categoryContainer.component";
 import { GetServerSideProps, NextPage } from "next";
 import { GithubCodeProps } from "types/auth";
 import { CategoryProps, Category, CategoryParentProps } from "types/category";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useGithubLoginMutation } from '../utils/hooks/useGithubLoginMutation';
-import { useRouter } from 'next/router';
+import { useGithubLoginMutation } from "../utils/hooks/useGithubLoginMutation";
+import { useRouter } from "next/router";
 
 const Home: NextPage<GithubCodeProps & CategoryProps & CategoryParentProps> = ({
   code,
@@ -32,7 +32,7 @@ const Home: NextPage<GithubCodeProps & CategoryProps & CategoryParentProps> = ({
       return;
     }
     const reload = async () => {
-      await router.replace('/');
+      await router.replace("/");
       await router.reload();
     };
     reload();
@@ -67,22 +67,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const value =
-    category.status === 'fulfilled'
+    category.status === "fulfilled"
       ? category.value
-      : [{ id: -1, name: "잘못된응답", subjecj: "잘못된응답" }];
+      : [{ id: -1, name: "잘못된응답", subject: "잘못된응답" }];
 
   const keyTemp: string[] = [];
   const tableTemp: any = {};
 
   if (category.status === "fulfilled") {
     value.forEach((item: Category) => {
-      const { id, name, subjecj } = item;
-      if (tableTemp[subjecj]) {
-        tableTemp[subjecj] = [...tableTemp[subjecj], { id, name, subjecj }];
+      const { id, name, subject } = item;
+      if (tableTemp[subject]) {
+        tableTemp[subject] = [...tableTemp[subject], { id, name, subject }];
         return;
       }
-      tableTemp[subjecj] = [{ id, name, subjecj }];
-      keyTemp.push(subjecj);
+      tableTemp[subject] = [{ id, name, subject }];
+      keyTemp.push(subject);
     });
   }
 

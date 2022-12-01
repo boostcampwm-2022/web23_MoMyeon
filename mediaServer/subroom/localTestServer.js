@@ -14,7 +14,7 @@ const io = new Server(server, {
   },
 });
 
-const port = 8000;
+const port = 8443;
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

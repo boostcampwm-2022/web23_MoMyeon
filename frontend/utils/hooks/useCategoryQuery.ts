@@ -3,7 +3,7 @@ import getAllCategory from "utils/api/getAllCategory";
 
 const useCategoryQuery = () => {
   const { data } = useQuery(["categories"], () => getAllCategory());
-  return data?.data.category;
+  return data;
 };
 
 export { useCategoryQuery };

@@ -32,15 +32,16 @@ export class FeedbackController {
     return { message: 'success' };
   }
 
+  // TODO: 요청자가 해당 면접의 호스트인지 판별, 호스트가 아닐 시 오류
   @Post(':interviewId')
   async saveAllFeedback(@Param('interviewId') interviewId: string) {
     await this.feedbackService.saveAllFeedback(+interviewId);
     return { message: 'success' };
   }
 
-  // @Get(':interviewId')
-  // @UseGuards(JwtGuard)
-  // getAllFeedbacks(@Param('interviewId') interviewId: string) {
-  //   return this.feedbackService.getAllFeedbacks(interviewId);
-  // }
+  // TODO: 요청자가 해당 면접의 참가자인지 판별
+  @Get(':interviewId')
+  getAllFeedbacks(@Param('interviewId') interviewId: string) {
+    return this.feedbackService.getAllFeedbacks(+interviewId);
+  }
 }

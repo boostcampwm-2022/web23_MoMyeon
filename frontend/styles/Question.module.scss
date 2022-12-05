@@ -17,12 +17,7 @@
 .text {
   font-size: 16px;
   margin-left: 1.1rem;
-  width: 100%;
   padding-block: 0.7rem;
-}
-
-.text:hover {
-  background-color: color.$SUBCOLOR;
 }
 
 .textFocus {
@@ -42,4 +37,16 @@
 
 .show {
   display: flex;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.textContainer:hover {
+  background-color: color.$SUBCOLOR;
 }

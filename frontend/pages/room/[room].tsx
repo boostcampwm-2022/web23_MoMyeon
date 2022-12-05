@@ -50,6 +50,8 @@ export default function Room({ roomName }: any) {
           <ToolBoxButton>
             <AudioToggleButton/>
             <VideoToggleButton/>
+            <button> 면접자 역할 하기</button>
+            <button> 면접관 역할 하기</button>
           </ToolBoxButton>
         </div>
         <div className={styles.utilContainer}>

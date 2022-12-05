@@ -25,6 +25,9 @@ export class Feedback extends BaseEntity {
   @Column({ type: 'text' })
   content: string;
 
+  @Column({ type: 'text' })
+  questionContent: string;
+
   @Column()
   interviewId: number;
 
@@ -33,6 +36,12 @@ export class Feedback extends BaseEntity {
 
   @Column()
   user_to: number;
+
+  @Column()
+  user_fromName: string;
+
+  @Column()
+  user_toName: string;
 
   @CreateDateColumn()
   created_at: Date;

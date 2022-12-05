@@ -16,16 +16,17 @@ export class FeedbackController {
     @Body() saveFeedbackDto: SaveFeedbackDto,
     @UserData() userData: UserInfo,
   ) {
-    try {
-      const result = await this.feedbackService.saveFeedback(
-        +interviewId,
-        saveFeedbackDto,
-        userData,
-      );
-      return { message: result ? 'success' : 'failed' };
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
+    await this.feedbackService.saveFeedback(
+      +interviewId,
+      saveFeedbackDto,
+      userData,
+    );
+    return { message: 'success' };
+  }
+
+  @Get(':interviewId')
+  @UseGuards(JwtGuard)
+  getAllFeedbacks(@Param('interviewId') interviewId: string) {
+    return this.feedbackService.getAllFeedbacks(interviewId);
   }
 }

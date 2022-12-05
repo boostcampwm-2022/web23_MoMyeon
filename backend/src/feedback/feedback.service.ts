@@ -32,10 +32,16 @@ export class FeedbackService {
         }),
       );
 
-      return result === 'OK';
+      if (result !== 'OK') {
+        throw new InternalServerErrorException('피드백 저장 오류');
+      }
+
+      return true;
     } catch (err) {
       console.error(err);
       throw new InternalServerErrorException('피드백 저장 오류');
     }
   }
+
+  async getAllFeedbacks(interviewId: string) {}
 }

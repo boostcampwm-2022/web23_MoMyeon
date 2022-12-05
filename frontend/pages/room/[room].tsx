@@ -6,6 +6,9 @@ import styles from "styles/room.module.scss";
 import {useRouter} from "next/dist/client/compat/router";
 import InterviewUser from "components/interviewUser/interviewUser.component";
 import dynamic from "next/dynamic";
+import { ToolBoxButton} from "components/button/toolBoxButton.component";
+import {AudioToggleButton} from "components/button/audioToggleButton.component";
+import {VideoToggleButton} from "components/button/videoToggleButton.component";
 
 const QAContainer = dynamic(() => import("components/question/qaContainer"), {
   ssr: false,
@@ -42,7 +45,13 @@ export default function Room({ roomName }: any) {
   return (
     <div className={styles.background}>
       <div className={styles.layout}>
-        <MediasoupVideo roomName={roomName} />
+        <div className = {styles.mediaContainer}>
+          <MediasoupVideo roomName={roomName} />
+          <ToolBoxButton>
+            <AudioToggleButton/>
+            <VideoToggleButton/>
+          </ToolBoxButton>
+        </div>
         <div className={styles.utilContainer}>
           <InterviewUser id={'1'} />
           <div className={styles.resumeWrapper}>
@@ -55,7 +64,7 @@ export default function Room({ roomName }: any) {
               <QAContainer id={'1'} />
             </Suspense>
           </div>
-          <div className={styles.routeButtonContainer}>
+          <div className= {styles.routerButtonContainer}>
             <button className={styles.feedbackBtn}> 피드백 가기 </button>
             <button className={styles.exitBtn} onClick={handleClickExitBtn}> 나가기 </button>
           </div>

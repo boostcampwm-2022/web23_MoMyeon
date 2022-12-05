@@ -2,6 +2,7 @@
 @use "_color";
 
 .background {
+  overflow: auto;
   position: fixed;
   width: 100%;
   height: 100%;
@@ -30,19 +31,52 @@
   background: #4bbd84;
 }
 
-.routeButtonContainer {
-  padding-top: 3rem;
+.toolBox {
+  @include common.flexRow;
+  column-gap: 20px;
+
+  button {
+    background-color: deepskyblue;
+    color: color.$SUBCOLOR;
+    border: none;
+    padding: 1.5rem;
+    font-size: 18px;
+    border-radius: 3rem;
+  }
+
+}
+
+.toolContainer {
+  padding: 1rem ;
   position: absolute;
-  right: 0;
+  left: 1rem ;
+}
+
+.routerButtonContainer {
+  padding: 1rem;
+  position: absolute;
+  right: 1rem;
 }
 
 .feedbackBtn {
-  margin: 1rem;
+  background-color: #4bbd84;
+  color: color.$SUBCOLOR;
+  border: none;
+  padding: 1.5rem;
+  font-size: 18px;
+  border-radius: 3rem;
 }
 
 .exitBtn {
-  margin: 1rem;
+  background-color: salmon;
+  color: color.$SUBCOLOR;
+  border: none;
+  padding: 1.5rem;
+  font-size: 18px;
+  margin-left: 2rem;
+  border-radius: 3rem;
 }
+
 
 .utilContainer {
   max-width: 32vw;

@@ -24,9 +24,9 @@ export class FeedbackController {
     return { message: 'success' };
   }
 
-  @Get(':interviewId')
-  @UseGuards(JwtGuard)
-  getAllFeedbacks(@Param('interviewId') interviewId: string) {
-    return this.feedbackService.getAllFeedbacks(interviewId);
-  }
+  // @Get(':interviewId')
+  // @UseGuards(JwtGuard)
+  // getAllFeedbacks(@Param('interviewId') interviewId: string) {
+  //   return this.feedbackService.getAllFeedbacks(interviewId);
+  // }
 }

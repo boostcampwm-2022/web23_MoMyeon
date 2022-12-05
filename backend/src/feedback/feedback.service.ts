@@ -12,7 +12,7 @@ export class FeedbackService {
     interviewId: number,
     saveFeedbackDto: SaveFeedbackDto,
     userData: UserInfo,
-  ): Promise<boolean> {
+  ): Promise<number> {
     try {
       const { id: fromId, nickname: fromName } = userData;
       const {
@@ -23,8 +23,9 @@ export class FeedbackService {
         feedback,
       } = saveFeedbackDto;
 
-      const result = await this.redis.set(
-        `question:${interviewId}:${fromId}:${toId}:${type}:${questionId}`,
+      const result: number = await this.redis.hset(
+        `question:${interviewId}`,
+        `${fromId}:${toId}:${type}:${questionId}`,
         JSON.stringify({
           interviewer: fromName,
           interviewee: toName,
@@ -32,16 +33,14 @@ export class FeedbackService {
         }),
       );
 
-      if (result !== 'OK') {
-        throw new InternalServerErrorException('피드백 저장 오류');
-      }
-
-      return true;
+      return result;
     } catch (err) {
       console.error(err);
       throw new InternalServerErrorException('피드백 저장 오류');
     }
   }
 
-  async getAllFeedbacks(interviewId: string) {}
+  // async getAllFeedbacks(interviewId: string) {
+  //   this.redis.keys();
+  // }
 }

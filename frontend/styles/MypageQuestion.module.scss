@@ -1,0 +1,72 @@
+@use "color";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.textContainer {
+  width: 60rem;
+  padding: 1.4rem;
+  border-bottom: 1px solid color.$GRAY;
+}
+
+.text {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.questionContainer {
+  overflow-y: scroll;
+  width: 55rem;
+  height: 34rem;
+  padding-block: 2rem;
+  padding-inline: 2rem;
+  border: 1px solid color.$GRAY;
+  border-radius: 20px;
+  margin-top: 4rem;
+}
+
+.createQuestion {
+  width: 55rem;
+  height: 12rem;
+  padding-block: 2rem;
+  padding-inline: 2rem;
+  border: 1px solid color.$GRAY;
+  border-radius: 20px;
+  margin-top: 4rem;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+}
+
+.submitButton {
+  border: none;
+  outline: none;
+  width: 12.6rem;
+  height: 3.2rem;
+  background-color: color.$MAINCOLOR;
+  border-radius: 20px;
+  margin-left: 2rem;
+  color: #fff;
+  font-size: 16px;
+}
+
+.textBox {
+  width: 36rem;
+  height: 10rem;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 20px;
+  padding-block: 1rem;
+}
+
+.deleteIcon {
+  cursor: pointer;
+}

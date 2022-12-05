@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtGuard } from 'src/guards/jwtAuth.guard';
 import { UserInfo } from 'src/interfaces/user.interface';
 import { UserData } from 'src/user/user.decorator';
@@ -21,6 +29,12 @@ export class FeedbackController {
       saveFeedbackDto,
       userData,
     );
+    return { message: 'success' };
+  }
+
+  @Post(':interviewId')
+  async saveAllFeedback(@Param('interviewId') interviewId: string) {
+    await this.feedbackService.saveAllFeedback(+interviewId);
     return { message: 'success' };
   }
 

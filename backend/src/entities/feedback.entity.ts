@@ -25,6 +25,15 @@ export class Feedback extends BaseEntity {
   @Column({ type: 'text' })
   content: string;
 
+  @Column()
+  interviewId: number;
+
+  @Column()
+  user_from: number;
+
+  @Column()
+  user_to: number;
+
   @CreateDateColumn()
   created_at: Date;
 

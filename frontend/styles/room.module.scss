@@ -1,32 +1,73 @@
+@use "_common";
+@use "_color";
+
 .background {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
-  background: #333333 ;
+  background-color: #FFFFFF;
+}
+
+.layout {
+  position: absolute;
+  padding-top: 2vh;
+  display: flex;
+  column-gap: 3vh;
 }
 
 .videoContainer {
+  padding-left: 1rem;
   max-width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  //grid-auto-flow: column;
-  //overflow-x: auto;
-  row-gap: 5rem;
-  column-gap: 5rem;
-
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 2rem;
+  column-gap: 2rem;
 }
 
 .videos {
-  width: 400px;
-  height: 400px;
-  margin: 2px;
+  width: 20vw;
+  height: 43vh;
+  background: #4bbd84;
 }
 
-
-.tr {
-  vertical-align: top;
+.routeButtonContainer {
+  padding-top: 3rem;
+  position: absolute;
+  right: 0;
 }
 
-.button {
-  margin: 2px ;
+.feedbackBtn {
+  margin: 1rem;
 }
+
+.exitBtn {
+  margin: 1rem;
+}
+
+.utilContainer {
+  max-width: 32vw;
+  max-height: 88vh;
+}
+
+.resumeWrapper {
+  overflow-y: scroll;
+  width: 32vw;
+  height: 30vh;
+  margin-top: 2vh;
+  padding-block: 2rem;
+  padding-inline: 2rem;
+  border: 1px solid color.$GRAY;
+  border-radius: 20px;
+}
+
+.questionWrapper {
+  overflow-y: scroll;
+  width: 32vw;
+  height: 46vh;
+  margin-top: 2vh;
+  padding-block: 2rem;
+  padding-inline: 2rem;
+  border: 1px solid color.$GRAY;
+  border-radius: 20px;
+}
+

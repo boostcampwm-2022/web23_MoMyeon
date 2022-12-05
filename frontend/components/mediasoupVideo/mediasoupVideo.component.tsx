@@ -327,7 +327,7 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
   return (
     <div className={styles.videoContainer}>
       <video ref={localVideoRef} muted autoPlay className={styles.videos} />
-      {[0, 1, 2, 3, 4, 5, 6].map((remote) => {
+      {[0, 1, 2, 3, 4].map((remote) => {
         return (
           <video
             ref={(elem) => (remoteVideoRef.current[remote] = elem)}

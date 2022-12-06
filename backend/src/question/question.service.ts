@@ -14,6 +14,7 @@ import { User } from 'src/entities/user.entity';
 import { QuestionType } from 'src/enum/questionType.enum';
 import { CreateUserQuestionDto } from './dto/create-user-question.dto';
 import { UserQuestion } from 'src/entities/userQuestion.entity';
+import { InterviewQuestionData } from 'src/interfaces/question.interface';
 
 @Injectable()
 export class QuestionService {
@@ -161,6 +162,64 @@ export class UserQuestionService {
   }
 
   findAll(userId: number) {
+    const userQuestion = this.UserQuestionRepository.createQueryBuilder()
+      .select(['id', 'content AS contents'])
+      .where('userId = :userId', { userId: userId })
+      .getRawMany();
+    return userQuestion;
+  }
+
+  async remove(id: number, userId: number) {
+    try {
+      const userQueryDeleteData =
+        await this.UserQuestionRepository.createQueryBuilder('')
+          .softDelete()
+          .where('id = :id AND userId = :userId', { id: id, userId: userId })
+          .execute();
+      if (!userQueryDeleteData.affected)
+        throw new BadRequestException('삭제할 수 없습니다.');
+      return userQueryDeleteData;
+    } catch (err) {
+      throw err;
+    }
+  }
+}
+
+@Injectable()
+export class InterviewQuestionService {
+  constructor(
+    @InjectRepository(UserQuestion)
+    private UserQuestionRepository: Repository<UserQuestion>,
+    @InjectRepository(UserInterview)
+    private UserInterviewRepository: Repository<UserInterview>,
+  ) {}
+
+  getInterviewUser(id: number) {
+    return this.UserInterviewRepository.createQueryBuilder('ui')
+      .select(['ui.userId As userId', 'user.nickname AS userName'])
+      .leftJoinAndSelect(User, 'user', 'ui.userId = user.id')
+      .where('interviewId = :id AND status = :status', {
+        id: id,
+        status: UserInterviewStatus.ACCEPTED,
+      })
+      .getRawMany();
+  }
+
+  async create(createUserQuestionData: InterviewQuestionData) {
+    try {
+      const newUserQuestion = this.UserQuestionRepository.create(
+        createUserQuestionData,
+      );
+      const saveUserQuestion = await this.UserQuestionRepository.save(
+        newUserQuestion,
+      );
+      return { id: saveUserQuestion.id };
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  find(interviewId: number, userId: number) {
     const userQuestion = this.UserQuestionRepository.createQueryBuilder()
       .select(['id', 'content AS contents'])
       .where('userId = :userId', { userId: userId })

@@ -221,16 +221,35 @@ export class InterviewQuestionService {
     }
   }
 
-  find(interviewId: number, userId: number) {
+  async find(interviewId: number, userId: number) {
+    const userInterviewQuestionData = { questions: [] };
+    const interviewUser = await this.getInterviewUser(interviewId);
     const userInterviewQuestion =
-      this.InterviewQuestionRepository.createQueryBuilder()
-        .select(['user_to', 'user_toName', 'userId', 'id', 'content'])
+      await this.InterviewQuestionRepository.createQueryBuilder()
+        .select(['user_to AS userTo', 'userId', 'id', 'content'])
         .where('interviewId = :interviewId AND userId = :userId', {
           interviewId: interviewId,
           userId: userId,
         })
         .getRawMany();
-    return userInterviewQuestion;
+    interviewUser.forEach((userElement) => {
+      const temp = [];
+      userInterviewQuestion.forEach((questionElement) => {
+        if (userElement.userId === questionElement.userTo) {
+          temp.push({
+            id: questionElement.id,
+            content: questionElement.content,
+          });
+        }
+      });
+      userInterviewQuestionData.questions.push({
+        userId: userElement.userId,
+        userName: userElement.userName,
+        question: temp,
+        feedback: '',
+      });
+    });
+    return userInterviewQuestionData;
   }
 
   async remove(id: number, userId: number) {

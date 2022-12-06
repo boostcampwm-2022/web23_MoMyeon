@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "styles/CategoryFilter.module.scss";
 import {
@@ -48,7 +47,7 @@ function CategoryContainer({
       </div>
       <div className={styles.child}>
         {category &&
-          category[categoryKey[current]].map((item: Category) => {
+          category[categoryKey[current]]?.map((item: Category) => {
             const { id, name } = item;
             const focused = categoryArr.includes(id);
             return (

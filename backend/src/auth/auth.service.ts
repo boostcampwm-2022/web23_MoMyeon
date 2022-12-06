@@ -12,7 +12,7 @@ import { firstValueFrom } from 'rxjs';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { GithubLoginDto } from './dto/github-login.dto';
-import { UserPayload } from '../interfaces/user.interface';
+import { UserInfo } from '../interfaces/user.interface';
 
 @Injectable()
 export class AuthService {
@@ -36,23 +36,28 @@ export class AuthService {
         avatar_url: profile,
       }: { id: string; login: string; avatar_url: string } = githubUserData;
 
-      const payload: UserPayload = {
-        oauth_provider: 'github',
-        oauth_uid: uid,
-      };
-
-      const exUser = await this.userRepository.findOneBy(payload);
+      const userData = { oauth_provider: 'github', oauth_uid: uid };
+      const exUser = await this.userRepository.findOneBy(userData);
+      let userId: number;
 
       if (!exUser) {
         const newUser = this.userRepository.create({
-          ...payload,
+          ...userData,
           nickname,
           profile,
         });
         await this.userRepository.save(newUser);
-      }
+        userId = newUser.id;
+      } else userId = exUser.id;
 
-      const accessToken = this.signAccessToken(payload);
+      const userInfo: UserInfo = {
+        ...userData,
+        nickname,
+        profile,
+        id: userId,
+      };
+
+      const accessToken = this.signAccessToken(userInfo);
       const refreshToken = this.signRefreshToken();
 
       // TODO: refreshToken을 User 테이블에 저장
@@ -104,7 +109,7 @@ export class AuthService {
     }
   }
 
-  signAccessToken(paylod: UserPayload) {
+  signAccessToken(paylod: UserInfo) {
     return this.jwtService.sign(paylod, {
       algorithm: 'HS256',
       expiresIn: '1h',

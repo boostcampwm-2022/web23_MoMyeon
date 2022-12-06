@@ -14,7 +14,7 @@ import { UpdateQuestionDto } from './dto/update-question.dto';
 import { CreateUserQuestionDto } from './dto/create-user-question.dto';
 import { JwtGuard } from 'src/guards/jwtAuth.guard';
 import { UserData } from 'src/user/user.decorator';
-import { UserInfo, UserPayload } from 'src/interfaces/user.interface';
+import { UserInfo } from 'src/interfaces/user.interface';
 
 @Controller({ version: '1', path: 'question' })
 export class QuestionController {

@@ -5,8 +5,9 @@ const useQuestionQuery = ({ id }: { id: string }) => {
   const { data, isLoading, error, isFetching } = useQuery(
     ["question", id],
     () => getQuestion(id),
-    { refetchOnWindowFocus: false, staleTime: 10000, refetchOnMount: false }
+    { refetchOnWindowFocus: false, staleTime: 10000 }
   );
+
   return { data, isLoading, error, isFetching };
 };
 
@@ -14,7 +15,7 @@ const useMemberQuery = ({ id }: { id: string }) => {
   const { data, isLoading, error, isFetching } = useQuery(
     ["member", id],
     () => getMember(id),
-    { refetchOnWindowFocus: false, staleTime: 10000, refetchOnMount: false }
+    { refetchOnWindowFocus: false, staleTime: 10000 }
   );
   return { data, isLoading, error, isFetching };
 };

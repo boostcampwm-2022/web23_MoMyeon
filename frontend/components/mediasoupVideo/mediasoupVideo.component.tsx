@@ -5,9 +5,8 @@ import io from "socket.io-client";
 
 const MediasoupVideo = ({ roomName }: { roomName: string }) => {
   const socketRef = useRef<any>(null);
-
   const paramsRef = useRef<any>(null);
-  const localVideoRef = useRef<any>(null);
+  const localMediaRef = useRef<any>(null);
   const remoteVideoRef = useRef<any>([]);
 
   const deviceRef = useRef<any>(null);
@@ -17,6 +16,11 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
 
   const producerRef = useRef<any>(null);
   const consumerRef = useRef<any>(null);
+
+  const remoteAudioRef = useRef<any>([]);
+  const audioProducerRef = useRef<any>(null);
+  const audioParamsRef = useRef<any>(null);
+  const consumingTransportsRef = useRef<any>([]);
 
   useEffect(() => {
     let to = "http://localhost:8443";
@@ -91,16 +95,21 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
         },
       };
 
-      localVideoRef.current.srcObject = stream;
-      const track = stream.getVideoTracks()[0];
+      localMediaRef.current.srcObject = stream;
+
+      audioParamsRef.current = {
+        track: stream.getAudioTracks()[0],
+        ...audioParamsRef.current,
+      }
+
       paramsRef.current = {
-        track,
+        track: stream.getVideoTracks()[0],
         ...paramsRef.current,
       };
-      console.log(paramsRef.current);
+
       joinRoom();
     } catch (e) {
-      alert("웹캠 가져오기 실패");
+      alert(e);
     }
   };
 
@@ -214,18 +223,35 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
   };
 
   const connectSendTransport = async () => {
+    audioProducerRef.current = await producerTransportRef.current.produce(
+      audioParamsRef.current
+    );
     producerRef.current = await producerTransportRef.current.produce(
       paramsRef.current
     );
+    audioProducerRef.current.on('trackended', () => {
+      console.log("audio track ended");
+    })
+
     producerRef.current.on("trackended", () => {
       console.log("tranck ended");
     });
+
+    audioProducerRef.current.on('transportclose', () => {
+      console.log("audio transport ended");
+    })
+
     producerRef.current.on("transportclose", () => {
       console.log("transport ended");
     });
   };
 
   const signalNewConsumerTransport = async (remoteProducerId: any) => {
+    if (consumingTransportsRef.current.includes(remoteProducerId)){
+      return ;
+    }
+    consumingTransportsRef.current.push(remoteProducerId);
+
     await socketRef.current.emit(
       "createWebRtcTransport",
       { consumer: true },
@@ -313,9 +339,15 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
         //console.log(remoteProducerId);
         const { track } = consumer;
 
-        remoteVideoRef.current.filter(
-          (elem: any) => elem.srcObject === null
-        )[0].srcObject = new MediaStream([track]);
+        if(params.kind === 'audio'){
+          remoteAudioRef.current.filter(
+            (elem: any) => elem.srcObject === null
+          )[0].srcObject = new MediaStream([track]);
+        } else {
+          remoteVideoRef.current.filter(
+            (elem: any) => elem.srcObject === null
+          )[0].srcObject = new MediaStream([track]);
+        }
 
         socketRef.current.emit("consumer-resume", {
           serverConsumerId: params.serverConsumerId,
@@ -324,17 +356,39 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
     );
   };
 
+  const handleClickRemoteAudioMuteBtn = (remote : number) => {
+    remoteAudioRef.current[remote].muted = !remoteAudioRef.current[remote].muted;
+  }
+
+  const handleClickLocalAudioMuteBtn = () => {
+    const audioTrack = localMediaRef.current.srcObject.getTracks().find((track: MediaStreamTrack)=> track.kind === 'audio') ;
+    audioTrack.enabled = !audioTrack.enabled ;
+  }
+
+  const handleClickLocalVideoMuteBtn = () => {
+    const videoTrack = localMediaRef.current.srcObject.getTracks().find((track: MediaStreamTrack)=> track.kind === 'video') ;
+    videoTrack.enabled = !videoTrack.enabled ;
+  }
+
   return (
     <div className={styles.videoContainer}>
-      <video ref={localVideoRef} muted autoPlay className={styles.videos} />
-      {[0, 1, 2, 3, 4, 5, 6].map((remote) => {
+      <div>
+        <video ref={localMediaRef} muted autoPlay className={styles.videos} />
+        <button onClick={handleClickLocalVideoMuteBtn}> 화면 </button>
+        <span><button onClick={handleClickLocalAudioMuteBtn}> 음소거 </button></span>
+      </div>
+      {[0, 1, 2, 3, 4].map((remote) => {
         return (
-          <video
-            ref={(elem) => (remoteVideoRef.current[remote] = elem)}
-            autoPlay
-            className={styles.videos}
-            key={remote}
-          />
+          <div key={remote}>
+            <audio ref={(elem) => (remoteAudioRef.current[remote] = elem)} autoPlay key={remote}/>
+            <video
+              ref={(elem) => (remoteVideoRef.current[remote] = elem)}
+              autoPlay
+              className={styles.videos}
+              key={remote}
+            />
+            <button key={remote} onClick={() => handleClickRemoteAudioMuteBtn(remote)}> 음소거 </button>
+          </div>
         );
       })}
     </div>

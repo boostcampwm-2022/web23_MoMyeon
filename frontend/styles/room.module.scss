@@ -1,32 +1,107 @@
+@use "_common";
+@use "_color";
+
 .background {
-  position: absolute;
+  overflow: auto;
+  position: fixed;
   width: 100%;
   height: 100%;
-  background: #333333 ;
+  background-color: #FFFFFF;
+}
+
+.layout {
+  position: absolute;
+  padding-top: 2vh;
+  display: flex;
+  column-gap: 3vh;
 }
 
 .videoContainer {
+  padding-left: 1rem;
   max-width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  //grid-auto-flow: column;
-  //overflow-x: auto;
-  row-gap: 5rem;
-  column-gap: 5rem;
-
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 2rem;
+  column-gap: 2rem;
+  background-color: #333333;
 }
 
 .videos {
-  width: 400px;
-  height: 400px;
-  margin: 2px;
+  width: 20vw;
+  height: 43vh;
+}
+
+.toolBox {
+  @include common.flexRow;
+  column-gap: 20px;
+
+  button {
+    background-color: deepskyblue;
+    color: color.$SUBCOLOR;
+    border: none;
+    padding: 1.5rem;
+    font-size: 18px;
+    border-radius: 3rem;
+  }
+
+}
+
+.toolContainer {
+  padding: 1rem ;
+  position: absolute;
+  left: 1rem ;
+}
+
+.routerButtonContainer {
+  padding: 1rem;
+  position: absolute;
+  right: 1rem;
+}
+
+.feedbackBtn {
+  background-color: #4bbd84;
+  color: color.$SUBCOLOR;
+  border: none;
+  padding: 1.5rem;
+  font-size: 18px;
+  border-radius: 3rem;
+}
+
+.exitBtn {
+  background-color: salmon;
+  color: color.$SUBCOLOR;
+  border: none;
+  padding: 1.5rem;
+  font-size: 18px;
+  margin-left: 2rem;
+  border-radius: 3rem;
 }
 
 
-.tr {
-  vertical-align: top;
+.utilContainer {
+  max-width: 32vw;
+  max-height: 88vh;
 }
 
-.button {
-  margin: 2px ;
+.resumeWrapper {
+  overflow-y: scroll;
+  width: 32vw;
+  height: 30vh;
+  margin-top: 2vh;
+  padding-block: 2rem;
+  padding-inline: 2rem;
+  border: 1px solid color.$GRAY;
+  border-radius: 20px;
 }
+
+.questionWrapper {
+  overflow-y: scroll;
+  width: 32vw;
+  height: 46vh;
+  margin-top: 2vh;
+  padding-block: 2rem;
+  padding-inline: 2rem;
+  border: 1px solid color.$GRAY;
+  border-radius: 20px;
+}
+

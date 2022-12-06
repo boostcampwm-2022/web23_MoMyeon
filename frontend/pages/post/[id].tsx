@@ -6,7 +6,7 @@ import styles from "styles/PostPage.module.scss";
 import Header from "components/header/header.component";
 import PostPageHead from "head/postPage";
 import { useRouter } from "next/router";
-import { InterviewJoinButton } from "components/button/interviewJoinButton";
+import { InterviewJoinButtonComponent } from "components/button/interviewJoinButton.component";
 import { PostData } from "types/posts";
 import getPostById from "utils/api/getPostById";
 const PostPage = ({ postData }: { postData: PostData | null }) => {
@@ -63,7 +63,7 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
 
               <span className={styles.date}> {postData?.date} </span>
             </div>
-            <InterviewJoinButton
+            <InterviewJoinButtonComponent
               initialUserState={postData?.userStatus ?? 0}
               postId={postData?.postId}
             />

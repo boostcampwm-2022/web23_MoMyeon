@@ -1,0 +1,12 @@
+@use "color";
+
+.textContainer {
+  width: 60rem;
+  padding: 1.4rem;
+  border-bottom: 1px solid color.$GRAY;
+}
+
+.text {
+  font-weight: bold;
+  font-size: 20px;
+}

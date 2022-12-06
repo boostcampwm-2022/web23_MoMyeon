@@ -1,0 +1,101 @@
+@use "color";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 3rem;
+}
+
+.resumeContainer {
+  position: relative;
+  overflow: hidden;
+  width: 55rem;
+  height: 22rem;
+  padding-block: 2rem;
+  padding-inline: 2rem;
+  border: 1px solid color.$GRAY;
+  border-radius: 20px;
+  margin-top: 2rem;
+}
+.scrollY {
+  overflow-y: scroll;
+  width: 100%;
+  height: 90%;
+}
+
+.resumeTitle {
+  font-size: 14px;
+  margin-bottom: 2rem;
+}
+.resumeItemContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.resumeItem {
+  font-size: 14px;
+  line-height: 1rem;
+  padding-block: 1rem;
+  margin-left: 2rem;
+}
+.resumeItemContainer:hover {
+  background-color: color.$SUBCOLOR;
+}
+.addButton {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  border: none;
+  outline: none;
+  background-color: color.$MAINCOLOR;
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  padding-inline: 0.6rem;
+  padding-block: 0.2rem;
+  cursor: pointer;
+}
+
+.createContainer {
+  display: flex;
+  flex-direction: column;
+  width: 55rem;
+  height: 34rem;
+  padding-block: 2rem;
+  padding-inline: 2rem;
+  border: 1px solid color.$GRAY;
+  border-radius: 20px;
+  margin-top: 4rem;
+}
+
+.resumeInput {
+  outline: none;
+  resize: none;
+  height: 20rem;
+  border-radius: 20px;
+  border: 1px solid color.$GRAY;
+  padding: 2rem;
+}
+
+.resumeTitle {
+  font-size: 16px;
+  margin-bottom: 2rem;
+}
+
+.createButton {
+  border: none;
+  outline: none;
+  background-color: color.$MAINCOLOR;
+  color: white;
+  border-radius: 20px;
+  font-size: 14px;
+  padding-inline: 0.6rem;
+  padding-block: 0.2rem;
+  cursor: pointer;
+  width: 8.6rem;
+  height: 2.7rem;
+  align-self: flex-end;
+  margin-top: 2rem;
+}

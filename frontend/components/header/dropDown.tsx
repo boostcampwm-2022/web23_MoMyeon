@@ -20,6 +20,8 @@ function DropDown({ children }: ChildComponent) {
       await onLogoutAction();
     } else if (key === "내질문") {
       onMyQuestionAction();
+    } else if (key === "이력서") {
+      onClickResume();
     }
   };
 
@@ -30,6 +32,10 @@ function DropDown({ children }: ChildComponent) {
 
   const onMyQuestionAction = () => {
     router.push("/mypage/question");
+  };
+
+  const onClickResume = () => {
+    router.push("/mypage/resume");
   };
 
   return (

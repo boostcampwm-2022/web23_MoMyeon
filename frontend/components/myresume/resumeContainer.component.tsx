@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ResumeContainerProps } from "./resume";
 import styles from "styles/MypageResume.module.scss";
 import ResumeItem from "./resumeItem.component";
-import { resumeSet } from "states/resume";
+import { resumeState } from "states/resume";
 function ResumeContainer({ itemId, item, content }: ResumeContainerProps) {
-  const setResume = resumeSet();
+  const [resume, setResume] = resumeState();
 
   const onClickAdd = () => {
     setResume({ id: itemId, item });
-    window.scroll({ top: document.body.scrollHeight, behavior: "smooth" });
   };
+  useEffect(() => {
+    if (resume.id) {
+      window.scroll({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+  }, [resume]);
   return (
     <div className={styles.resumeContainer}>
       <div className={styles.resumeTitle}>{item}</div>

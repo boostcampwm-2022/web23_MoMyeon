@@ -2,7 +2,7 @@ import styles from "styles/PostPage.module.scss";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
-export function InterviewJoinButton({
+export function InterviewJoinButtonComponent({
   initialUserState,
   postId,
 }: {

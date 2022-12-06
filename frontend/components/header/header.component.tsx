@@ -11,14 +11,10 @@ import { loginModalSet } from "states/loginModal";
 import { useUserDataQuery } from "utils/hooks/useUserDataQuery";
 import { UserData } from "types/auth";
 
-import axios from "axios";
-import apiKeys from "../../constants/apiKeys";
-
 function Header() {
   const setVisible = loginModalSet();
 
   const { data, isError, error } = useUserDataQuery();
-
   const userData: UserData = { profile: null, nickname: null };
   userData.nickname = data?.data.profile;
   userData.profile = data?.data.nickname;

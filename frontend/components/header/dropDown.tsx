@@ -18,12 +18,18 @@ function DropDown({ children }: ChildComponent) {
   const handleAction = async (key: Key) => {
     if (key === "로그아웃") {
       await onLogoutAction();
+    } else if (key === "내질문") {
+      onMyQuestionAction();
     }
   };
 
   const onLogoutAction = async () => {
     await logoutAxios();
     router.reload();
+  };
+
+  const onMyQuestionAction = () => {
+    router.push("/mypage/question");
   };
 
   return (

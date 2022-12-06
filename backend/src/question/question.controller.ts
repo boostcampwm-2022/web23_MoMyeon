@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   BadRequestException,
+  BadGatewayException,
 } from '@nestjs/common';
 import {
   InterviewQuestionService,
@@ -118,7 +119,9 @@ export class InterviewQuestionController {
     console.log(createQuestionDto);
     const createInterviewQuestionData = {
       content: createQuestionDto.content,
+      interview: createQuestionDto.interview_id,
       interviewId: createQuestionDto.interview_id,
+      user: userData.id,
       userId: userData.id,
       user_to: createQuestionDto.interviewee_id,
       user_toName: userToName,
@@ -128,7 +131,7 @@ export class InterviewQuestionController {
 
   @UseGuards(JwtGuard)
   @Get(':id')
-  findOne(@Param('id') id: string, @UserData() userData: UserInfo) {
+  find(@Param('id') id: string, @UserData() userData: UserInfo) {
     return this.intervewService.find(+id, userData.id);
   }
 

@@ -15,6 +15,7 @@ import { QuestionType } from 'src/enum/questionType.enum';
 import { CreateUserQuestionDto } from './dto/create-user-question.dto';
 import { UserQuestion } from 'src/entities/userQuestion.entity';
 import { InterviewQuestionData } from 'src/interfaces/question.interface';
+import { InterviewQuestion } from 'src/entities/interviewQuestion.entity';
 
 @Injectable()
 export class QuestionService {
@@ -192,6 +193,8 @@ export class InterviewQuestionService {
     private UserQuestionRepository: Repository<UserQuestion>,
     @InjectRepository(UserInterview)
     private UserInterviewRepository: Repository<UserInterview>,
+    @InjectRepository(InterviewQuestion)
+    private InterviewQuestionRepository: Repository<InterviewQuestion>,
   ) {}
 
   getInterviewUser(id: number) {
@@ -205,32 +208,35 @@ export class InterviewQuestionService {
       .getRawMany();
   }
 
-  async create(createUserQuestionData: InterviewQuestionData) {
+  async create(createInterviewQuestionData: InterviewQuestionData) {
     try {
-      const newUserQuestion = this.UserQuestionRepository.create(
-        createUserQuestionData,
+      const newUserInterviewQuestion = this.InterviewQuestionRepository.create(
+        createInterviewQuestionData,
       );
-      const saveUserQuestion = await this.UserQuestionRepository.save(
-        newUserQuestion,
-      );
-      return { id: saveUserQuestion.id };
+      const saveUserInterviewQuestion =
+        await this.InterviewQuestionRepository.save(newUserInterviewQuestion);
+      return saveUserInterviewQuestion;
     } catch (err) {
       throw err;
     }
   }
 
   find(interviewId: number, userId: number) {
-    const userQuestion = this.UserQuestionRepository.createQueryBuilder()
-      .select(['id', 'content AS contents'])
-      .where('userId = :userId', { userId: userId })
-      .getRawMany();
-    return userQuestion;
+    const userInterviewQuestion =
+      this.InterviewQuestionRepository.createQueryBuilder()
+        .select(['user_to', 'user_toName', 'userId', 'id', 'content'])
+        .where('interviewId = :interviewId AND userId = :userId', {
+          interviewId: interviewId,
+          userId: userId,
+        })
+        .getRawMany();
+    return userInterviewQuestion;
   }
 
   async remove(id: number, userId: number) {
     try {
       const userQueryDeleteData =
-        await this.UserQuestionRepository.createQueryBuilder('')
+        await this.InterviewQuestionRepository.createQueryBuilder('')
           .softDelete()
           .where('id = :id AND userId = :userId', { id: id, userId: userId })
           .execute();

@@ -97,7 +97,6 @@ export class InterviewService {
         search: selectInterviewDto.search || '',
         category: selectInterviewDto.category || '',
       };
-      console.log(selectInterviewData);
 
       //자료형 변환
       const category: number[] = [];
@@ -138,7 +137,6 @@ export class InterviewService {
         });
         where.sql += ')';
       }
-      console.log(where);
 
       const startTime = new Date().getTime();
       const interviewData = await this.interviewRepository
@@ -158,7 +156,6 @@ export class InterviewService {
           if (element.category) element.category = JSON.parse(element.category);
         });
       }
-      console.log(interviewData);
       return { queryTime: endTime - startTime, interviews: interviewData };
     } catch (err) {
       throw err;
@@ -290,7 +287,6 @@ export class InterviewService {
         categoryList: `${JSON.stringify(updateInterviewDto.category)}`,
       };
       this.interviewRepository.update(id, updateInterviewData);
-      console.log(id, userId);
 
       //interviewCategory 삭제
       this.interviewCategoryRepository

@@ -1,3 +1,4 @@
+import Title from "components/title";
 import React from "react";
 import styles from "styles/MypageQuestion.module.scss";
 import { useMyQuestionQuery } from "utils/hooks/useMyQuestionQuery";
@@ -7,9 +8,7 @@ function MyQuestion() {
   const { data, isLoading, error } = useMyQuestionQuery();
   return (
     <div className={styles.container}>
-      <div className={styles.textContainer}>
-        <span className={styles.text}>내 질문 리스트</span>
-      </div>
+      <Title text="내 질문 리스트" />
       <div className={styles.questionContainer}>
         {data?.map((item) => {
           const { id } = item;

@@ -1,19 +1,22 @@
-import React, {Suspense} from "react";
+import React, { Suspense } from "react";
 import { GetServerSideProps } from "next";
 import { usePreventBack } from "utils/hooks/usePreventBack";
 import { MediasoupVideo } from "components/mediasoupVideo/mediasoupVideo.component";
 import styles from "styles/room.module.scss";
-import {useRouter} from "next/dist/client/compat/router";
+import { useRouter } from "next/dist/client/compat/router";
 import InterviewUser from "components/interviewUser/interviewUser.component";
 import dynamic from "next/dynamic";
-import { ToolBoxButton} from "components/button/toolBoxButton.component";
-import {AudioToggleButton} from "components/button/audioToggleButton.component";
-import {VideoToggleButton} from "components/button/videoToggleButton.component";
+import { ToolBoxButton } from "components/button/toolBoxButton.component";
+import { AudioToggleButton } from "components/button/audioToggleButton.component";
+import { VideoToggleButton } from "components/button/videoToggleButton.component";
 
-const QAContainer = dynamic(() => import("components/question/qaContainer"), {
-  ssr: false,
-});
-const Resume = dynamic(() => import("components/resume/resume.compoent"), {
+const QAContainer = dynamic(
+  () => import("components/question/qaContainer.component"),
+  {
+    ssr: false,
+  }
+);
+const Resume = dynamic(() => import("components/resume/resume.component"), {
   ssr: false,
 });
 const Loading = () => {
@@ -37,38 +40,41 @@ export default function Room({ roomName }: any) {
   const router = useRouter();
 
   const handleClickExitBtn = () => {
-    if(window.confirm('나가시겠습니까?')){
+    if (window.confirm("나가시겠습니까?")) {
       router?.replace(`../post/${roomName}`);
     }
-  }
+  };
 
   return (
     <div className={styles.background}>
       <div className={styles.layout}>
-        <div className = {styles.mediaContainer}>
+        <div className={styles.mediaContainer}>
           <MediasoupVideo roomName={roomName} />
           <ToolBoxButton>
-            <AudioToggleButton/>
-            <VideoToggleButton/>
+            <AudioToggleButton />
+            <VideoToggleButton />
             <button> 면접자 역할 하기</button>
             <button> 면접관 역할 하기</button>
           </ToolBoxButton>
         </div>
         <div className={styles.utilContainer}>
-          <InterviewUser id={'1'} />
+          <InterviewUser id={"1"} />
           <div className={styles.resumeWrapper}>
             <Suspense fallback={<Loading />}>
-              <Resume id={'1'} />
+              <Resume id={"1"} />
             </Suspense>
           </div>
           <div className={styles.questionWrapper}>
             <Suspense fallback={<Loading />}>
-              <QAContainer id={'1'} />
+              <QAContainer id={"1"} />
             </Suspense>
           </div>
-          <div className= {styles.routerButtonContainer}>
+          <div className={styles.routerButtonContainer}>
             <button className={styles.feedbackBtn}> 피드백 가기 </button>
-            <button className={styles.exitBtn} onClick={handleClickExitBtn}> 나가기 </button>
+            <button className={styles.exitBtn} onClick={handleClickExitBtn}>
+              {" "}
+              나가기{" "}
+            </button>
           </div>
         </div>
       </div>

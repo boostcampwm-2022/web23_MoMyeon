@@ -29,7 +29,7 @@ function QuestionContainer({
         height={24}
       />
     );
-  }, []);
+  }, [mutate, id]);
 
   return (
     <Question HoverIcon={HoverIcon} focus={focus} id={id} contents={contents} />

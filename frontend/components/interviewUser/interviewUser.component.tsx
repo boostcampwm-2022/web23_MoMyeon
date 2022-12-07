@@ -7,14 +7,18 @@ import styles from "styles/Interview.module.scss";
 import { interviewUserSet } from "states/user";
 
 function InterviewUser({ id }: { id: string }) {
-  const { data } = useMemberQuery({ id });
+  const { data, isLoading, error } = useMemberQuery({ id });
   const setCur = interviewUserSet();
   useEffect(() => {
     if (data !== undefined && data.length > 0) setCur(data[0].userId);
-  }, [data]);
+  }, [data, setCur]);
 
-  if (data === undefined) {
+  if (isLoading) {
     return <div>loading</div>;
+  }
+
+  if (error) {
+    return <div>에러</div>;
   }
 
   if (data.length === 0) {

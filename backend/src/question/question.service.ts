@@ -34,6 +34,10 @@ export class QuestionService {
     private categoryRepository: Repository<Category>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(InterviewQuestion)
+    private InterviewQuestionRepository: Repository<InterviewQuestion>,
+    @InjectRepository(UserInterview)
+    private UserInterviewRepository: Repository<UserInterview>,
   ) {}
 
   create(createQuestionDto: CreateQuestionDto) {
@@ -119,12 +123,76 @@ export class QuestionService {
     });
     return questions;
   }
-  findRoomQuestion(id: number) {
-    // 0. id -> interview(방정보 가져오기)
-    // 1. id -> user_interview(참여 유저) -> interview_question(참여유저 별 세팅질문)
-    // 2. 세팅질문이 없다면, simple_question(심플질문) 면접 분야 질문 추가, 부족하면 기타 질문에서 추가
-    // 3. 면접 분야 심플해당 파트에서 랜덤으로 가져오기
-    return `This action returns a #${id} question`;
+
+  async findRoomQuestion(interviewId: number, userId: number) {
+    // 1. 면접 분야 심플해당 파트에서 랜덤으로 가져오기
+    const categoryData = await this.interviewCategoryRepository
+      .createQueryBuilder('ic')
+      .leftJoinAndSelect(Category, 'category', 'ic.categoryId = category.id')
+      .select(['category.id AS id', 'category.name AS name'])
+      .where('ic.interviewId = :id', { id: interviewId })
+      .getRawMany();
+
+    // 2. 면접 분야 심플해당 파트에서 랜덤으로 가져오기
+    const where = { sql: `categoryId = 14 `, value: {} };
+    categoryData.forEach((element) => {
+      where.sql += `OR categoryId = ${element.id} `;
+    });
+    const simpleQuestionData = await this.simpleQuestionRepository
+      .createQueryBuilder()
+      .select(['id', 'content'])
+      .where(where.sql)
+      .getRawMany();
+
+    // 3. id -> user_interview(참여 유저) -> interview_question(참여유저 별 세팅질문)
+    const userInterviewQuestionData = { questions: [] };
+    const interviewUser = await this.UserInterviewRepository.createQueryBuilder(
+      'ui',
+    )
+      .select(['ui.userId As userId', 'user.nickname AS userName'])
+      .leftJoinAndSelect(User, 'user', 'ui.userId = user.id')
+      .where('interviewId = :id AND status = :status', {
+        id: interviewId,
+        status: UserInterviewStatus.ACCEPTED,
+      })
+      .getRawMany();
+    const userInterviewQuestion =
+      await this.InterviewQuestionRepository.createQueryBuilder()
+        .select(['user_to AS userTo', 'userId', 'id', 'content'])
+        .where('interviewId = :interviewId AND userId = :userId', {
+          interviewId: interviewId,
+          userId: userId,
+        })
+        .getRawMany();
+    interviewUser.forEach((userElement) => {
+      const temp = [];
+      userInterviewQuestion.forEach((questionElement) => {
+        if (userElement.userId === questionElement.userTo) {
+          temp.push({
+            type: QuestionType.INTERVIEW,
+            id: questionElement.id,
+            content: questionElement.content,
+            feedback: '',
+          });
+        }
+      });
+      simpleQuestionData.forEach((simpleElement) => {
+        if (temp.length < 15) {
+          temp.push({
+            type: QuestionType.SIMPLE,
+            id: simpleElement.id,
+            content: simpleElement.content,
+            feedback: '',
+          });
+        }
+      });
+      userInterviewQuestionData.questions.push({
+        userId: userElement.userId,
+        userName: userElement.userName,
+        question: temp,
+      });
+    });
+    return userInterviewQuestionData.questions;
   }
 
   update(id: number, updateQuestionDto: UpdateQuestionDto) {

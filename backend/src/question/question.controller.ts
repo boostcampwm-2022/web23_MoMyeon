@@ -8,7 +8,6 @@ import {
   Delete,
   UseGuards,
   BadRequestException,
-  BadGatewayException,
 } from '@nestjs/common';
 import {
   InterviewQuestionService,
@@ -22,6 +21,7 @@ import { JwtGuard } from 'src/guards/jwtAuth.guard';
 import { UserData } from 'src/user/user.decorator';
 import { UserInfo } from 'src/interfaces/user.interface';
 import { CreateInterviewQuestionDto } from './dto/create-interview-question.dto';
+import { get } from 'http';
 
 @Controller({ version: '1', path: 'question' })
 export class QuestionController {
@@ -37,9 +37,10 @@ export class QuestionController {
     return this.questionService.findAll();
   }
 
+  @UseGuards(JwtGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.questionService.findTemporaryRoomQuestion(+id);
+  findOne(@Param('id') id: string, @UserData() userData: UserInfo) {
+    return this.questionService.findRoomQuestion(+id, userData.id);
   }
 
   @Patch(':id')

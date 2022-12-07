@@ -6,16 +6,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entities/user.entity';
-import { Repository } from 'typeorm';
+import { UserInfo } from '../interfaces/user.interface';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
-  constructor(
-    private readonly jwtService: JwtService,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-  ) {}
+  constructor(private readonly jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
@@ -23,24 +18,8 @@ export class JwtGuard implements CanActivate {
       const token = request.cookies?.['accessToken'];
       if (!token) throw new UnauthorizedException('토큰 정보 없음');
 
-      const jwtPayload = this.jwtService.verify(token);
-      const { oauth_provider, oauth_uid } = jwtPayload;
-
-      const [user] = await this.userRepository.findBy({
-        oauth_provider,
-        oauth_uid,
-      });
-      if (!user) {
-        throw new UnauthorizedException('회원 정보 없음');
-      }
-      const { id, nickname, profile } = user;
-      request.user = {
-        oauth_provider,
-        oauth_uid: oauth_uid.toString(),
-        nickname,
-        profile,
-        id,
-      };
+      const userInfo = this.verifyToken(token);
+      request.user = userInfo;
 
       return true;
     } catch (err) {
@@ -49,7 +28,7 @@ export class JwtGuard implements CanActivate {
     }
   }
 
-  verifyToken(token: string) {
+  verifyToken(token: string): UserInfo {
     try {
       const verified = this.jwtService.verify(token);
       return verified;

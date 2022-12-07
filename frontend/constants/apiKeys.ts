@@ -16,6 +16,9 @@ export const apiKeys = {
 
   GET_INTERVIEW_QUESTIONS: `https://${HOST}/v1/question/`,
   GET_INTERVIEW_MEMBERS: `https://${HOST}/v1/interview/members/`,
+
+  MY_QUESTION: `https://${HOST}/v1/user/question`,
+  MY_RESUME: `https://${HOST}/v1/user/resume`,
 };
 
 export default apiKeys;

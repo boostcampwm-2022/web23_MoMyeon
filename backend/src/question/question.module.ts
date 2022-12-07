@@ -6,14 +6,20 @@ import { Interview } from 'src/entities/interview.entity';
 import { UserInterview } from 'src/entities/userInterview.entity';
 import { InterviewCategory } from 'src/entities/interviewCategory.entity';
 import { Category } from 'src/entities/category.entity';
-import { QuestionService, UserQuestionService } from './question.service';
 import {
+  InterviewQuestionService,
+  QuestionService,
+  UserQuestionService,
+} from './question.service';
+import {
+  InterviewQuestionController,
   QuestionController,
   UserQuestionController,
 } from './question.controller';
 import { User } from 'src/entities/user.entity';
 import { UserQuestion } from 'src/entities/userQuestion.entity';
 import { AuthModule } from 'src/auth/auth.module';
+import { InterviewQuestion } from 'src/entities/interviewQuestion.entity';
 
 @Module({
   imports: [
@@ -26,8 +32,13 @@ import { AuthModule } from 'src/auth/auth.module';
     TypeOrmModule.forFeature([Category]),
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([UserQuestion]),
+    TypeOrmModule.forFeature([InterviewQuestion]),
   ],
-  controllers: [QuestionController, UserQuestionController],
-  providers: [QuestionService, UserQuestionService],
+  controllers: [
+    QuestionController,
+    UserQuestionController,
+    InterviewQuestionController,
+  ],
+  providers: [QuestionService, UserQuestionService, InterviewQuestionService],
 })
 export class QuestionModule {}

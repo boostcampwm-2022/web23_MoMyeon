@@ -20,6 +20,12 @@ export class UserInterview extends BaseEntity {
   @Column()
   status: UserInterviewStatus;
 
+  @Column()
+  userId: number;
+
+  @Column()
+  interviewId: number;
+
   @CreateDateColumn()
   created_at: Date;
 

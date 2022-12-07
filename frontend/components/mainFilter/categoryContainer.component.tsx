@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useCallback } from "react";
 import styles from "styles/CategoryFilter.module.scss";
 import {
@@ -18,9 +17,12 @@ function CategoryContainer({
 }: CategoryProps & CategoryParentProps) {
   const [categoryArr, setCategoryArr] = categoryArrayState();
   const [current, setCurrent] = categoryParentState();
-  const onClickParent = useCallback((idx: number) => {
-    setCurrent(idx);
-  }, []);
+  const onClickParent = useCallback(
+    (idx: number) => {
+      setCurrent(idx);
+    },
+    [setCurrent]
+  );
 
   const onClickChild = (idx: number) => {
     if (categoryArr.includes(idx)) {
@@ -48,7 +50,7 @@ function CategoryContainer({
       </div>
       <div className={styles.child}>
         {category &&
-          category[categoryKey[current]].map((item: Category) => {
+          category[categoryKey[current]]?.map((item: Category) => {
             const { id, name } = item;
             const focused = categoryArr.includes(id);
             return (

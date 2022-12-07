@@ -136,6 +136,8 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const postID = context.query.id;
+  const {accessToken, refreshToken} = context.req.cookies; 
+  console.log(accessToken,refreshToken);
 
   //서버에서 리다이렉트 해주면 알림 메시지 주기 어려울 수 있다.
   //클라이언트에서 리다이렉트 하면 알림 메시지 줄 수 있지만, 불필요한 렌더링이 있을 수 있다.
@@ -147,8 +149,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-
-  const postData = await getPostById(postID);
+  const postData = await getPostById(postID, accessToken, refreshToken);
   if (postData === null) {
     return {
       redirect: {

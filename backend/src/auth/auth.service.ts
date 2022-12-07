@@ -13,11 +13,14 @@ import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { GithubLoginDto } from './dto/github-login.dto';
 import { UserInfo } from '../interfaces/user.interface';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRedis() private readonly redis: Redis,
     private readonly jwtService: JwtService,
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
@@ -60,7 +63,7 @@ export class AuthService {
       const accessToken = this.signAccessToken(userInfo);
       const refreshToken = this.signRefreshToken();
 
-      // TODO: refreshToken을 User 테이블에 저장
+      await this.redis.set(`refresh:${userId}`, refreshToken);
 
       return { accessToken, refreshToken };
     } catch (err) {

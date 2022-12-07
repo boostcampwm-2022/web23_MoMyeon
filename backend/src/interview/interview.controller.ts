@@ -33,12 +33,14 @@ export class InterviewController {
 
   @UseGuards(JwtGuard)
   @Post()
-  create(
+  async create(
     @Body() createInterviewDto: CreateInterviewDto,
     @UserData() userData: UserInfo,
   ) {
     createInterviewDto['user'] = userData.id;
-    return this.interviewService.create(createInterviewDto);
+    const interviewId = await this.interviewService.create(createInterviewDto);
+    await this.interviewService.applyInterview(+interviewId.id, userData);
+    return { id: interviewId.id, message: 'success' };
   }
 
   @Get()

@@ -14,6 +14,8 @@ import { User } from 'src/entities/user.entity';
 import { QuestionType } from 'src/enum/questionType.enum';
 import { CreateUserQuestionDto } from './dto/create-user-question.dto';
 import { UserQuestion } from 'src/entities/userQuestion.entity';
+import { InterviewQuestionData } from 'src/interfaces/question.interface';
+import { InterviewQuestion } from 'src/entities/interviewQuestion.entity';
 
 @Injectable()
 export class QuestionService {
@@ -172,6 +174,88 @@ export class UserQuestionService {
     try {
       const userQueryDeleteData =
         await this.UserQuestionRepository.createQueryBuilder('')
+          .softDelete()
+          .where('id = :id AND userId = :userId', { id: id, userId: userId })
+          .execute();
+      if (!userQueryDeleteData.affected)
+        throw new BadRequestException('삭제할 수 없습니다.');
+      return userQueryDeleteData;
+    } catch (err) {
+      throw err;
+    }
+  }
+}
+
+@Injectable()
+export class InterviewQuestionService {
+  constructor(
+    @InjectRepository(UserQuestion)
+    private UserQuestionRepository: Repository<UserQuestion>,
+    @InjectRepository(UserInterview)
+    private UserInterviewRepository: Repository<UserInterview>,
+    @InjectRepository(InterviewQuestion)
+    private InterviewQuestionRepository: Repository<InterviewQuestion>,
+  ) {}
+
+  getInterviewUser(id: number) {
+    return this.UserInterviewRepository.createQueryBuilder('ui')
+      .select(['ui.userId As userId', 'user.nickname AS userName'])
+      .leftJoinAndSelect(User, 'user', 'ui.userId = user.id')
+      .where('interviewId = :id AND status = :status', {
+        id: id,
+        status: UserInterviewStatus.ACCEPTED,
+      })
+      .getRawMany();
+  }
+
+  async create(createInterviewQuestionData: InterviewQuestionData) {
+    try {
+      const newUserInterviewQuestion = this.InterviewQuestionRepository.create(
+        createInterviewQuestionData,
+      );
+      const saveUserInterviewQuestion =
+        await this.InterviewQuestionRepository.save(newUserInterviewQuestion);
+      return saveUserInterviewQuestion;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async find(interviewId: number, userId: number) {
+    const userInterviewQuestionData = { questions: [] };
+    const interviewUser = await this.getInterviewUser(interviewId);
+    const userInterviewQuestion =
+      await this.InterviewQuestionRepository.createQueryBuilder()
+        .select(['user_to AS userTo', 'userId', 'id', 'content'])
+        .where('interviewId = :interviewId AND userId = :userId', {
+          interviewId: interviewId,
+          userId: userId,
+        })
+        .getRawMany();
+    interviewUser.forEach((userElement) => {
+      const temp = [];
+      userInterviewQuestion.forEach((questionElement) => {
+        if (userElement.userId === questionElement.userTo) {
+          temp.push({
+            id: questionElement.id,
+            content: questionElement.content,
+          });
+        }
+      });
+      userInterviewQuestionData.questions.push({
+        userId: userElement.userId,
+        userName: userElement.userName,
+        question: temp,
+        feedback: '',
+      });
+    });
+    return userInterviewQuestionData;
+  }
+
+  async remove(id: number, userId: number) {
+    try {
+      const userQueryDeleteData =
+        await this.InterviewQuestionRepository.createQueryBuilder('')
           .softDelete()
           .where('id = :id AND userId = :userId', { id: id, userId: userId })
           .execute();

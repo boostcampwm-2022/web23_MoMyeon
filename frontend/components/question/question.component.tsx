@@ -1,28 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "styles/Question.module.scss";
 import question from "public/icon/question.png";
 import Image from "next/image";
 
 interface QuestionProp {
-  id: number;
+  id?: number;
   contents: string;
   focus: boolean;
-  setFocus: Function;
+  onClickText?: () => void;
+  HoverIcon?: () => JSX.Element;
 }
-function Question({ id, contents, focus, setFocus }: QuestionProp) {
-  const onClickText = () => {
-    setFocus(!focus);
+function Question({
+  id,
+  contents,
+  focus,
+  onClickText,
+  HoverIcon,
+}: QuestionProp) {
+  const [hover, setHover] = useState(false);
+  const toggleHover = () => {
+    setHover(!hover);
   };
   return (
-    <div className={styles.container}>
+    <div
+      onMouseEnter={toggleHover}
+      onMouseLeave={toggleHover}
+      className={styles.container}
+    >
       <div className={styles.icon}>
         <Image src={question} width={35} height={35} alt={"question-mark"} />
       </div>
       <div
-        onClick={onClickText}
-        className={`${styles.text} ${focus && styles.textFocus}`}
+        onClick={onClickText && onClickText}
+        className={`${styles.textContainer} ${focus && styles.textFocus}`}
       >
-        {contents}
+        <span className={styles.text}>{contents}</span>
+        {HoverIcon && hover && <HoverIcon />}
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ function Answer({ id, feedback, focus, username }: Answer) {
       const local = localStorage.getItem(localKey);
       if (local) textRef.current.value = local;
     }
-  }, [textRef.current]);
+  }, [textRef.current, localKey]);
   return (
     <div>
       <textarea

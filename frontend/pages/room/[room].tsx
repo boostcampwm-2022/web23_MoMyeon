@@ -7,10 +7,14 @@ import { useRouter } from "next/dist/client/compat/router";
 import InterviewUser from "components/interviewUser/interviewUser.component";
 import dynamic from "next/dynamic";
 
-const QAContainer = dynamic(() => import("components/question/qaContainer"), {
-  ssr: false,
-});
-const Resume = dynamic(() => import("components/resume/resume.compoent"), {
+
+const QAContainer = dynamic(
+  () => import("components/question/qaContainer.component"),
+  {
+    ssr: false,
+  }
+);
+const Resume = dynamic(() => import("components/resume/resume.component"), {
   ssr: false,
 });
 const Loading = () => {

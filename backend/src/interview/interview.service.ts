@@ -185,7 +185,9 @@ export class InterviewService {
     interviewData['category'] = categoryData;
 
     const interviewMember = await this.interviewMember(id);
-    interviewData['member'] = interviewMember.get(UserInterviewStatus.ACCEPTED);
+    interviewData['member'] = +interviewMember.get(
+      UserInterviewStatus.ACCEPTED,
+    );
     interviewData['isHost'] = false;
     interviewData['userStatus'] = 0;
     //0: 신청하기 전 1: 신청 후 승인 대기중 2: 승인 3: 거부

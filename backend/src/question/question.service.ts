@@ -46,7 +46,6 @@ export class QuestionService {
 
   findAll() {
     return this.simpleQuestionRepository.createQueryBuilder().getRawMany();
-    return `This action returns all question`;
   }
 
   /**

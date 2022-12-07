@@ -8,6 +8,18 @@ body {
   font-size: 10px;
 }
 
+textarea {
+  font-family: "LINE Seed Sans KR", -apple-system, BlinkMacSystemFont, Segoe UI,
+  Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+  sans-serif;
+}
+
+input {
+  font-family: "LINE Seed Sans KR", -apple-system, BlinkMacSystemFont, Segoe UI,
+  Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+  sans-serif;
+}
+
 a {
   color: inherit;
   text-decoration: none;

@@ -72,7 +72,6 @@ export class JwtGuard implements CanActivate {
 
         case 'TokenExpiredError':
           try {
-            console.log('access token expired!');
             const { id, profile, nickname, oauth_provider, oauth_uid } =
               this.jwtService.decode(accessToken) as DecodedUserInfo;
             const userInfo: UserInfo = {
@@ -85,13 +84,15 @@ export class JwtGuard implements CanActivate {
             const savedRefreshToken = await this.redis.get(`refresh:${id}`);
 
             if (savedRefreshToken === refreshToken) {
-              console.log('refresh found!! id:', id);
               return { userInfo, refreshed: true };
             }
             throw new UnauthorizedException('유저 정보 불일치');
           } catch (err) {
             console.error(err);
-            throw new UnauthorizedException('유효하지 않은 토큰');
+            if (err.message !== 'Unauthorized') {
+              throw new InternalServerErrorException('서버 내부 오류');
+            }
+            throw err;
           }
 
         default:

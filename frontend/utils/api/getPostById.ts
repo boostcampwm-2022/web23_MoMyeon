@@ -3,11 +3,20 @@ import axios from "axios";
 import { PostData } from "types/posts";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
+import Cookies from "js-cookie";
 
-const getPostById = async (postId: string) => {
-  const res = await axios.get(`${apiKeys.GET_POST}/${postId}`).catch(() => {
-    return null;
-  });
+const getPostById = async (postId: string, accessToken:string|undefined, refreshToken: string|undefined) => {
+  const res = await axios
+    .get(`${apiKeys.GET_POST}/${postId}`, {
+      headers: {
+        Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}`,
+      },
+    })
+    .catch(() => {
+      return null;
+    });
+	
+  console.log(res);
 
   const data = res?.data.interviewData;
   if (!data) {

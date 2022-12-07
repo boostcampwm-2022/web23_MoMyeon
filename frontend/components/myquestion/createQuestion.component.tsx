@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import styles from "styles/MypageQuestion.module.scss";
-import { useMyQuestionCreate } from "utils/hooks/useMyQuestionCreate";
+import { useMyQuestionCreate } from "utils/hooks/useMyQuestion/useMyQuestionCreate";
 function CreateQuestion() {
   const textRef = useRef<HTMLTextAreaElement | null>(null);
   const { mutate, error } = useMyQuestionCreate();
@@ -14,12 +14,14 @@ function CreateQuestion() {
     if (textRef.current) textRef.current.value = "";
   };
   return (
-    <form className={styles.formContainer}>
-      <textarea ref={textRef} className={styles.textBox} autoFocus />
-      <button onClick={onClickSubmit} className={styles.submitButton}>
-        질문추가
-      </button>
-    </form>
+    <div className={styles.createQuestion}>
+      <form className={styles.formContainer}>
+        <textarea ref={textRef} className={styles.textBox} autoFocus />
+        <button onClick={onClickSubmit} className={styles.submitButton}>
+          질문추가
+        </button>
+      </form>
+    </div>
   );
 }
 

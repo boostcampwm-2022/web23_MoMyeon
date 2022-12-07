@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import styles from "styles/MypageResume.module.scss";
 import { resumeState } from "states/resume";
-import { useMyResumeCreate } from "utils/hooks/useMyResumeCreate";
+import { useMyResumeCreate } from "utils/hooks/useMyResume/useMyResumeCreate";
 function ResumeCreate() {
   const [resume, setResume] = resumeState();
   const { item, id } = resume;

@@ -28,6 +28,12 @@ export class InterviewQuestion extends BaseEntity {
   @DeleteDateColumn()
   deleted_at: Date;
 
+  @Column()
+  user_to: number;
+
+  @Column()
+  user_toName: string;
+
   @ManyToOne(() => Interview, (interview) => interview.interviewQuestions)
   interview: Interview;
 

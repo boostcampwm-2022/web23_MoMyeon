@@ -17,9 +17,12 @@ function CategoryContainer({
 }: CategoryProps & CategoryParentProps) {
   const [categoryArr, setCategoryArr] = categoryArrayState();
   const [current, setCurrent] = categoryParentState();
-  const onClickParent = useCallback((idx: number) => {
-    setCurrent(idx);
-  }, []);
+  const onClickParent = useCallback(
+    (idx: number) => {
+      setCurrent(idx);
+    },
+    [setCurrent]
+  );
 
   const onClickChild = (idx: number) => {
     if (categoryArr.includes(idx)) {

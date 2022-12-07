@@ -4,10 +4,13 @@ import dynamic from "next/dynamic";
 import styles from "styles/Resume.module.scss";
 import InterviewUser from "components/interviewUser/interviewUser.component";
 
-const QAContainer = dynamic(() => import("components/question/qaContainer"), {
-  ssr: false,
-});
-const Resume = dynamic(() => import("components/resume/resume.compoent"), {
+const QAContainer = dynamic(
+  () => import("components/question/qaContainer.component"),
+  {
+    ssr: false,
+  }
+);
+const Resume = dynamic(() => import("components/resume/resume.component"), {
   ssr: false,
 });
 const Loading = () => {

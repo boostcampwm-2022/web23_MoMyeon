@@ -5,11 +5,13 @@ import { ResumeItem, ResumeT } from "types/resume";
 import { interviewUserValue } from "states/user";
 
 function Resume({ id }: { id: string }) {
-  const { data } = useMemberQuery({ id });
+  const { data, isLoading, error } = useMemberQuery({ id });
   const cur = interviewUserValue();
-
-  if (data === undefined) {
+  if (isLoading) {
     return <div>loading</div>;
+  }
+  if (error) {
+    return <div>에러</div>;
   }
   if (data.length === 0 || !data || cur === -1) {
     return <div>이력서가 없습니다</div>;

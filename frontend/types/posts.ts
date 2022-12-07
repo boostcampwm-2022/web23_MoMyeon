@@ -9,6 +9,7 @@ export interface Post {
   recruitStatue: number;
   date: string;
   category: CategoryGet[];
+  host: string;
 }
 
 export interface Category {

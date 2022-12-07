@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { Category } from "types/posts";
 
 function PostCard({ post }: PostProp) {
-  const { interview_id, title, category, maxMember } = post;
+  const { interview_id, title, category, maxMember, host } = post;
   const router = useRouter();
 
   const handlePostCardClick = async () => {
@@ -30,8 +30,9 @@ function PostCard({ post }: PostProp) {
       <div className={styles.footer}>
         <div className={styles.user}>
           <Image src={userImage} alt="user" width={30} height={30} />
+          <p> {host} </p>
         </div>
-        <p>모집인원 {maxMember}</p>
+        <p>최대 {maxMember}명</p>
       </div>
     </div>
   );

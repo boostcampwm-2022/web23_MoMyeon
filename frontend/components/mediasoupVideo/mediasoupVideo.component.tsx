@@ -2,8 +2,17 @@ import styles from "styles/room.module.scss";
 import { useState, useRef, useEffect } from "react";
 import { Device } from "mediasoup-client";
 import io from "socket.io-client";
+import { MuteButton } from "components/button/muteButton.component";
+import { ConfigType } from "@stitches/react/types/config";
+import Media = ConfigType.Media;
 
-const MediasoupVideo = ({ roomName }: { roomName: string }) => {
+const MediasoupVideo = ({
+  roomName,
+  isLeft,
+}: {
+  roomName: string;
+  isLeft: boolean;
+}) => {
   const socketRef = useRef<any>(null);
   const paramsRef = useRef<any>(null);
   const localMediaRef = useRef<any>(null);
@@ -15,12 +24,15 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
   const consumerTransportRef = useRef<any>([]);
 
   const producerRef = useRef<any>(null);
-  const consumerRef = useRef<any>(null);
 
   const remoteAudioRef = useRef<any>([]);
   const audioProducerRef = useRef<any>(null);
   const audioParamsRef = useRef<any>(null);
   const consumingTransportsRef = useRef<any>([]);
+
+  const producerIdRef = useRef<any>(null);
+  const producerIdToAudioIdxRef = useRef<any>({});
+  const producerIdToVideoIdxRef = useRef<any>({});
 
   useEffect(() => {
     let to = "http://localhost:8443";
@@ -35,6 +47,7 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
     });
 
     socketRef.current.on("new-producer", ({ producerId }: any) => {
+      producerIdRef.current = producerId;
       signalNewConsumerTransport(producerId);
     });
 
@@ -44,11 +57,31 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
       );
       producerToClose.consumerTransport.close();
       producerToClose.consumer.close();
-      consumerTransportRef.current = consumerRef.current.filter(
-        (transporData: any) => transporData.producerId !== remoteProducerId
+
+      consumerTransportRef.current = consumerTransportRef.current.filter(
+        (transportData: any) => transportData.producerId !== remoteProducerId
       );
 
-      delete remoteVideoRef.current.remoteProducerId;
+      //remoteVideoRef 원래대로 되돌리기
+      console.log(`리모트, ${remoteProducerId}`);
+      console.log(producerIdToAudioIdxRef.current);
+      console.log(producerIdToVideoIdxRef.current);
+
+      const audioIdx = producerIdToAudioIdxRef.current[`${remoteProducerId}`];
+      if (audioIdx !== undefined) {
+        remoteAudioRef.current[audioIdx].srcObject = null;
+        delete producerIdToAudioIdxRef.current[`${remoteProducerId}`];
+      }
+
+      const videoIdx = producerIdToVideoIdxRef.current[`${remoteProducerId}`];
+      if (videoIdx !== undefined) {
+        remoteVideoRef.current[videoIdx].srcObject = null;
+        delete producerIdToVideoIdxRef.current[`${remoteProducerId}`];
+      }
+
+      console.log(producerIdToAudioIdxRef.current);
+      console.log(producerIdToVideoIdxRef.current);
+      console.log(audioIdx, videoIdx);
     });
   }, []);
 
@@ -100,7 +133,7 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
       audioParamsRef.current = {
         track: stream.getAudioTracks()[0],
         ...audioParamsRef.current,
-      }
+      };
 
       paramsRef.current = {
         track: stream.getVideoTracks()[0],
@@ -229,17 +262,17 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
     producerRef.current = await producerTransportRef.current.produce(
       paramsRef.current
     );
-    audioProducerRef.current.on('trackended', () => {
+    audioProducerRef.current.on("trackended", () => {
       console.log("audio track ended");
-    })
+    });
 
     producerRef.current.on("trackended", () => {
       console.log("tranck ended");
     });
 
-    audioProducerRef.current.on('transportclose', () => {
+    audioProducerRef.current.on("transportclose", () => {
       console.log("audio transport ended");
-    })
+    });
 
     producerRef.current.on("transportclose", () => {
       console.log("transport ended");
@@ -247,8 +280,8 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
   };
 
   const signalNewConsumerTransport = async (remoteProducerId: any) => {
-    if (consumingTransportsRef.current.includes(remoteProducerId)){
-      return ;
+    if (consumingTransportsRef.current.includes(remoteProducerId)) {
+      return;
     }
     consumingTransportsRef.current.push(remoteProducerId);
 
@@ -335,11 +368,51 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
           },
         ];
 
-        //setRemoteVideoList((prev: any[]) => [...prev, remoteProducerId]);
-        //console.log(remoteProducerId);
         const { track } = consumer;
 
-        if(params.kind === 'audio'){
+        if (params.kind === "audio") {
+          const emptyAudioRefIndexes = remoteAudioRef.current
+            .map((elem: any, index: number) => {
+              if (elem.srcObject === null) {
+                return index;
+              }
+            })
+            .filter((idx: number) => idx !== undefined);
+
+          if (emptyAudioRefIndexes.length === 0) {
+            console.log("오디오 빈 공간이 없습니다.\n");
+          } else {
+            remoteAudioRef.current[emptyAudioRefIndexes[0]].srcObject =
+              new MediaStream([track]);
+            producerIdToAudioIdxRef.current[`${remoteProducerId}`] =
+              emptyAudioRefIndexes[0];
+
+            console.log("오디오", producerIdToAudioIdxRef.current);
+          }
+        }
+
+        if (params.kind === "video") {
+          const emptyVideoRefIndexes = remoteVideoRef.current
+            .map((elem: any, index: number) => {
+              if (elem.srcObject === null) {
+                return index;
+              }
+            })
+            .filter((idx: number) => idx !== undefined);
+
+          if (emptyVideoRefIndexes.length === 0) {
+            console.log("비디오 빈 공간이 없습니디.\n");
+          } else {
+            remoteVideoRef.current[emptyVideoRefIndexes[0]].srcObject =
+              new MediaStream([track]);
+            producerIdToVideoIdxRef.current[`${remoteProducerId}`] =
+              emptyVideoRefIndexes[0];
+            console.log("비디오", producerIdToAudioIdxRef.current);
+          }
+        }
+
+        /*
+        if (params.kind === "audio") {
           remoteAudioRef.current.filter(
             (elem: any) => elem.srcObject === null
           )[0].srcObject = new MediaStream([track]);
@@ -347,7 +420,7 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
           remoteVideoRef.current.filter(
             (elem: any) => elem.srcObject === null
           )[0].srcObject = new MediaStream([track]);
-        }
+        }*/
 
         socketRef.current.emit("consumer-resume", {
           serverConsumerId: params.serverConsumerId,
@@ -356,38 +429,69 @@ const MediasoupVideo = ({ roomName }: { roomName: string }) => {
     );
   };
 
-  const handleClickRemoteAudioMuteBtn = (remote : number) => {
-    remoteAudioRef.current[remote].muted = !remoteAudioRef.current[remote].muted;
-  }
+  const handleClickRemoteAudioMuteBtn = (remote: number) => {
+    remoteAudioRef.current[remote].muted =
+      !remoteAudioRef.current[remote].muted;
+  };
 
   const handleClickLocalAudioMuteBtn = () => {
-    const audioTrack = localMediaRef.current.srcObject.getTracks().find((track: MediaStreamTrack)=> track.kind === 'audio') ;
-    audioTrack.enabled = !audioTrack.enabled ;
-  }
+    const audioTrack = localMediaRef.current.srcObject
+      .getTracks()
+      .find((track: MediaStreamTrack) => track.kind === "audio");
+    audioTrack.enabled = !audioTrack.enabled;
+  };
 
   const handleClickLocalVideoMuteBtn = () => {
-    const videoTrack = localMediaRef.current.srcObject.getTracks().find((track: MediaStreamTrack)=> track.kind === 'video') ;
-    videoTrack.enabled = !videoTrack.enabled ;
-  }
+    const videoTrack = localMediaRef.current.srcObject
+      .getTracks()
+      .find((track: MediaStreamTrack) => track.kind === "video");
+    videoTrack.enabled = !videoTrack.enabled;
+  };
+
+  //나가기 버튼을 누른 경우
+  useEffect(() => {
+    if (isLeft) {
+      localMediaRef.current.srcObject
+        .getTracks()
+        .map((track: MediaStreamTrack) => track.stop());
+      socketRef.current.close();
+    }
+  }, [isLeft]);
 
   return (
     <div className={styles.videoContainer}>
       <div>
         <video ref={localMediaRef} muted autoPlay className={styles.videos} />
-        <button onClick={handleClickLocalVideoMuteBtn}> 화면 </button>
-        <span><button onClick={handleClickLocalAudioMuteBtn}> 음소거 </button></span>
+        <div className={styles.muteButtonContainer}>
+          <MuteButton
+            onClickBtn={handleClickLocalVideoMuteBtn}
+            name={"화면 끄기"}
+          />
+          <MuteButton
+            onClickBtn={handleClickLocalAudioMuteBtn}
+            name={"음소거"}
+          />
+        </div>
       </div>
       {[0, 1, 2, 3, 4].map((remote) => {
         return (
           <div key={remote}>
-            <audio ref={(elem) => (remoteAudioRef.current[remote] = elem)} autoPlay key={remote}/>
+            <audio
+              ref={(elem) => (remoteAudioRef.current[remote] = elem)}
+              autoPlay
+              key={remote}
+            />
             <video
               ref={(elem) => (remoteVideoRef.current[remote] = elem)}
               autoPlay
               className={styles.videos}
               key={remote}
             />
-            <button key={remote} onClick={() => handleClickRemoteAudioMuteBtn(remote)}> 음소거 </button>
+            <MuteButton
+              key={remote}
+              onClickBtn={() => handleClickRemoteAudioMuteBtn(remote)}
+              name={"음소거"}
+            />
           </div>
         );
       })}

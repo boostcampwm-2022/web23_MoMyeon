@@ -81,7 +81,7 @@ const MediasoupVideo = ({
 
       console.log(producerIdToAudioIdxRef.current);
       console.log(producerIdToVideoIdxRef.current);
-      console.log(audioIdx, videoIdx);
+      -console.log(audioIdx, videoIdx);
     });
   }, []);
 
@@ -136,9 +136,12 @@ const MediasoupVideo = ({
       };
 
       paramsRef.current = {
+        interviewRole: "interviewer",
         track: stream.getVideoTracks()[0],
         ...paramsRef.current,
       };
+
+      console.log("Params ref: ", paramsRef);
 
       joinRoom();
     } catch (e) {
@@ -347,8 +350,6 @@ const MediasoupVideo = ({
           console.log("Cannot consume");
           return;
         }
-
-        console.log("paramprapm", params);
 
         const consumer = await consumerTransport.consume({
           id: params.id,

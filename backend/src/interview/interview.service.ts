@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -16,6 +17,7 @@ import { User } from 'src/entities/user.entity';
 import { Resume } from 'src/entities/resume.entity';
 import { Item } from 'src/entities/item.entity';
 import { UserInterviewStatus } from 'src/enum/userInterviewStatus.enum';
+import { UserInfo } from 'src/interfaces/user.interface';
 
 @Injectable()
 export class InterviewService {
@@ -355,5 +357,35 @@ export class InterviewService {
       map.set(element.status, element.count);
     });
     return map;
+  }
+
+  async applyInterview(interviewId: number, userData: UserInfo) {
+    try {
+      const { id: userId } = userData;
+      const [interview] = await this.interviewRepository.findBy({
+        id: interviewId,
+      });
+      const { current_member, max_member } = interview;
+
+      if (current_member >= max_member) {
+        throw new ForbiddenException('면접 인원 정원 초과');
+      }
+
+      const userInterview = this.userInterviewRepository.create({
+        userId,
+        interviewId,
+        status: UserInterviewStatus.ACCEPTED,
+      });
+
+      await this.userInterviewRepository.save(userInterview);
+      await this.interviewRepository.update(interviewId, {
+        current_member: current_member + 1,
+      });
+
+      return true;
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException('DB 작업 실패');
+    }
   }
 }

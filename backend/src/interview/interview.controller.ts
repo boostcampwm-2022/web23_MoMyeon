@@ -87,4 +87,14 @@ export class InterviewController {
   remove(@Param('id') id: string, @UserData() userData: UserInfo) {
     return this.interviewService.remove(+id, userData.id);
   }
+
+  @Post('apply/:interviewId')
+  @UseGuards(JwtGuard)
+  async applyInterview(
+    @Param('interviewId') interviewId: string,
+    @UserData() userData: UserInfo,
+  ) {
+    await this.interviewService.applyInterview(+interviewId, userData);
+    return { message: 'success' };
+  }
 }

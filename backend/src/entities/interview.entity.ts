@@ -21,12 +21,15 @@ export class Interview extends BaseEntity {
   id: number;
 
   @Column()
+  userId: number;
+
+  @Column()
   title: string;
 
   @Column()
   max_member: number;
 
-  @Column({ default: 0 })
+  @Column({ default: 1 })
   current_member: number;
 
   @Column()

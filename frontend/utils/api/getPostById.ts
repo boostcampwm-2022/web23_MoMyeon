@@ -24,7 +24,7 @@ const getPostById = async (postId: string) => {
     host: data.host ?? "blindcat",
     isHost: data.isHost ?? false,
     maxMember: data.maxMember ?? 6,
-    member: data.maxMember ?? 1,
+    member: data.member ?? 1,
     postId: data.interview_id ?? Number(postId),
     recruitStatus: data.recruitStatus ?? 0,
     userStatus: data.userStatus ?? 0,

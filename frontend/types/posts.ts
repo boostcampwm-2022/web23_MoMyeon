@@ -26,12 +26,12 @@ export interface Posts {
 export interface PostData {
   postId: number;
   title: string;
-  maxMember: number;
+  maxMember: number; //최대 멤버 수
   category: Category[];
   contact: string;
   content: string[];
   count: number;
-  member: number;
+  member: number; //멤버 수
   date: string;
   recruitStatus: number;
   isHost: boolean;

@@ -60,7 +60,6 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
           <div className={styles.titleInfoContainer}>
             <div className={styles.titleInfoCenter}>
               <span> {postData?.host}</span>
-
               <span className={styles.date}> {postData?.date} </span>
             </div>
             <InterviewJoinButtonComponent

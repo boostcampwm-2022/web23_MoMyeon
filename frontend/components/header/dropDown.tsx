@@ -22,6 +22,8 @@ function DropDown({ children }: ChildComponent) {
       onMyQuestionAction();
     } else if (key === "이력서") {
       onClickResume();
+    } else if (key === "면접관리") {
+      onClickMange();
     }
   };
 
@@ -36,6 +38,10 @@ function DropDown({ children }: ChildComponent) {
 
   const onClickResume = () => {
     router.push("/mypage/resume");
+  };
+
+  const onClickMange = () => {
+    router.push("/mypage/manage");
   };
 
   return (

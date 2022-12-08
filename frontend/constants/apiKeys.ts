@@ -25,6 +25,7 @@ export const apiKeys = {
   MY_RESUME: `https://${HOST}/v1/user/resume`,
   MANAGE_QUESTION: `https://${HOST}/v1/interview/question`,
   CREATE_FEEDBACK: `https://${HOST}/v1/feedback`,
+  MANAGE_POST: `https://${HOST}/v1/user/interview`,
 };
 
 export default apiKeys;

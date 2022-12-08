@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import Question from "components/question/question.component";
-import { QuestionItem } from "utils/api/manageQuestion/getManageQuestion";
+import { QuestionItem } from "utils/api/ManageQuestion/getManageQuestion";
 import deleteQuestion from "public/icon/deleteQuestion.png";
 import { useManageQuestionDelete } from "utils/hooks/useManageQuestion/useManageQuestionDelete";
 

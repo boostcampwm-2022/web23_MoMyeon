@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import getManageQuestion from "utils/api/manageQuestion/getManageQuestion";
+import getManageQuestion from "utils/api/ManageQuestion/getManageQuestion";
 const useManageQuestionQuery = ({ id }: { id: string }) => {
   const { data, isLoading, error, isFetching } = useQuery(
     ["manageQuestion", id],

@@ -24,15 +24,17 @@ import { InterviewQuestion } from 'src/entities/interviewQuestion.entity';
 @Module({
   imports: [
     AuthModule,
-    TypeOrmModule.forFeature([SimpleQuestion]),
-    TypeOrmModule.forFeature([Feedback]),
-    TypeOrmModule.forFeature([Interview]),
-    TypeOrmModule.forFeature([UserInterview]),
-    TypeOrmModule.forFeature([InterviewCategory]),
-    TypeOrmModule.forFeature([Category]),
-    TypeOrmModule.forFeature([User]),
-    TypeOrmModule.forFeature([UserQuestion]),
-    TypeOrmModule.forFeature([InterviewQuestion]),
+    TypeOrmModule.forFeature([
+      SimpleQuestion,
+      Feedback,
+      Interview,
+      UserInterview,
+      InterviewCategory,
+      Category,
+      User,
+      UserQuestion,
+      InterviewQuestion,
+    ]),
   ],
   controllers: [
     QuestionController,

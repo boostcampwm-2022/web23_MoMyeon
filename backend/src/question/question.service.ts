@@ -16,6 +16,22 @@ import { CreateUserQuestionDto } from './dto/create-user-question.dto';
 import { UserQuestion } from 'src/entities/userQuestion.entity';
 import { InterviewQuestionData } from 'src/interfaces/question.interface';
 import { InterviewQuestion } from 'src/entities/interviewQuestion.entity';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
+import { UserInfo } from 'src/interfaces/user.interface';
+
+interface QuestionFeedback {
+  type: QuestionType;
+  id: number;
+  content: string;
+  feedback: string;
+}
+
+interface QuestionResult {
+  userId: number;
+  userName: string;
+  question: QuestionFeedback[];
+}
 
 @Injectable()
 export class QuestionService {
@@ -38,6 +54,7 @@ export class QuestionService {
     private InterviewQuestionRepository: Repository<InterviewQuestion>,
     @InjectRepository(UserInterview)
     private UserInterviewRepository: Repository<UserInterview>,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   create(createQuestionDto: CreateQuestionDto) {
@@ -123,7 +140,14 @@ export class QuestionService {
     return questions;
   }
 
-  async findRoomQuestion(interviewId: number, userId: number) {
+  async findRoomQuestion(interviewId: number, userData: UserInfo) {
+    // 0. 종합 질문 생성 전에 redis 확인하기 (재접속 처리)
+    const result = await this.redis.hgetall(`question:${interviewId}`);
+    if (Object.keys(result).length) {
+      const questions = this.extractQuestions(result);
+      return questions;
+    }
+
     // 1. 면접 분야 심플해당 파트에서 랜덤으로 가져오기
     const categoryData = await this.interviewCategoryRepository
       .createQueryBuilder('ic')
@@ -161,7 +185,7 @@ export class QuestionService {
         .select(['user_to AS userTo', 'userId', 'id', 'content'])
         .where('interviewId = :interviewId AND userId = :userId', {
           interviewId: interviewId,
-          userId: userId,
+          userId: userData.id,
         })
         .getRawMany();
     interviewUser.forEach((userElement) => {
@@ -192,7 +216,69 @@ export class QuestionService {
         question: temp,
       });
     });
+
+    // N명의 유저가 각각 M개의 질문을 가지는 것을 모두 redis에 저장
+    const promises: Promise<number>[][] =
+      userInterviewQuestionData.questions.map((user) => {
+        const { userId, userName } = user;
+
+        return user.question.map((question) => {
+          const { type, id, content } = question;
+
+          return this.redis.hset(
+            `question:${interviewId}`,
+            `${userData.id}:${userId}:${type}:${id}`,
+            JSON.stringify({
+              fromName: userData.nickname,
+              toName: userName,
+              feedback: '',
+              questionContent: content,
+            }),
+          );
+        });
+      });
+    await Promise.all(promises.map(Promise.all.bind(Promise)));
+
     return userInterviewQuestionData.questions;
+  }
+
+  extractQuestions(result: any) {
+    const entries = Object.entries(result);
+    const questions: QuestionResult[] = entries.reduce(
+      (acc: any, [key, value]: any) => {
+        const [toId, type, questionId] = key
+          .split(':')
+          .map((n) => +n)
+          .slice(1);
+        const { toName, feedback, questionContent } = JSON.parse(value);
+
+        const found: QuestionResult = acc.find(
+          (userTo) => userTo.userId === toId,
+        );
+        const questionFeedback: QuestionFeedback = {
+          type,
+          id: questionId,
+          content: questionContent,
+          feedback,
+        };
+        const questionResult: QuestionResult = {
+          userId: toId,
+          userName: toName,
+          question: [questionFeedback],
+        };
+
+        if (!found) {
+          acc.push(questionResult);
+          return acc;
+        }
+
+        found.question.push(questionFeedback);
+        return acc;
+      },
+      [],
+    );
+
+    return questions;
   }
 
   update(id: number, updateQuestionDto: UpdateQuestionDto) {

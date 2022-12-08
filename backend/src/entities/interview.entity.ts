@@ -26,7 +26,7 @@ export class Interview extends BaseEntity {
   @Column()
   max_member: number;
 
-  @Column({ default: 1 })
+  @Column({ default: 0 })
   current_member: number;
 
   @Column()

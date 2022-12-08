@@ -9,6 +9,9 @@ import { useRouter } from "next/router";
 import { InterviewJoinButtonComponent } from "components/button/interviewJoinButton.component";
 import { PostData } from "types/posts";
 import getPostById from "utils/api/getPostById";
+import { PostDeleteButton } from "../../components/button/postDeleteButton.component";
+import { usePostPageStatusCheck } from "../../utils/hooks/usePostPageStatusCheck";
+
 const PostPage = ({ postData }: { postData: PostData | null }) => {
   const router = useRouter();
 
@@ -18,12 +21,10 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
     }
   }, []);
 
+  const [curMember, setCurMember] = useState(postData?.member);
+  const [isHost, userStatus] = usePostPageStatusCheck(postData?.postId);
+
   const buttonAttributes = [
-    {
-      name: "참여자 관리",
-      isVisible: true /* isHost */,
-      /* postData?.isHost ?? false */
-    },
     {
       name: "질문 관리",
       isVisible: true,
@@ -60,11 +61,13 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
           <div className={styles.titleInfoContainer}>
             <div className={styles.titleInfoCenter}>
               <span> {postData?.host}</span>
-
               <span className={styles.date}> {postData?.date} </span>
             </div>
             <InterviewJoinButtonComponent
-              initialUserState={postData?.userStatus ?? 0}
+              curMember={curMember}
+              setCurMember={setCurMember}
+              isHost={isHost}
+              userStatus={userStatus}
               postId={postData?.postId}
             />
           </div>
@@ -87,7 +90,7 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
             <li className={styles.postInfoLi}>
               <span> 신청 현황 </span>
               <div className={styles.textWrapper}>
-                <h6 className={styles.mainText}> {postData?.member} </h6>
+                <h6 className={styles.mainText}> {curMember} </h6>
                 <h6 className={styles.subText}> / </h6>
                 <h6 className={styles.subText}> {postData?.maxMember} </h6>
               </div>
@@ -129,6 +132,7 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
             );
           })}
         </section>
+        {isHost && <PostDeleteButton id={postData?.postId} />}
       </div>
     </div>
   );
@@ -149,6 +153,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const postData = await getPostById(postID);
+
   if (postData === null) {
     return {
       redirect: {

@@ -21,6 +21,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
+import { UserInterviewStatus } from 'src/enum/userInterviewStatus.enum';
 
 @Controller({ version: '1', path: 'interview' })
 export class InterviewController {
@@ -33,12 +34,14 @@ export class InterviewController {
 
   @UseGuards(JwtGuard)
   @Post()
-  create(
+  async create(
     @Body() createInterviewDto: CreateInterviewDto,
     @UserData() userData: UserInfo,
   ) {
     createInterviewDto['user'] = userData.id;
-    return this.interviewService.create(createInterviewDto);
+    const interviewId = await this.interviewService.create(createInterviewDto);
+    await this.interviewService.applyInterview(+interviewId.id, userData);
+    return { id: interviewId.id, message: 'success' };
   }
 
   @Get()
@@ -96,5 +99,18 @@ export class InterviewController {
   ) {
     await this.interviewService.applyInterview(+interviewId, userData);
     return { message: 'success' };
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('status/:id')
+  userInterviewStatus(
+    @Param('id') interviewId: string,
+    @UserData() userData: UserInfo,
+  ) {
+    return this.interviewService.userInterviewStatus(
+      +interviewId,
+      userData.id,
+      userData.nickname,
+    );
   }
 }

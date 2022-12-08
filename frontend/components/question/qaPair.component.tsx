@@ -8,6 +8,7 @@ function QAPair({ data, username, userId }: QuestionProp & User) {
   const onClickText = () => {
     setFocus(!focus);
   };
+
   return (
     <div>
       <Question

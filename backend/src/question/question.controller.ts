@@ -67,7 +67,7 @@ export class UserQuestionController {
     @UserData() userData: UserInfo,
   ) {
     createUserQuestionDto['user'] = userData.id;
-    createUserQuestionDto['userId'] = userData.id;
+    // createUserQuestionDto['userId'] = userData.id;
     return this.userQuestionService.create(createUserQuestionDto);
   }
 

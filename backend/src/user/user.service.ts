@@ -4,9 +4,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Interview } from 'src/entities/interview.entity';
 import { Item } from 'src/entities/item.entity';
 import { Resume } from 'src/entities/resume.entity';
 import { User } from 'src/entities/user.entity';
+import { UserInterview } from 'src/entities/userInterview.entity';
 import { Repository } from 'typeorm';
 import { CreateResumeDto } from './dto/create-resume.dto';
 
@@ -16,6 +18,10 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Resume) private resumeRepository: Repository<Resume>,
     @InjectRepository(Item) private itemRepository: Repository<Item>,
+    @InjectRepository(Interview)
+    private interviewRepository: Repository<Interview>,
+    @InjectRepository(UserInterview)
+    private userInterviewRepository: Repository<UserInterview>,
   ) {}
 
   async getUserInfo() {
@@ -85,5 +91,37 @@ export class UserService {
       .createQueryBuilder()
       .select(['id AS itemId', 'title AS item'])
       .getRawMany();
+  }
+
+  async getInterview(id) {
+    const interviewData = await this.userInterviewRepository
+      .createQueryBuilder('ui')
+      .leftJoinAndSelect(
+        Interview,
+        'interview',
+        'ui.interviewId = interview.id',
+      )
+      .select()
+      .where('ui.status = 2 AND ui.userId = :userId', { userId: id })
+      .orderBy('ui.created_at', 'DESC')
+      .getRawMany();
+    const userInterviewData = {
+      host: [],
+      guest: [],
+    };
+    interviewData.forEach((element) => {
+      const interviewInfo = {
+        interview_id: element.interview_id,
+        title: element.interview_title,
+        category: element.interview_categoryList,
+        applicationDate: element.ui_created_at,
+      };
+      if (element.interview_userId === id) {
+        userInterviewData.host.push(interviewInfo);
+      } else {
+        userInterviewData.guest.push(interviewInfo);
+      }
+    });
+    return userInterviewData;
   }
 }

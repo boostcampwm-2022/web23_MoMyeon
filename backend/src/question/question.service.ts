@@ -16,6 +16,9 @@ import { CreateUserQuestionDto } from './dto/create-user-question.dto';
 import { UserQuestion } from 'src/entities/userQuestion.entity';
 import { InterviewQuestionData } from 'src/interfaces/question.interface';
 import { InterviewQuestion } from 'src/entities/interviewQuestion.entity';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
+import { UserInfo } from 'src/interfaces/user.interface';
 
 @Injectable()
 export class QuestionService {
@@ -38,6 +41,7 @@ export class QuestionService {
     private InterviewQuestionRepository: Repository<InterviewQuestion>,
     @InjectRepository(UserInterview)
     private UserInterviewRepository: Repository<UserInterview>,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   create(createQuestionDto: CreateQuestionDto) {
@@ -123,7 +127,7 @@ export class QuestionService {
     return questions;
   }
 
-  async findRoomQuestion(interviewId: number, userId: number) {
+  async findRoomQuestion(interviewId: number, userData: UserInfo) {
     // 1. 면접 분야 심플해당 파트에서 랜덤으로 가져오기
     const categoryData = await this.interviewCategoryRepository
       .createQueryBuilder('ic')
@@ -160,7 +164,7 @@ export class QuestionService {
         .select(['user_to AS userTo', 'userId', 'id', 'content'])
         .where('interviewId = :interviewId AND userId = :userId', {
           interviewId: interviewId,
-          userId: userId,
+          userId: userData.id,
         })
         .getRawMany();
     interviewUser.forEach((userElement) => {
@@ -191,6 +195,29 @@ export class QuestionService {
         question: temp,
       });
     });
+
+    // N명의 유저가 각각 M개의 질문을 가지는 것을 모두 redis에 저장
+    const promises: Promise<number>[][] =
+      userInterviewQuestionData.questions.map((user) => {
+        const { userId, userName } = user;
+
+        return user.question.map((question) => {
+          const { type, id, content } = question;
+
+          return this.redis.hset(
+            `question:${interviewId}`,
+            `${userData.id}:${userId}:${type}:${id}`,
+            JSON.stringify({
+              fromName: userData.nickname,
+              toName: userName,
+              feedback: '',
+              questionContent: content,
+            }),
+          );
+        });
+      });
+    await Promise.all(promises.map(Promise.all.bind(Promise)));
+
     return userInterviewQuestionData.questions;
   }
 

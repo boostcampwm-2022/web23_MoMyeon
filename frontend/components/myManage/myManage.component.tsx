@@ -3,7 +3,7 @@ import Participant from "./participant.component";
 import Host from "./host.component";
 import styles from "styles/MyManage.module.scss";
 import { useManagePost } from "utils/hooks/useManagePost";
-import { Res } from "utils/api/getManagePost";
+
 function MyManage() {
   const { data, isLoading } = useManagePost();
   if (isLoading || !data) {

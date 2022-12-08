@@ -10,7 +10,7 @@ interface Req {
 }
 
 interface RoomId {
-  roomId: string | string[] | undefined;
+  roomId: string;
 }
 
 async function patchFeedback({

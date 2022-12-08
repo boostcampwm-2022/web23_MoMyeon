@@ -13,11 +13,10 @@ interface Answer {
 }
 function Answer({ id, type, feedback, focus, username, userId }: Answer) {
   const router = useRouter();
-  const { room } = router.query;
+  const room = router.query.room as string;
 
   const textRef = useRef<null | HTMLTextAreaElement>(null);
   const localKey = `${userId}:${username}:${type}:${id}`;
-
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (textRef.current) {
       textRef.current.value = e.target.value;

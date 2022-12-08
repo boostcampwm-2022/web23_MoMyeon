@@ -130,6 +130,7 @@
   min-height: 2rem;
   min-width: 10rem;
   font-size: 18px;
+  cursor: pointer;
 }
 
 .postPageButton {
@@ -140,6 +141,15 @@
   padding: 1.5rem;
   min-height: 2rem;
   min-width: 10rem;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.deleteButton {
+  background-color: crimson ;
+  color: color.$SUBCOLOR;
+  cursor: pointer;
+  padding: 1.5rem;
   font-size: 15px;
 }
 

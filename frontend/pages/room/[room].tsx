@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 import postFeedback from "utils/api/feedbackCreate/postFeedback";
 import { usePostPageStatusCheck } from "utils/hooks/usePostPageStatusCheck";
 
+
 const QAContainer = dynamic(
   () => import("components/question/qaContainer.component"),
   {
@@ -60,15 +61,15 @@ export default function Room({ roomName }: any) {
           <MediasoupVideo roomName={roomName} isLeft={isLeft} />
         </div>
         <div className={styles.utilContainer}>
-          <InterviewUser id={"1"} />
+          <InterviewUser id={roomName} />
           <div className={styles.resumeWrapper}>
             <Suspense fallback={<Loading />}>
-              <Resume id={"1"} />
+              <Resume id={roomName} />
             </Suspense>
           </div>
           <div className={styles.questionWrapper}>
             <Suspense fallback={<Loading />}>
-              <QAContainer id={"1"} />
+              <QAContainer id={roomName} />
             </Suspense>
           </div>
           <div className={styles.routerButtonContainer}>

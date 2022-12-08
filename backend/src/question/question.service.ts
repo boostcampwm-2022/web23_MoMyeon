@@ -141,6 +141,7 @@ export class QuestionService {
       .createQueryBuilder()
       .select(['id', 'content'])
       .where(where.sql)
+      .orderBy('RAND()')
       .getRawMany();
 
     // 3. id -> user_interview(참여 유저) -> interview_question(참여유저 별 세팅질문)

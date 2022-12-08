@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ForbiddenException,
+  HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -402,7 +403,10 @@ export class InterviewService {
       return true;
     } catch (err) {
       console.error(err);
-      throw new InternalServerErrorException('DB 작업 실패');
+      if (err.status !== HttpStatus.FORBIDDEN) {
+        throw new InternalServerErrorException('DB 작업 실패');
+      }
+      throw err;
     }
   }
 }

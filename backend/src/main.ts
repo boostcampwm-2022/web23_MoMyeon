@@ -13,6 +13,7 @@ async function bootstrap() {
       'https://localhost:3000',
       'http://localhost:3000',
       'https://www.momyeon.site',
+      'https://dev.momyeon.site',
     ],
     credentials: true,
   });

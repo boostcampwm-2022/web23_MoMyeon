@@ -2,12 +2,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 5rem;
 }
 
 .postContainer {
   display: flex;
   flex-direction: column;
+  max-height: 50rem;
+  margin-bottom: 10rem;
+}
+
+.scroll {
   overflow-y: scroll;
-  height: 40rem;
-  margin-bottom: 3rem;
 }

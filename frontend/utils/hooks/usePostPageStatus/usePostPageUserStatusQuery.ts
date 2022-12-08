@@ -8,7 +8,8 @@ const usePostPageUserStatusQuery = (id: string | undefined) => {
 
   const { data, isLoading, error, isError, isFetching, isSuccess } = useQuery(
     [`postPageStatus${id}`],
-    () => getPostPageUserStatus(id)
+    () => getPostPageUserStatus(id),
+    { retry: false }
   );
 
   return { data, isLoading, error, isError, isFetching, isSuccess };

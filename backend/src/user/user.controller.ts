@@ -43,6 +43,7 @@ export class UserResumeController {
     @UserData() userData: UserInfo,
   ) {
     createResumeDto['user'] = userData.id;
+    createResumeDto['userId'] = userData.id;
     if (!createResumeDto.content)
       throw new BadRequestException('content를 입력해 주세요');
     let itemChecked = false;

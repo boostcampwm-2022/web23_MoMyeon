@@ -8,6 +8,7 @@ import {
   DeleteDateColumn,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Feedback } from './feedback.entity';
 import { InterviewCategory } from './interviewCategory.entity';
@@ -54,7 +55,11 @@ export class Interview extends BaseEntity {
   deleted_at: Date;
 
   @ManyToOne(() => User, (user) => user.interviews)
+  @JoinColumn({ name: 'userId' })
   user: User;
+
+  @Column({ nullable: false })
+  userId: number;
 
   @OneToMany(() => UserInterview, (userInterview) => userInterview.interview)
   userInterviews: UserInterview[];

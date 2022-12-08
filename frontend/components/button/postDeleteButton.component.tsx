@@ -8,7 +8,7 @@ const PostDeleteButton = ({ id }: { id: string | undefined }) => {
   const router = useRouter();
 
   const handleDeleteClick = () => {
-    if (window.confirm()) {
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
       if (id) {
         mutate(id);
       }

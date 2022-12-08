@@ -91,7 +91,10 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
             </li>
           </ul>
           <ul>
-            <InterviewManageButton userStatus={userStatus} />
+            <InterviewManageButton
+              id={postData?.postId}
+              userStatus={userStatus}
+            />
           </ul>
         </section>
         <section>

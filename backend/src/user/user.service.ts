@@ -96,7 +96,7 @@ export class UserService {
   async getInterview(id) {
     const interviewData = await this.userInterviewRepository
       .createQueryBuilder('ui')
-      .leftJoinAndSelect(
+      .innerJoinAndSelect(
         Interview,
         'interview',
         'ui.interviewId = interview.id',

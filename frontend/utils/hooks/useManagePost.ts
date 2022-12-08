@@ -5,6 +5,7 @@ const useManagePost = () => {
   const { data, isLoading, error, isFetching } = useQuery(["managePost"], () =>
     getMangePost()
   );
+
   return { data, isLoading, error, isFetching };
 };
 

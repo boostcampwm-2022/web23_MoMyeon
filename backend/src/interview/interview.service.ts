@@ -210,6 +210,25 @@ export class InterviewService {
     return { interviewData };
   }
 
+  async userInterviewStatus(id: number, userId: number, userName: string) {
+    //interview 정보
+    const { interviewData } = await this.findOne(id);
+    const userStatus = await this.userInterviewRepository
+      .createQueryBuilder()
+      .select('status')
+      .where('interviewId = :id AND userId = :userId', {
+        id: id,
+        userId: userId,
+      })
+      .getRawOne();
+    interviewData['isHost'] = interviewData.host === userName;
+    interviewData['userStatus'] = (userStatus && userStatus.status) || 0;
+    return {
+      isHost: interviewData.isHost,
+      userStatus: interviewData.userStatus,
+    };
+  }
+
   async getMembers(interviewId: string) {
     // 모의면접 신청이 승인된 멤버들 조회 + 멤버들의 이력서 조회
     try {

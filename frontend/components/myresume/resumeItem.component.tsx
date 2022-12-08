@@ -3,7 +3,7 @@ import { ResumeItemProps } from "./resume";
 import styles from "styles/MypageResume.module.scss";
 import Image from "next/image";
 import deleteQuestion from "public/icon/deleteQuestion.png";
-import { useMyResumeDelete } from "utils/hooks/useMyResumeDelete";
+import { useMyResumeDelete } from "utils/hooks/useMyResume/useMyResumeDelete";
 function ResumeItem({ data }: ResumeItemProps) {
   const { text, id } = data;
   const [hover, setHover] = useState(false);

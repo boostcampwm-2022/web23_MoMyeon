@@ -1,7 +1,7 @@
 import Title from "components/title";
 import React from "react";
 import styles from "styles/MypageQuestion.module.scss";
-import { useMyQuestionQuery } from "utils/hooks/useMyQuestionQuery";
+import { useMyQuestionQuery } from "utils/hooks/useMyQuestion/useMyQuestionQuery";
 import CreateQuestion from "./createQuestion.component";
 import QuestionContainer from "./questionContainer.component";
 function MyQuestion() {
@@ -15,9 +15,7 @@ function MyQuestion() {
           return <QuestionContainer key={id} data={item} />;
         })}
       </div>
-      <div className={styles.createQuestion}>
-        <CreateQuestion />
-      </div>
+      <CreateQuestion />
     </div>
   );
 }

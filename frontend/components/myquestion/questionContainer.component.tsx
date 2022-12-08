@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import Question from "components/question/question.component";
-import { useMyQuestionDelete } from "utils/hooks/useMyQuestionDelete";
+import { useMyQuestionDelete } from "utils/hooks/useMyQuestion/useMyQuestionDelete";
 import deleteQuestion from "public/icon/deleteQuestion.png";
 import Image from "next/image";
 import styles from "styles/MypageQuestion.module.scss";

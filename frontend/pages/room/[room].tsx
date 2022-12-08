@@ -7,8 +7,7 @@ import { useRouter } from "next/dist/client/compat/router";
 import InterviewUser from "components/interviewUser/interviewUser.component";
 import dynamic from "next/dynamic";
 import postFeedback from "utils/api/feedbackCreate/postFeedback";
-import { usePostPageStatusCheck } from "utils/hooks/usePostPageStatusCheck";
-
+import { usePostPageStatusCheck } from "utils/hooks/usePostPageStatus/usePostPageStatusCheck";
 
 const QAContainer = dynamic(
   () => import("components/question/qaContainer.component"),

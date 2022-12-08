@@ -6,6 +6,10 @@ const usePreventBack = () => {
     window.onpopstate = () => {
       history.go(1);
     };
+
+    return () => {
+      window.onpopstate = () => {};
+    };
   }, []);
 };
 

@@ -36,7 +36,7 @@
 }
 .resumeItem {
   font-size: 14px;
-  line-height: 1rem;
+  line-height: 2rem;
   padding-block: 1rem;
   margin-left: 2rem;
 }
@@ -98,4 +98,10 @@
   height: 2.7rem;
   align-self: flex-end;
   margin-top: 2rem;
+}
+
+.deleteIcon {
+  position: absolute;
+  cursor: pointer;
+  right: 3rem;
 }

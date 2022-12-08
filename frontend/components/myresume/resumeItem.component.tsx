@@ -27,7 +27,7 @@ function ResumeItem({ data }: ResumeItemProps) {
       {hover && (
         <Image
           onClick={onClickDelete}
-          style={{ cursor: "pointer" }}
+          className={styles.deleteIcon}
           src={deleteQuestion}
           width={24}
           height={24}

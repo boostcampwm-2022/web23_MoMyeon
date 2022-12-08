@@ -20,6 +20,19 @@ import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 import { UserInfo } from 'src/interfaces/user.interface';
 
+interface QuestionFeedback {
+  type: QuestionType;
+  id: number;
+  content: string;
+  feedback: string;
+}
+
+interface QuestionResult {
+  userId: number;
+  userName: string;
+  question: QuestionFeedback[];
+}
+
 @Injectable()
 export class QuestionService {
   constructor(
@@ -128,6 +141,13 @@ export class QuestionService {
   }
 
   async findRoomQuestion(interviewId: number, userData: UserInfo) {
+    // 0. 종합 질문 생성 전에 redis 확인하기 (재접속 처리)
+    const result = await this.redis.hgetall(`question:${interviewId}`);
+    if (Object.keys(result).length) {
+      const questions = this.extractQuestions(result);
+      return questions;
+    }
+
     // 1. 면접 분야 심플해당 파트에서 랜덤으로 가져오기
     const categoryData = await this.interviewCategoryRepository
       .createQueryBuilder('ic')
@@ -219,6 +239,45 @@ export class QuestionService {
     await Promise.all(promises.map(Promise.all.bind(Promise)));
 
     return userInterviewQuestionData.questions;
+  }
+
+  extractQuestions(result: any) {
+    const entries = Object.entries(result);
+    const questions: QuestionResult[] = entries.reduce(
+      (acc: any, [key, value]: any) => {
+        const [toId, type, questionId] = key
+          .split(':')
+          .map((n) => +n)
+          .slice(1);
+        const { toName, feedback, questionContent } = JSON.parse(value);
+
+        const found: QuestionResult = acc.find(
+          (userTo) => userTo.userId === toId,
+        );
+        const questionFeedback: QuestionFeedback = {
+          type,
+          id: questionId,
+          content: questionContent,
+          feedback,
+        };
+        const questionResult: QuestionResult = {
+          userId: toId,
+          userName: toName,
+          question: [questionFeedback],
+        };
+
+        if (!found) {
+          acc.push(questionResult);
+          return acc;
+        }
+
+        found.question.push(questionFeedback);
+        return acc;
+      },
+      [],
+    );
+
+    return questions;
   }
 
   update(id: number, updateQuestionDto: UpdateQuestionDto) {

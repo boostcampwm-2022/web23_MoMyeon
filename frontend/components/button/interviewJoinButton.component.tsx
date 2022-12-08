@@ -1,36 +1,73 @@
 import styles from "styles/PostPage.module.scss";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useApplyInterview } from "utils/hooks/useApplyInterview";
+import { AxiosError } from "axios";
 
 export function InterviewJoinButtonComponent({
-  initialUserState,
+  curMember,
+  setCurMember,
+  isHost,
+  userStatus,
   postId,
 }: {
-  initialUserState: number;
-  postId: number | undefined;
+  curMember: number | undefined;
+  setCurMember: React.Dispatch<React.SetStateAction<number | undefined>>;
+  isHost: boolean | undefined;
+  userStatus: number | undefined;
+  postId: string | undefined;
 }) {
-  const [joinState, setJoinState] = useState(initialUserState /* userState */);
-  const joinButtonName = ["신청 하기", "신청 중", "승인됨", "거부됨"];
   const router = useRouter();
 
-  const handleJoinClick = async () => {
-    //POST API CALL
+  //TODO::타입 적용
+  const { mutate, isError, isSuccess, error }: any = useApplyInterview();
 
-    //Test
-    /*
-    setJoinState((prev) => {
-      prev += 1;
-      if (prev === 4) {
-        prev = 0;
-      }
-      return prev;
-    });*/
-    await router.replace(`../room/${postId}`);
+  const [joinState, setJoinState] = useState(isHost ? 2 : userStatus); //0이랑 2만 사용
+
+  useEffect(() => {
+    if (isHost || userStatus === 2) {
+      setJoinState(2);
+    }
+  }, [isHost, userStatus]);
+
+  const handleJoinClick = async () => {
+    if (joinState !== 2 && postId) {
+      mutate(postId);
+    }
+
+    if (joinState === 2) {
+      await router.replace(`../room/${postId}`);
+    }
   };
+
+  useEffect(() => {
+    if (isError) {
+      if (error.response.status === 401) {
+        alert("로그인을 해주세요 !");
+        //ModalOpen
+      } else if (error.response.status === 403) {
+        alert("신청이 마감 됐습니다");
+      } else {
+        console.log(error.message);
+      }
+    }
+  }, [isError]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      alert("성공적으로 등록 됐습니다.");
+      setJoinState(2);
+      setCurMember((prev) => {
+        if (prev) {
+          return prev + 1;
+        }
+      });
+    }
+  }, [isSuccess]);
 
   return (
     <button className={styles.joinButton} onClick={handleJoinClick}>
-      {joinButtonName[joinState]}
+      {joinState === 2 ? "참여하기" : "신청하기"}
     </button>
   );
 }

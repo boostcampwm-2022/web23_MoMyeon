@@ -5,9 +5,12 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 
 const getPostById = async (postId: string) => {
-  const res = await axios.get(`${apiKeys.GET_POST}/${postId}`).catch(() => {
-    return null;
-  });
+  const res = await axios
+    .get(`${apiKeys.GET_POST}/${postId}`)
+    .catch((error) => {
+      console.log(error);
+      return null;
+    });
 
   const data = res?.data.interviewData;
   if (!data) {
@@ -24,8 +27,8 @@ const getPostById = async (postId: string) => {
     host: data.host ?? "blindcat",
     isHost: data.isHost ?? false,
     maxMember: data.maxMember ?? 6,
-    member: data.maxMember ?? 1,
-    postId: data.interview_id ?? Number(postId),
+    member: data.member ?? 1,
+    postId: data.interview_id ?? postId,
     recruitStatus: data.recruitStatus ?? 0,
     userStatus: data.userStatus ?? 0,
   };

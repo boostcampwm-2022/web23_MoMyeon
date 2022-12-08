@@ -12,7 +12,11 @@ export const apiKeys = {
 
   GET_POSTS: `https://${HOST}/v1/interview?`,
   GET_POST: `https://${HOST}/v1/interview`,
+  DELETE_POST: `https://${HOST}/v1/interview`,
   CREATE_POSTS: `https://${HOST}/v1/interview`,
+
+  APPLY_INTERVIEW: `https://${HOST}/v1/interview/apply/`,
+  GET_POSTPAGE_USER_STATUS: `https://${HOST}/v1/interview/status/`,
 
   GET_INTERVIEW_QUESTIONS: `https://${HOST}/v1/question/`,
   GET_INTERVIEW_MEMBERS: `https://${HOST}/v1/interview/members/`,

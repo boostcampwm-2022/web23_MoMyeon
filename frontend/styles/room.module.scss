@@ -31,28 +31,9 @@
   width: 20vw;
   height: 40vh;
   background-color: mediumaquamarine;
-  //background-color: teal;
+  --webkit-transform:rotateY(180deg);
 }
 
-.toolBox {
-  @include common.flexRow;
-  column-gap: 20px;
-
-  button {
-    background-color: deepskyblue;
-    color: color.$SUBCOLOR;
-    border: none;
-    padding: 1.5rem;
-    font-size: 18px;
-    border-radius: 3rem;
-  }
-}
-
-.toolContainer {
-  padding: 1rem ;
-  position: absolute;
-  left: 1rem ;
-}
 
 .routerButtonContainer {
   padding: 1rem;
@@ -67,6 +48,7 @@
   padding: 1.5rem;
   font-size: 18px;
   border-radius: 3rem;
+  cursor: pointer;
 }
 
 .exitBtn {
@@ -77,6 +59,7 @@
   font-size: 18px;
   margin-left: 2rem;
   border-radius: 3rem;
+  cursor: pointer;
 }
 
 
@@ -120,6 +103,7 @@
   font-size: 18px;
   border-radius: 3rem;
   margin-bottom: 1rem;
+  cursor: pointer;
 }
 
 .muteButton {
@@ -130,4 +114,5 @@
   font-size: 18px;
   border-radius: 3rem;
   margin-bottom: 1rem;
+  cursor: pointer;
 }

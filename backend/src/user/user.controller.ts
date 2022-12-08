@@ -67,3 +67,14 @@ export class UserResumeController {
     return this.userService.removeResume(+id, userData.id);
   }
 }
+
+@Controller({ version: '1', path: 'user/interview' })
+export class UserinterviewController {
+  constructor(private readonly userService: UserService) {}
+
+  @UseGuards(JwtGuard)
+  @Get()
+  findAll(@UserData() userData: UserInfo) {
+    return this.userService.getInterview(userData.id);
+  }
+}

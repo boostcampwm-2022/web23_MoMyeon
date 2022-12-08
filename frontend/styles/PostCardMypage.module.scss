@@ -1,0 +1,38 @@
+@use "_color";
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.title {
+  font-size: 16px;
+  object-fit: contain;
+  flex-wrap: wrap;
+  margin-right: 2rem;
+}
+.category {
+  font-size: 14px;
+  color: #bababa;
+  margin-right: 0.3rem;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.button {
+  border: none;
+  outline: none;
+  background-color: color.$MAINCOLOR;
+  margin-left: 2rem;
+  color: white;
+  padding-inline: 1.5rem;
+  padding-block: 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+}

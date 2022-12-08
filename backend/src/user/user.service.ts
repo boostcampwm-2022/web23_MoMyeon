@@ -113,7 +113,7 @@ export class UserService {
       const interviewInfo = {
         interview_id: element.interview_id,
         title: element.interview_title,
-        category: `${JSON.stringify(element.interview_categoryList)}`,
+        category: JSON.parse(element.interview_categoryList),
         applicationDate: element.ui_created_at,
       };
       if (element.interview_userId === id) {

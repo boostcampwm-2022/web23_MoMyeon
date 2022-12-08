@@ -1,7 +1,7 @@
 export interface Question {
   type: number;
   id: number;
-  contents: string;
+  content: string;
   feedback: string;
 }
 export interface QuestionProp {
@@ -14,6 +14,7 @@ export interface QAItem {
   question: Question[];
 }
 
-export interface Username {
+export interface User {
   username: striing;
+  userId: number;
 }

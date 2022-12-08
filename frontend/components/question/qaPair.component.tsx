@@ -1,22 +1,30 @@
 import React, { useState } from "react";
 import Question from "./question.component";
 import Answer from "./answer.component";
-import { QuestionProp, Username } from "./question";
-function QAPair({ data, username }: QuestionProp & Username) {
-  const { id, contents, feedback } = data;
+import { QuestionProp, User } from "./question";
+function QAPair({ data, username, userId }: QuestionProp & User) {
+  const { type, id, content, feedback } = data;
   const [focus, setFocus] = useState(false);
   const onClickText = () => {
     setFocus(!focus);
   };
+
   return (
     <div>
       <Question
         onClickText={onClickText}
         focus={focus}
         id={id}
-        contents={contents}
+        contents={content}
       />
-      <Answer focus={focus} id={id} feedback={feedback} username={username} />
+      <Answer
+        focus={focus}
+        id={id}
+        type={type}
+        userId={userId}
+        feedback={feedback}
+        username={username}
+      />
     </div>
   );
 }

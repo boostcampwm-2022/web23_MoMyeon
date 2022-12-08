@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import deleteManageQuestion from "utils/api/ManageQuestion/deleteManageQuestion";
+import deleteManageQuestion from "utils/api/manageQuestion/deleteManageQuestion";
 const useManageQuestionDelete = () => {
   const queryClient = useQueryClient();
   const { data, isLoading, error, mutate } = useMutation(deleteManageQuestion, {

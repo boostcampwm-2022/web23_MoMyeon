@@ -6,6 +6,9 @@ import styles from "styles/room.module.scss";
 import { useRouter } from "next/dist/client/compat/router";
 import InterviewUser from "components/interviewUser/interviewUser.component";
 import dynamic from "next/dynamic";
+import postFeedback from "utils/api/feedbackCreate/postFeedback";
+import { usePostPageStatusCheck } from "utils/hooks/usePostPageStatusCheck";
+
 
 const QAContainer = dynamic(
   () => import("components/question/qaContainer.component"),
@@ -36,12 +39,19 @@ export default function Room({ roomName }: any) {
   usePreventBack();
   const router = useRouter();
   const [isLeft, setIsLeft] = useState(false);
-
+  const [isHost, _] = usePostPageStatusCheck(roomName);
   const handleClickExitBtn = () => {
     if (window.confirm("나가시겠습니까?")) {
       setIsLeft(true);
       router?.replace(`../post/${roomName}`);
     }
+  };
+
+  const handleFeedbackBtn = () => {
+    if (isHost) {
+      postFeedback({ roomId: roomName });
+    }
+    window.localStorage.clear();
   };
 
   return (
@@ -63,7 +73,10 @@ export default function Room({ roomName }: any) {
             </Suspense>
           </div>
           <div className={styles.routerButtonContainer}>
-            <button className={styles.feedbackBtn}> 피드백 가기 </button>
+            <button onClick={handleFeedbackBtn} className={styles.feedbackBtn}>
+              {" "}
+              피드백 가기{" "}
+            </button>
             <button className={styles.exitBtn} onClick={handleClickExitBtn}>
               나가기
             </button>

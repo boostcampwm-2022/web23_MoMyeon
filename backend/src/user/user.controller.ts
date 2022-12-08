@@ -43,6 +43,7 @@ export class UserResumeController {
     @UserData() userData: UserInfo,
   ) {
     createResumeDto['user'] = userData.id;
+    createResumeDto['userId'] = userData.id;
     if (!createResumeDto.content)
       throw new BadRequestException('content를 입력해 주세요');
     let itemChecked = false;
@@ -65,5 +66,16 @@ export class UserResumeController {
   @Delete(':id')
   remove(@Param('id') id: string, @UserData() userData: UserInfo) {
     return this.userService.removeResume(+id, userData.id);
+  }
+}
+
+@Controller({ version: '1', path: 'user/interview' })
+export class UserinterviewController {
+  constructor(private readonly userService: UserService) {}
+
+  @UseGuards(JwtGuard)
+  @Get()
+  findAll(@UserData() userData: UserInfo) {
+    return this.userService.getInterview(userData.id);
   }
 }

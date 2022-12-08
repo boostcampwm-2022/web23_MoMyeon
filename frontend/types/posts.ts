@@ -25,7 +25,7 @@ export interface Posts {
 }
 
 export interface PostData {
-  postId: number;
+  postId: string;
   title: string;
   maxMember: number; //최대 멤버 수
   category: Category[];

@@ -5,7 +5,11 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Cookies from "js-cookie";
 
-const getPostById = async (postId: string, accessToken:string|undefined, refreshToken: string|undefined) => {
+const getPostById = async (
+  postId: string,
+  accessToken: string | undefined,
+  refreshToken: string | undefined
+) => {
   const res = await axios
     .get(`${apiKeys.GET_POST}/${postId}`, {
       headers: {
@@ -15,8 +19,8 @@ const getPostById = async (postId: string, accessToken:string|undefined, refresh
     .catch(() => {
       return null;
     });
-	
-  console.log(res);
+
+  console.log(res?.data);
 
   const data = res?.data.interviewData;
   if (!data) {
@@ -34,7 +38,7 @@ const getPostById = async (postId: string, accessToken:string|undefined, refresh
     isHost: data.isHost ?? false,
     maxMember: data.maxMember ?? 6,
     member: data.member ?? 1,
-    postId: data.interview_id ?? Number(postId),
+    postId: data.interview_id ?? postId,
     recruitStatus: data.recruitStatus ?? 0,
     userStatus: data.userStatus ?? 0,
   };

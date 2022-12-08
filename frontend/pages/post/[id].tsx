@@ -9,8 +9,13 @@ import { useRouter } from "next/router";
 import { InterviewJoinButtonComponent } from "components/button/interviewJoinButton.component";
 import { PostData } from "types/posts";
 import getPostById from "utils/api/getPostById";
+import postPage from "head/postPage";
+import { PostDeleteButton } from "../../components/button/postDeleteButton.component";
+
 const PostPage = ({ postData }: { postData: PostData | null }) => {
   const router = useRouter();
+
+  const [curMember, setCurMember] = useState(postData?.member);
 
   useEffect(() => {
     if (postData === null) {
@@ -19,11 +24,6 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
   }, []);
 
   const buttonAttributes = [
-    {
-      name: "참여자 관리",
-      isVisible: true /* isHost */,
-      /* postData?.isHost ?? false */
-    },
     {
       name: "질문 관리",
       isVisible: true,
@@ -63,7 +63,10 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
               <span className={styles.date}> {postData?.date} </span>
             </div>
             <InterviewJoinButtonComponent
-              initialUserState={postData?.userStatus ?? 0}
+              curMember={curMember}
+              setCurMember={setCurMember}
+              isHost={postData?.isHost}
+              userStatus={postData?.userStatus}
               postId={postData?.postId}
             />
           </div>
@@ -86,7 +89,7 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
             <li className={styles.postInfoLi}>
               <span> 신청 현황 </span>
               <div className={styles.textWrapper}>
-                <h6 className={styles.mainText}> {postData?.member} </h6>
+                <h6 className={styles.mainText}> {curMember} </h6>
                 <h6 className={styles.subText}> / </h6>
                 <h6 className={styles.subText}> {postData?.maxMember} </h6>
               </div>
@@ -128,6 +131,9 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
             );
           })}
         </section>
+        {postData?.isHost === true && (
+          <PostDeleteButton id={postData?.postId} />
+        )}
       </div>
     </div>
   );
@@ -135,8 +141,8 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const postID = context.query.id;
-  const {accessToken, refreshToken} = context.req.cookies; 
-  console.log(accessToken,refreshToken);
+  const { accessToken, refreshToken } = context.req.cookies;
+  console.log(accessToken, refreshToken);
 
   //서버에서 리다이렉트 해주면 알림 메시지 주기 어려울 수 있다.
   //클라이언트에서 리다이렉트 하면 알림 메시지 줄 수 있지만, 불필요한 렌더링이 있을 수 있다.

@@ -29,7 +29,7 @@ export class HostGuard implements CanActivate {
       const [found] = await this.interviewRepository.findBy({
         id: interviewId,
       });
-      if (found.user.id !== userId) {
+      if (found.userId !== userId) {
         throw new UnauthorizedException('호스트가 아닙니다');
       }
 

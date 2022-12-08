@@ -122,6 +122,6 @@ export class UserService {
         userInterviewData.guest.push(interviewInfo);
       }
     });
-    return { userInterviewData };
+    return userInterviewData;
   }
 }

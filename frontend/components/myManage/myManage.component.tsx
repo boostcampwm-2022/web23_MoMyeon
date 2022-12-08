@@ -13,12 +13,8 @@ function MyManage() {
   const { host, guest } = data;
   return (
     <div className={styles.container}>
-      <div className={styles.postContainer}>
-        <Host data={host} />
-      </div>
-      <div className={styles.postContainer}>
-        <Participant data={guest} />
-      </div>
+      <Host data={host} />
+      <Participant data={guest} />
     </div>
   );
 }

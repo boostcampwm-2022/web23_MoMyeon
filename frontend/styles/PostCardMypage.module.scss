@@ -1,8 +1,12 @@
 @use "_color";
 .header {
   display: flex;
+  object-fit: contain;
+  overflow: hidden;
+  flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
+  height: 3rem;
   width: 100%;
 }
 

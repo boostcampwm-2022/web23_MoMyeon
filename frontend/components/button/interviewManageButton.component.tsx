@@ -5,8 +5,10 @@ import { useRouter } from "next/router";
 
 const InterviewManageButton = ({
   userStatus,
+  id,
 }: {
   userStatus: number | undefined;
+  id: string | undefined;
 }) => {
   const router = useRouter();
 
@@ -18,7 +20,7 @@ const InterviewManageButton = ({
   }, [userStatus]);
 
   const handleQuestionBtnClicked = async () => {
-    await router.push("../mypage/question");
+    await router.push(`/mypage/interview/${id}`);
   };
   const handleFeedbackBtnClicked = async () => {};
 

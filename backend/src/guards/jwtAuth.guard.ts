@@ -2,6 +2,7 @@ import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import {
   CanActivate,
   ExecutionContext,
+  HttpStatus,
   Injectable,
   InternalServerErrorException,
   UnauthorizedException,
@@ -72,6 +73,7 @@ export class JwtGuard implements CanActivate {
 
         case 'TokenExpiredError':
           try {
+            this.jwtService.verify(refreshToken);
             const { id, profile, nickname, oauth_provider, oauth_uid } =
               this.jwtService.decode(accessToken) as DecodedUserInfo;
             const userInfo: UserInfo = {
@@ -89,7 +91,7 @@ export class JwtGuard implements CanActivate {
             throw new UnauthorizedException('유저 정보 불일치');
           } catch (err) {
             console.error(err);
-            if (err.message !== 'Unauthorized') {
+            if (err.status !== HttpStatus.UNAUTHORIZED) {
               throw new InternalServerErrorException('서버 내부 오류');
             }
             throw err;

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { Feedback } from 'src/entities/feedback.entity';
+import { Interview } from 'src/entities/interview.entity';
 import { InterviewQuestion } from 'src/entities/interviewQuestion.entity';
 import { SimpleQuestion } from 'src/entities/simpleQuestion.entity';
 import { User } from 'src/entities/user.entity';
@@ -13,6 +14,7 @@ import { FeedbackService } from './feedback.service';
   imports: [
     TypeOrmModule.forFeature([
       User,
+      Interview,
       Feedback,
       UserQuestion,
       InterviewQuestion,

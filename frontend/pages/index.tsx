@@ -18,7 +18,7 @@ const Home: NextPage<GithubCodeProps & CategoryProps & CategoryParentProps> = ({
   category,
   categoryKey,
 }) => {
-  const mutation = useGithubLoginMutation(code);
+  const mutation = useGithubLoginMutation();
   const router = useRouter();
 
   useEffect(() => {

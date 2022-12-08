@@ -39,7 +39,7 @@ export class QuestionController {
   @UseGuards(JwtGuard)
   @Get(':id')
   findOne(@Param('id') id: string, @UserData() userData: UserInfo) {
-    return this.questionService.findRoomQuestion(+id, userData.id);
+    return this.questionService.findRoomQuestion(+id, userData);
   }
 
   @Patch(':id')

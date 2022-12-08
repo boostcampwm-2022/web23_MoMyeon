@@ -145,6 +145,14 @@
   cursor: pointer;
 }
 
+.deleteButton {
+  background-color: crimson ;
+  color: color.$SUBCOLOR;
+  cursor: pointer;
+  padding: 1.5rem;
+  font-size: 15px;
+}
+
 .contents {
   line-height: 4rem;
   font-size: 15px;

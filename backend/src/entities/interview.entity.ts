@@ -21,9 +21,6 @@ export class Interview extends BaseEntity {
   id: number;
 
   @Column()
-  userId: number;
-
-  @Column()
   title: string;
 
   @Column()

@@ -6,7 +6,7 @@ import Image from "next/image";
 interface QuestionProp {
   id?: number;
   contents: string;
-  focus: boolean;
+  focus?: boolean;
   onClickText?: () => void;
   HoverIcon?: () => JSX.Element;
 }

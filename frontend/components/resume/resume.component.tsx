@@ -28,8 +28,11 @@ function Resume({ id }: { id: string }) {
       {resumeArr?.map((item: ResumeItem) => {
         const { title, content } = item;
         return (
-          <div key={title} className={styles.text}>
-            {title}: {content}
+          <div key={title}>
+            <div className={styles.text}>{title}:</div>
+            <br />
+            <div className={styles.text}>{content}</div>
+            <br />
           </div>
         );
       })}

@@ -19,6 +19,7 @@ export const apiKeys = {
 
   MY_QUESTION: `https://${HOST}/v1/user/question`,
   MY_RESUME: `https://${HOST}/v1/user/resume`,
+  MANAGE_QUESTION: `https://${HOST}/v1/interview/question`,
 };
 
 export default apiKeys;

@@ -24,7 +24,6 @@ function InterviewUser({ id }: { id: string }) {
   if (data.length === 0) {
     return <div>유저정보가 없습니다.</div>;
   }
-
   const onClickUser = (id: number) => {
     setCur(id);
   };

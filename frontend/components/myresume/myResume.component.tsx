@@ -4,7 +4,7 @@ import Title from "components/title";
 import ResumeContainer from "./resumeContainer.component";
 import ResumeCreate from "./resumeCreate.component";
 import { resumeValue } from "states/resume";
-import { useMyResumeQuery } from "utils/hooks/useMyResumeQuery";
+import { useMyResumeQuery } from "utils/hooks/useMyResume/useMyResumeQuery";
 
 function MyResume() {
   const resume = resumeValue();

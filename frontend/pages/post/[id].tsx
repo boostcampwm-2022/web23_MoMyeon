@@ -9,8 +9,11 @@ import { useRouter } from "next/router";
 import { InterviewJoinButtonComponent } from "components/button/interviewJoinButton.component";
 import { PostData } from "types/posts";
 import getPostById from "utils/api/getPostById";
-import { PostDeleteButton } from "../../components/button/postDeleteButton.component";
-import { usePostPageStatusCheck } from "../../utils/hooks/usePostPageStatusCheck";
+import { PostDeleteButton } from "components/button/postDeleteButton.component";
+import { usePostPageStatusCheck } from "utils/hooks/usePostPageStatus/usePostPageStatusCheck";
+import { InterviewManageButton } from "components/button/interviewManageButton.component";
+import { PostPageApplyList } from "../../components/postPageApplyList/postPageApplyList";
+import postPage from "head/postPage";
 
 const PostPage = ({ postData }: { postData: PostData | null }) => {
   const router = useRouter();
@@ -23,21 +26,6 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
 
   const [curMember, setCurMember] = useState(postData?.member);
   const [isHost, userStatus] = usePostPageStatusCheck(postData?.postId);
-
-  const buttonAttributes = [
-    {
-      name: "질문 관리",
-      isVisible: true,
-      /* postData?.userStatus !== undefined && postData?.userStatus === 2, */
-      /* userStatus === 2 => 승인 */
-    },
-    {
-      name: "피드백",
-      isVisible: true,
-      /* postData?.recruitStatus !== undefined && postData?.recruitStatus === 1,*/
-      /* 모의 면접 종료 후 */
-    },
-  ];
 
   const [isContactURL, setIsContactURL] = useState(false);
   useEffect(() => {
@@ -64,7 +52,6 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
               <span className={styles.date}> {postData?.date} </span>
             </div>
             <InterviewJoinButtonComponent
-              curMember={curMember}
               setCurMember={setCurMember}
               isHost={isHost}
               userStatus={userStatus}
@@ -88,12 +75,11 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
               </div>
             </li>
             <li className={styles.postInfoLi}>
-              <span> 신청 현황 </span>
-              <div className={styles.textWrapper}>
-                <h6 className={styles.mainText}> {curMember} </h6>
-                <h6 className={styles.subText}> / </h6>
-                <h6 className={styles.subText}> {postData?.maxMember} </h6>
-              </div>
+              <PostPageApplyList
+                id={postData?.postId}
+                curMember={curMember}
+                maxMember={postData?.maxMember}
+              />
             </li>
             <li className={styles.postInfoLi}>
               <span> 연락 방법 </span>
@@ -105,19 +91,7 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
             </li>
           </ul>
           <ul>
-            {buttonAttributes?.map((attribute) => {
-              if (!attribute.isVisible) {
-                return;
-              }
-              return (
-                <li className={styles.postButtonLi} key={attribute.name}>
-                  <button className={styles.postPageButton}>
-                    {" "}
-                    {attribute.name}{" "}
-                  </button>
-                </li>
-              );
-            })}
+            <InterviewManageButton userStatus={userStatus} />
           </ul>
         </section>
         <section>
@@ -132,7 +106,11 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
             );
           })}
         </section>
-        {isHost && <PostDeleteButton id={postData?.postId} />}
+        {isHost && (
+          <section>
+            <PostDeleteButton id={postData?.postId} />
+          </section>
+        )}
       </div>
     </div>
   );

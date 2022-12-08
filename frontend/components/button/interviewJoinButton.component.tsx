@@ -3,15 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useApplyInterview } from "utils/hooks/useApplyInterview";
 import { AxiosError } from "axios";
+import { loginModalSet } from "states/loginModal";
 
 export function InterviewJoinButtonComponent({
-  curMember,
   setCurMember,
   isHost,
   userStatus,
   postId,
 }: {
-  curMember: number | undefined;
   setCurMember: React.Dispatch<React.SetStateAction<number | undefined>>;
   isHost: boolean | undefined;
   userStatus: number | undefined;
@@ -23,6 +22,7 @@ export function InterviewJoinButtonComponent({
   const { mutate, isError, isSuccess, error }: any = useApplyInterview();
 
   const [joinState, setJoinState] = useState(isHost ? 2 : userStatus); //0이랑 2만 사용
+  const setLoginModalVisible = loginModalSet();
 
   useEffect(() => {
     if (isHost || userStatus === 2) {
@@ -43,7 +43,7 @@ export function InterviewJoinButtonComponent({
   useEffect(() => {
     if (isError) {
       if (error.response.status === 401) {
-        alert("로그인을 해주세요 !");
+        setLoginModalVisible(true);
         //ModalOpen
       } else if (error.response.status === 403) {
         alert("신청이 마감 됐습니다");

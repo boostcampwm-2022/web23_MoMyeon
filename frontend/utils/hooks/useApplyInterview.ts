@@ -7,7 +7,7 @@ const useApplyInterview = () => {
     applyInterview,
     {
       /*onSuccess: () => {
-      queryClient.invalidateQueries(["PostPageStatus"]);
+      queryClient.invalidateQueries([""]);
     },*/
     }
   );

@@ -23,7 +23,12 @@ export function InterviewJoinButtonComponent({
   const { mutate, isError, isSuccess, error }: any = useApplyInterview();
 
   const [joinState, setJoinState] = useState(isHost ? 2 : userStatus); //0이랑 2만 사용
-  //console.log(joinState, isHost);
+
+  useEffect(() => {
+    if (isHost || userStatus === 2) {
+      setJoinState(2);
+    }
+  }, [isHost, userStatus]);
 
   const handleJoinClick = async () => {
     if (joinState !== 2 && postId) {
@@ -43,7 +48,7 @@ export function InterviewJoinButtonComponent({
       } else if (error.response.status === 403) {
         alert("신청이 마감 됐습니다");
       } else {
-        console.log(error.response.message);
+        console.log(error.message);
       }
     }
   }, [isError]);

@@ -3,13 +3,15 @@ import React, { useState, useEffect } from "react";
 import { useDeletePost } from "../../utils/hooks/useDeletePost";
 import { useRouter } from "next/router";
 
-const PostDeleteButton = ({ id }: { id: string }) => {
+const PostDeleteButton = ({ id }: { id: string | undefined }) => {
   const { mutate, isSuccess } = useDeletePost();
   const router = useRouter();
 
   const handleDeleteClick = () => {
     if (window.confirm()) {
-      mutate(id);
+      if (id) {
+        mutate(id);
+      }
     }
   };
 

@@ -1,0 +1,20 @@
+name: nCloud Deployment-DEV
+
+on:
+  push:
+    branches: 'dev'
+  workflow_dispatch:
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: deploy
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USERNAME }}
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
+          port: ${{ secrets.DEV_SSH_PORT }}
+          script: ${{ secrets.DEV_SSH_SCRIPT }}

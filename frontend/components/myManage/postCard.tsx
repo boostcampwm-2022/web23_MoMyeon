@@ -54,7 +54,7 @@ function PostCard({ id, title, category }: Props) {
       <div className={styles.buttons}>
         {button?.map((item) => {
           const { title, func } = item;
-          return <Button text={title} onClick={func} />;
+          return <Button key={title} text={title} onClick={func} />;
         })}
       </div>
     </BoxContainer>

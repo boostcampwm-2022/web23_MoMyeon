@@ -18,6 +18,7 @@ function QAContainer({ id }: { id: string }) {
   }
 
   const filtered = data.filter((item: QAItem) => item.userId === cur)[0];
+  const { userName, userId } = filtered;
   return (
     <div>
       <div>{filtered.userName}</div>
@@ -26,7 +27,8 @@ function QAContainer({ id }: { id: string }) {
         return (
           <QAPair
             key={`${item.id}${filtered.userName}`}
-            username={filtered.userName}
+            username={userName}
+            userId={userId}
             data={item}
           />
         );

@@ -70,7 +70,7 @@ const mediaCodecs = [
 
 //const peers = io.of('/mediasoup');
 io.on("connection", async (socket) => {
-  console.log("socket id: " + socket.id);
+  console.log(`socket id: " + ${socket.id}, 기존 producer 수 ${producers / 2}`);
   socket.emit("connection-success", {
     socketId: socket.id,
   });
@@ -144,7 +144,7 @@ io.on("connection", async (socket) => {
       router1 = await worker.createRouter({ mediaCodecs });
     }
 
-    console.log(`Router ID:  ${router1.id} ${peers.length}`);
+    //console.log(`Router ID:  ${router1.id} ${peers.length}`);
     rooms[roomName] = {
       router: router1,
       peers: [...peers, socketId],
@@ -155,7 +155,7 @@ io.on("connection", async (socket) => {
 
   const getRtpCapabilities = (callback) => {
     const rtpCapabilities = router.rtpCapabilities;
-    console.log("rtp Capabilities+++", rtpCapabilities);
+    //console.log("rtp Capabilities+++", rtpCapabilities);
     callback({ rtpCapabilities });
   };
 
@@ -163,7 +163,7 @@ io.on("connection", async (socket) => {
     const roomName = peers[socket.id].roomName;
     const router = rooms[roomName].router;
 
-    console.log(roomName, router);
+    //console.log(roomName, router);
 
     createWebRtcTransport(router).then(
       (transport) => {
@@ -240,7 +240,7 @@ io.on("connection", async (socket) => {
   };
 
   socket.on("transport-connect", ({ dtlsParameters }) => {
-    console.log("DTLS PARAMS....", { dtlsParameters });
+    //console.log("DTLS PARAMS....", { dtlsParameters });
     getTransport(socket.id).connect({ dtlsParameters });
   });
 
@@ -259,10 +259,10 @@ io.on("connection", async (socket) => {
 
       informConsumers(roomName, socket.id, producer.id);
 
-      console.log("Producer ID: ", producer.id, producer.kind);
+      //console.log("Producer ID: ", producer.id, producer.kind);
 
       producer.on("transportclose", () => {
-        console.log("transport for this producer closed ");
+        //console.log("transport for this producer closed ");
         producer.close();
       });
 
@@ -295,7 +295,7 @@ io.on("connection", async (socket) => {
   socket.on(
     "transport-recv-connect",
     async ({ dtlsParameters, serverConsumerTransportId }) => {
-      console.log(`DTLS PARAMS: ${dtlsParameters}`);
+      //console.log(`DTLS PARAMS: ${dtlsParameters}`);
       const consumerTransport = transports.find(
         (transportData) =>
           transportData.consumer &&
@@ -407,7 +407,7 @@ const createWebRtcTransport = async (router) => {
       let transport = await router.createWebRtcTransport(
         webRtcTransport_options
       );
-      console.log("transport id: " + transport.id);
+      //console.log("transport id: " + transport.id);
 
       transport.on("dtlsstatechange", (dtlsState) => {
         if (dtlsState === "closed") {

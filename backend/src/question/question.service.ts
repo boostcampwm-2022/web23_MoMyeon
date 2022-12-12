@@ -22,19 +22,10 @@ import { InterviewQuestion } from 'src/entities/interviewQuestion.entity';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 import { UserInfo } from 'src/interfaces/user.interface';
-
-interface QuestionFeedback {
-  type: QuestionType;
-  id: number;
-  content: string;
-  feedback: string;
-}
-
-interface QuestionResult {
-  userId: number;
-  userName: string;
-  question: QuestionFeedback[];
-}
+import {
+  QuestionFeedback,
+  QuestionResult,
+} from 'src/interfaces/question.interface';
 
 @Injectable()
 export class QuestionService {
@@ -143,7 +134,10 @@ export class QuestionService {
     return questions;
   }
 
-  async findRoomQuestion(interviewId: number, userData: UserInfo) {
+  async findRoomQuestion(
+    interviewId: number,
+    userData: UserInfo,
+  ): Promise<QuestionResult[]> {
     // 0. 종합 질문 생성 전에 redis 확인하기 (재접속 처리)
     const result = await this.redis.hgetall(`question:${interviewId}`);
     if (Object.keys(result).length) {
@@ -246,10 +240,11 @@ export class QuestionService {
       });
     await Promise.all(promises.map(Promise.all.bind(Promise)));
 
-    return userInterviewQuestionData.questions;
+    const savedQuestions = await this.redis.hgetall(`question:${interviewId}`);
+    return this.extractQuestions(savedQuestions);
   }
 
-  extractQuestions(result: any) {
+  extractQuestions(result: any): QuestionResult[] {
     const entries = Object.entries(result);
     const questions: QuestionResult[] = entries.reduce(
       (acc: any, [key, value]: any) => {

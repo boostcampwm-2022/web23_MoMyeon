@@ -21,6 +21,7 @@ import { JwtGuard } from 'src/guards/jwtAuth.guard';
 import { UserData } from 'src/user/user.decorator';
 import { UserInfo } from 'src/interfaces/user.interface';
 import { CreateInterviewQuestionDto } from './dto/create-interview-question.dto';
+import { InterviewGuard } from 'src/guards/interview.guard';
 
 @Controller({ version: '1', path: 'question' })
 export class QuestionController {
@@ -37,9 +38,12 @@ export class QuestionController {
   }
 
   @UseGuards(JwtGuard)
-  @Get(':id')
-  findOne(@Param('id') id: string, @UserData() userData: UserInfo) {
-    return this.questionService.findRoomQuestion(+id, userData);
+  @Get(':interviewId')
+  findOne(
+    @Param('interviewId') interviewId: string,
+    @UserData() userData: UserInfo,
+  ) {
+    return this.questionService.findRoomQuestion(+interviewId, userData);
   }
 
   @Patch(':id')

@@ -81,6 +81,18 @@ io.on("connection", async (socket) => {
     return items;
   };
 
+  socket.on("feedbackStarted", () => {
+    const { roomName } = peers[socket.id];
+    const peersSocketId = rooms[roomName].peers;
+
+    peersSocketId.map((peerSocketId) => {
+      if (peerSocketId !== socket.id) {
+        const peerSocket = peers[peerSocketId].socket;
+        peerSocket.emit("feedbackStarted");
+      }
+    });
+  });
+
   socket.on("disconnect", () => {
     // do some cleanup
     console.log("peer disconnected");

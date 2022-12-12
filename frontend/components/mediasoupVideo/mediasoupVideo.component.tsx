@@ -35,6 +35,8 @@ const MediasoupVideo = ({
   const producerIdToAudioIdxRef = useRef<any>({});
   const producerIdToVideoIdxRef = useRef<any>({});
 
+  const [isFeedbackStarted, setIsFeedbackStarted] = feedbackStartedState();
+
   useEffect(() => {
     let to = "http://localhost:8443";
     if (process.env.NEXT_PUBLIC_IS_DEPLOYMENT === "true") {
@@ -83,6 +85,10 @@ const MediasoupVideo = ({
       //console.log(producerIdToAudioIdxRef.current);
       //console.log(producerIdToVideoIdxRef.current);
       //console.log(audioIdx, videoIdx);
+    });
+
+    socketRef.current.on("feedbackStarted", () => {
+      setIsFeedbackStarted(true);
     });
   }, []);
 
@@ -440,7 +446,11 @@ const MediasoupVideo = ({
     videoTrack.enabled = !videoTrack.enabled;
   };
 
-  //useEffect(() => {}, []);
+  useEffect(() => {
+    if (isFeedbackStarted && isHost) {
+      socketRef.current.emit("feedbackStarted");
+    }
+  }, [isFeedbackStarted]);
 
   //나가기 버튼을 누른 경우
   useEffect(() => {
@@ -449,6 +459,7 @@ const MediasoupVideo = ({
         .getTracks()
         .map((track: MediaStreamTrack) => track.stop());
       socketRef.current.close();
+      setIsFeedbackStarted(false);
     }
   }, [isLeft]);
 

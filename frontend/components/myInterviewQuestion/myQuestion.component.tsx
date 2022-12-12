@@ -4,7 +4,7 @@ import MyQuestionContainer from "./myQuestionContainer.component";
 
 import BoxContainer from "components/boxContainer";
 function MyQuestion() {
-  const { data, isLoading, error } = useMyQuestionQuery();
+  const { data } = useMyQuestionQuery();
   return (
     <BoxContainer width="40rem" height="32rem" overflow>
       <>

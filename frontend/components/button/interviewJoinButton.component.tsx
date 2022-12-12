@@ -59,7 +59,8 @@ export function InterviewJoinButtonComponent({
   return (
     <button
       className={`${styles.joinButton} ${
-        (joinStatus === 1 || joinStatus === 4) && styles.inActive
+        (joinStatus === 1 || joinStatus === 4 || joinStatus === 2) &&
+        styles.inActive
       }`}
       onClick={handleJoinClick}
     >

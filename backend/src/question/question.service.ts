@@ -9,7 +9,10 @@ import { InterviewCategory } from 'src/entities/interviewCategory.entity';
 import { Category } from 'src/entities/category.entity';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
-import { UserInterviewStatus } from 'src/enum/userInterviewStatus.enum';
+import {
+  InterviewStatus,
+  UserInterviewStatus,
+} from 'src/enum/userInterviewStatus.enum';
 import { User } from 'src/entities/user.entity';
 import { QuestionType } from 'src/enum/questionType.enum';
 import { CreateUserQuestionDto } from './dto/create-user-question.dto';
@@ -147,6 +150,11 @@ export class QuestionService {
       const questions = this.extractQuestions(result);
       return questions;
     }
+
+    // 한 명이라도 종합 질문 조회하면 마감
+    await this.interviewRepository.update(interviewId, {
+      status: InterviewStatus.ENDED,
+    });
 
     // 1. 면접 분야 심플해당 파트에서 랜덤으로 가져오기
     const categoryData = await this.interviewCategoryRepository

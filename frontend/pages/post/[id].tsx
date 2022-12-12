@@ -10,10 +10,10 @@ import { InterviewJoinButtonComponent } from "components/button/interviewJoinBut
 import { PostData } from "types/posts";
 import getPostById from "utils/api/getPostById";
 import { PostDeleteButton } from "components/button/postDeleteButton.component";
-import { usePostPageStatusCheck } from "utils/hooks/usePostPageStatus/usePostPageStatusCheck";
 import { InterviewManageButton } from "components/button/interviewManageButton.component";
 import { PostPageApplyList } from "../../components/postPageApplyList/postPageApplyList";
-import postPage from "head/postPage";
+import useJoinHandle from "utils/hooks/useJoinHandle";
+import { usePostPageStatusCheck } from "utils/hooks/usePostPageStatus/usePostPageStatusCheck";
 
 const PostPage = ({ postData }: { postData: PostData | null }) => {
   const router = useRouter();
@@ -25,7 +25,9 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
   }, []);
 
   const [curMember, setCurMember] = useState(postData?.member);
-  const [isHost, userStatus] = usePostPageStatusCheck(postData?.postId);
+  const [isHost] = usePostPageStatusCheck(postData?.postId);
+
+  useJoinHandle({ postId: postData?.postId });
 
   const [isContactURL, setIsContactURL] = useState(false);
   useEffect(() => {
@@ -53,8 +55,6 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
             </div>
             <InterviewJoinButtonComponent
               setCurMember={setCurMember}
-              isHost={isHost}
-              userStatus={userStatus}
               postId={postData?.postId}
             />
           </div>
@@ -91,10 +91,7 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
             </li>
           </ul>
           <ul>
-            <InterviewManageButton
-              id={postData?.postId}
-              userStatus={userStatus}
-            />
+            <InterviewManageButton id={postData?.postId} />
           </ul>
         </section>
         <section>

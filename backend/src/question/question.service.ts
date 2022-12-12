@@ -417,6 +417,13 @@ export class InterviewQuestionService {
 
   async remove(id: number, userId: number) {
     try {
+      //isStart check
+      const result = await this.redis.hgetall(`question:${id}`);
+      if (Object.keys(result).length > 0) {
+        throw new BadRequestException(
+          '모의면접이 시작되어 질문을 삭제할 수 없습니다.',
+        );
+      }
       const userQueryDeleteData =
         await this.InterviewQuestionRepository.createQueryBuilder('')
           .softDelete()

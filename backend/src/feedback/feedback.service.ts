@@ -3,10 +3,12 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import Redis from 'ioredis';
 import { Feedback } from 'src/entities/feedback.entity';
+import { Interview } from 'src/entities/interview.entity';
 import { InterviewQuestion } from 'src/entities/interviewQuestion.entity';
 import { SimpleQuestion } from 'src/entities/simpleQuestion.entity';
 import { UserQuestion } from 'src/entities/userQuestion.entity';
 import { QuestionType } from 'src/enum/questionType.enum';
+import { InterviewStatus } from 'src/enum/userInterviewStatus.enum';
 import { FeedbackInfo } from 'src/interfaces/feedback.interface';
 import { UserInfo } from 'src/interfaces/user.interface';
 import { Repository } from 'typeorm';
@@ -24,6 +26,8 @@ export class FeedbackService {
     private readonly simpleQuestionRepository: Repository<SimpleQuestion>,
     @InjectRepository(Feedback)
     private readonly feedbackRepository: Repository<Feedback>,
+    @InjectRepository(Interview)
+    private interviewRepository: Repository<Interview>,
   ) {}
 
   selectQuestionRepository(type: QuestionType) {
@@ -100,6 +104,11 @@ export class FeedbackService {
       await this.feedbackRepository.save(feedbacks);
 
       await this.redis.del(`question:${interviewId}`);
+
+      //interview status <- FB
+      await this.interviewRepository.update(interviewId, {
+        status: InterviewStatus.FEEDBACK,
+      });
 
       return feedbacks.length;
     } catch (err) {

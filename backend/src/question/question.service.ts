@@ -352,6 +352,8 @@ export class InterviewQuestionService {
     @InjectRepository(InterviewQuestion)
     private InterviewQuestionRepository: Repository<InterviewQuestion>,
     @InjectRedis() private readonly redis: Redis,
+    @InjectRepository(Interview)
+    private interviewRepository: Repository<Interview>,
   ) {}
 
   getInterviewUser(id: number) {
@@ -374,6 +376,14 @@ export class InterviewQuestionService {
       if (Object.keys(result).length > 0) {
         throw new BadRequestException(
           '모의면접이 시작되어 질문을 추가할 수 없습니다.',
+        );
+      }
+      const [interview] = await this.interviewRepository.findBy({
+        id: createInterviewQuestionData.interviewId,
+      });
+      if (interview.status === InterviewStatus.FEEDBACK) {
+        throw new BadRequestException(
+          '모의면접 종료되어 질문을 추가할 수 없습니다.',
         );
       }
       const newUserInterviewQuestion = this.InterviewQuestionRepository.create(
@@ -420,11 +430,29 @@ export class InterviewQuestionService {
 
   async remove(id: number, userId: number) {
     try {
+      const userInterview =
+        await this.InterviewQuestionRepository.createQueryBuilder()
+          .select(['interviewId'])
+          .where('id = :id AND userId = :userId', {
+            id: id,
+            userId: userId,
+          })
+          .getRawOne();
       //isStart check
-      const result = await this.redis.hgetall(`question:${id}`);
+      const result = await this.redis.hgetall(
+        `question:${userInterview.interviewId}`,
+      );
       if (Object.keys(result).length > 0) {
         throw new BadRequestException(
           '모의면접이 시작되어 질문을 삭제할 수 없습니다.',
+        );
+      }
+      const [interview] = await this.interviewRepository.findBy({
+        id: userInterview.interviewId,
+      });
+      if (interview.status === InterviewStatus.FEEDBACK) {
+        throw new BadRequestException(
+          '모의면접 종료되어 질문을 삭제할 수 없습니다.',
         );
       }
       const userQueryDeleteData =

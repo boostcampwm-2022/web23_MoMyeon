@@ -6,6 +6,7 @@ import { Interview } from 'src/entities/interview.entity';
 import { InterviewQuestion } from 'src/entities/interviewQuestion.entity';
 import { SimpleQuestion } from 'src/entities/simpleQuestion.entity';
 import { User } from 'src/entities/user.entity';
+import { UserInterview } from 'src/entities/userInterview.entity';
 import { UserQuestion } from 'src/entities/userQuestion.entity';
 import { FeedbackController } from './feedback.controller';
 import { FeedbackService } from './feedback.service';
@@ -17,6 +18,7 @@ import { FeedbackService } from './feedback.service';
       Interview,
       Feedback,
       UserQuestion,
+      UserInterview,
       InterviewQuestion,
       SimpleQuestion,
     ]),

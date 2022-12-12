@@ -141,7 +141,7 @@ export class FeedbackService {
         id: question_id,
         contents: questionContent,
         feedback: content,
-        isScrapped: false, // TODO: 스크랩 여부
+        isScrapped: false,
       };
 
       if (!found) {

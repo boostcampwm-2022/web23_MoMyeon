@@ -8,7 +8,8 @@ import InterviewUser from "components/interviewUser/interviewUser.component";
 import dynamic from "next/dynamic";
 import postFeedback from "utils/api/feedbackCreate/postFeedback";
 import { usePostPageStatusCheck } from "utils/hooks/usePostPageStatus/usePostPageStatusCheck";
-import { Feedback } from "../../components/feedback/feedback.component";
+import { Feedback } from "components/feedback/feedback.component";
+import { feedbackStartedState } from "states/feedbackStarted";
 
 const QAContainer = dynamic(
   () => import("components/question/qaContainer.component"),
@@ -40,7 +41,8 @@ export default function Room({ roomName }: any) {
   const router = useRouter();
   const [isLeft, setIsLeft] = useState(false);
   const [isHost, _] = usePostPageStatusCheck(roomName);
-  const [isFeedbackStarted, setIsFeedbackStarted] = useState(false);
+  //const [isFeedbackStarted, setIsFeedbackStarted] = useState(false);
+  const [isFeedbackStarted, setIsFeedbackStarted] = feedbackStartedState();
 
   const handleClickExitBtn = () => {
     if (window.confirm("나가시겠습니까?")) {
@@ -51,8 +53,14 @@ export default function Room({ roomName }: any) {
 
   const handleFeedbackBtn = async () => {
     if (isHost) {
-      await postFeedback({ roomId: roomName });
-      setIsFeedbackStarted(true);
+      if (
+        confirm(
+          "더 이상 피드백을 작성할 수 없습니다.\n모든 사용자가 피드백을 완료 했는지 확인해 주세요."
+        )
+      ) {
+        await postFeedback({ roomId: roomName });
+        setIsFeedbackStarted(true);
+      }
     } else {
       alert("호스트만 이동이 가능합니다 !");
     }
@@ -63,7 +71,7 @@ export default function Room({ roomName }: any) {
     <div className={styles.background}>
       <div className={styles.layout}>
         <div className={styles.mediaContainer}>
-          <MediasoupVideo roomName={roomName} isLeft={isLeft} />
+          <MediasoupVideo roomName={roomName} isLeft={isLeft} isHost={isHost} />
         </div>
         <div className={styles.utilContainer}>
           {!isFeedbackStarted ? (

@@ -1,5 +1,4 @@
 import { FeedbackData, FeedbackQuestionData } from "types/feedback";
-import question from "../../pages/mypage/question";
 
 const FeedbackItem = ({
   feedbackData,

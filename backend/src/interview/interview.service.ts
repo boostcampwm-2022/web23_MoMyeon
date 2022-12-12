@@ -19,6 +19,8 @@ import { Resume } from 'src/entities/resume.entity';
 import { Item } from 'src/entities/item.entity';
 import { UserInterviewStatus } from 'src/enum/userInterviewStatus.enum';
 import { UserInfo } from 'src/interfaces/user.interface';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
 
 @Injectable()
 export class InterviewService {
@@ -33,6 +35,7 @@ export class InterviewService {
     private userInterviewRepository: Repository<UserInterview>,
     @InjectRepository(Resume)
     private resumeRepository: Repository<Resume>,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   interviewSelect = [
@@ -210,21 +213,32 @@ export class InterviewService {
 
   async userInterviewStatus(id: number, userId: number, userName: string) {
     //interview 정보
-    const { interviewData } = await this.findOne(id);
-    const userStatus = await this.userInterviewRepository
-      .createQueryBuilder()
-      .select('status')
-      .where('interviewId = :id AND userId = :userId', {
-        id: id,
-        userId: userId,
-      })
-      .getRawOne();
-    interviewData['isHost'] = interviewData.host === userName;
-    interviewData['userStatus'] = (userStatus && userStatus.status) || 0;
-    return {
-      isHost: interviewData.isHost,
-      userStatus: interviewData.userStatus,
-    };
+    try {
+      const { interviewData } = await this.findOne(id);
+      const userStatus = await this.userInterviewRepository
+        .createQueryBuilder()
+        .select('status')
+        .where('interviewId = :id AND userId = :userId', {
+          id: id,
+          userId: userId,
+        })
+        .getRawOne();
+
+      interviewData['isHost'] = interviewData.host === userName;
+      interviewData['userStatus'] = (userStatus && userStatus.status) || 0;
+
+      // 모의면접 시작 여부
+      const result = await this.redis.hgetall(`question:${id}`);
+      const isStart = Object.keys(result).length > 0;
+
+      return {
+        isHost: interviewData.isHost,
+        userStatus: interviewData.userStatus,
+        isStart: isStart,
+      };
+    } catch (error) {
+      throw new BadRequestException('해당 인터뷰 정보가 없습니다.');
+    }
   }
 
   async getMembers(interviewId: string) {

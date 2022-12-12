@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { HostGuard } from 'src/guards/host.guard';
 import { JwtGuard } from 'src/guards/jwtAuth.guard';
+import { MemberGuard } from 'src/guards/member.guard';
 import { UserInfo } from 'src/interfaces/user.interface';
 import { UserData } from 'src/user/user.decorator';
 import { SaveFeedbackDto } from './dto/save-feedback.dto';
@@ -40,8 +41,8 @@ export class FeedbackController {
     return { message: 'success' };
   }
 
-  // TODO: 요청자가 해당 면접의 참가자인지 판별
   @Get(':interviewId')
+  @UseGuards(JwtGuard, MemberGuard)
   getAllFeedbacks(@Param('interviewId') interviewId: string) {
     return this.feedbackService.getAllFeedbacks(+interviewId);
   }

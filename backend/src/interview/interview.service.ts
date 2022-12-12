@@ -392,6 +392,12 @@ export class InterviewService {
         throw new ForbiddenException('면접 인원 정원 초과');
       }
 
+      const [exRecord] = await this.userInterviewRepository.findBy({
+        userId,
+        interviewId,
+      });
+      if (exRecord) throw new ForbiddenException('이미 신청했습니다.');
+
       const userInterview = this.userInterviewRepository.create({
         userId,
         interviewId,

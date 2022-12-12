@@ -55,6 +55,9 @@ export function InterviewJoinButtonComponent({
       });
     }
   }, [isSuccess]);
+  if (joinStatus === -1) {
+    return null;
+  }
 
   return (
     <button

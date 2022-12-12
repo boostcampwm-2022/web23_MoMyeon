@@ -31,7 +31,9 @@ const InterviewManageButton = ({ id }: { id: string | undefined }) => {
       /* 모의 면접 종료 후 */
     },
   ];
-
+  if (joinStatus === -1) {
+    return null;
+  }
   return (
     <>
       {buttonAttributes?.map((attribute) => {

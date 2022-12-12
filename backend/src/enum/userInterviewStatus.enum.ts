@@ -8,4 +8,5 @@ export enum UserInterviewStatus {
 export enum InterviewStatus {
   RECRUITING = 0,
   ENDED,
+  FEEDBACK,
 }

@@ -20,7 +20,13 @@ export function InterviewJoinButtonComponent({
   });
   const [joinStatus, setJoinStatus] = joinStatustState();
   const setLoginModalVisible = loginModalSet();
-  const buttonMsg = ["신청하기", "모집완료", "신청완료", "참여하기", "완료"];
+  const buttonMsg = [
+    "신청하기",
+    "모집완료",
+    "신청완료",
+    "참여하기",
+    "면접완료",
+  ];
   const handleJoinClick = async () => {
     if (joinStatus === 0 && postId) {
       mutate(postId);

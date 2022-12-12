@@ -215,6 +215,7 @@ export class InterviewService {
     //interview 정보
     try {
       const { interviewData } = await this.findOne(id);
+
       const userStatus = await this.userInterviewRepository
         .createQueryBuilder()
         .select('status')
@@ -235,6 +236,7 @@ export class InterviewService {
         isHost: interviewData.isHost,
         userStatus: interviewData.userStatus,
         isStart: isStart,
+        interviewStatus: interviewData.recruitStatus,
       };
     } catch (error) {
       throw new BadRequestException('해당 인터뷰 정보가 없습니다.');

@@ -356,6 +356,7 @@ export class InterviewQuestionService {
     private UserInterviewRepository: Repository<UserInterview>,
     @InjectRepository(InterviewQuestion)
     private InterviewQuestionRepository: Repository<InterviewQuestion>,
+    @InjectRedis() private readonly redis: Redis,
   ) {}
 
   getInterviewUser(id: number) {
@@ -371,6 +372,15 @@ export class InterviewQuestionService {
 
   async create(createInterviewQuestionData: InterviewQuestionData) {
     try {
+      //isStart check
+      const result = await this.redis.hgetall(
+        `question:${createInterviewQuestionData.interviewId}`,
+      );
+      if (Object.keys(result).length > 0) {
+        throw new BadRequestException(
+          '모의면접이 시작되어 질문을 추가할 수 없습니다.',
+        );
+      }
       const newUserInterviewQuestion = this.InterviewQuestionRepository.create(
         createInterviewQuestionData,
       );
@@ -415,6 +425,13 @@ export class InterviewQuestionService {
 
   async remove(id: number, userId: number) {
     try {
+      //isStart check
+      const result = await this.redis.hgetall(`question:${id}`);
+      if (Object.keys(result).length > 0) {
+        throw new BadRequestException(
+          '모의면접이 시작되어 질문을 삭제할 수 없습니다.',
+        );
+      }
       const userQueryDeleteData =
         await this.InterviewQuestionRepository.createQueryBuilder('')
           .softDelete()

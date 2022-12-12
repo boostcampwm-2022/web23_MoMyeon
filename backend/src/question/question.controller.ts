@@ -21,7 +21,6 @@ import { JwtGuard } from 'src/guards/jwtAuth.guard';
 import { UserData } from 'src/user/user.decorator';
 import { UserInfo } from 'src/interfaces/user.interface';
 import { CreateInterviewQuestionDto } from './dto/create-interview-question.dto';
-import { InterviewGuard } from 'src/guards/interview.guard';
 
 @Controller({ version: '1', path: 'question' })
 export class QuestionController {

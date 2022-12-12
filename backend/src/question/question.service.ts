@@ -417,8 +417,19 @@ export class InterviewQuestionService {
 
   async remove(id: number, userId: number) {
     try {
+      const userInterview =
+        await this.InterviewQuestionRepository.createQueryBuilder()
+          .select(['interviewId'])
+          .where('id = :id AND userId = :userId', {
+            id: id,
+            userId: userId,
+          })
+          .getRawOne();
       //isStart check
-      const result = await this.redis.hgetall(`question:${id}`);
+      console.log(userInterview);
+      const result = await this.redis.hgetall(
+        `question:${userInterview.interviewId}`,
+      );
       if (Object.keys(result).length > 0) {
         throw new BadRequestException(
           '모의면접이 시작되어 질문을 삭제할 수 없습니다.',

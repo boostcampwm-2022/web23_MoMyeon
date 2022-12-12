@@ -183,9 +183,8 @@ export class QuestionService {
     const userInterviewQuestion =
       await this.InterviewQuestionRepository.createQueryBuilder()
         .select(['user_to AS userTo', 'userId', 'id', 'content'])
-        .where('interviewId = :interviewId AND userId = :userId', {
+        .where('interviewId = :interviewId', {
           interviewId: interviewId,
-          userId: userData.id,
         })
         .getRawMany();
     interviewUser.forEach((userElement) => {
@@ -201,7 +200,7 @@ export class QuestionService {
         }
       });
       simpleQuestionData.forEach((simpleElement) => {
-        if (temp.length < 15) {
+        if (temp.length < 20) {
           temp.push({
             type: QuestionType.SIMPLE,
             id: simpleElement.id,
@@ -393,6 +392,7 @@ export class InterviewQuestionService {
           temp.push({
             id: questionElement.id,
             content: questionElement.content,
+            feedback: '',
           });
         }
       });
@@ -400,7 +400,6 @@ export class InterviewQuestionService {
         userId: userElement.userId,
         userName: userElement.userName,
         question: temp,
-        feedback: '',
       });
     });
     return userInterviewQuestionData;

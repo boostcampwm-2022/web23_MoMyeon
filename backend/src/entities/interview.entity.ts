@@ -1,3 +1,4 @@
+import { InterviewStatus } from 'src/enum/userInterviewStatus.enum';
 import {
   BaseEntity,
   Column,
@@ -42,8 +43,8 @@ export class Interview extends BaseEntity {
   @Column({ default: 0 })
   count: number;
 
-  @Column({ default: 0 })
-  status: number;
+  @Column({ default: InterviewStatus.RECRUITING })
+  status: InterviewStatus;
 
   @CreateDateColumn()
   created_at: Date;

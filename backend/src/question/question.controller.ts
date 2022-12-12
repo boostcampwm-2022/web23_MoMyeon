@@ -37,9 +37,12 @@ export class QuestionController {
   }
 
   @UseGuards(JwtGuard)
-  @Get(':id')
-  findOne(@Param('id') id: string, @UserData() userData: UserInfo) {
-    return this.questionService.findRoomQuestion(+id, userData);
+  @Get(':interviewId')
+  findOne(
+    @Param('interviewId') interviewId: string,
+    @UserData() userData: UserInfo,
+  ) {
+    return this.questionService.findRoomQuestion(+interviewId, userData);
   }
 
   @Patch(':id')

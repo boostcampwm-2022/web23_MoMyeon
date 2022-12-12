@@ -4,3 +4,8 @@ export enum UserInterviewStatus {
   ACCEPTED,
   REJECTED,
 }
+
+export enum InterviewStatus {
+  RECRUITING = 0,
+  ENDED,
+}

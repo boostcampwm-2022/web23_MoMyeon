@@ -17,7 +17,10 @@ import { SelectInterviewDto } from './dto/select-interview.dto';
 import { User } from 'src/entities/user.entity';
 import { Resume } from 'src/entities/resume.entity';
 import { Item } from 'src/entities/item.entity';
-import { UserInterviewStatus } from 'src/enum/userInterviewStatus.enum';
+import {
+  InterviewStatus,
+  UserInterviewStatus,
+} from 'src/enum/userInterviewStatus.enum';
 import { UserInfo } from 'src/interfaces/user.interface';
 
 @Injectable()
@@ -396,8 +399,13 @@ export class InterviewService {
       });
 
       await this.userInterviewRepository.save(userInterview);
+
       await this.interviewRepository.update(interviewId, {
         current_member: current_member + 1,
+        status:
+          current_member + 1 === max_member
+            ? InterviewStatus.ENDED
+            : InterviewStatus.RECRUITING,
       });
 
       return true;

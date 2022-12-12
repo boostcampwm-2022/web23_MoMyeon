@@ -21,7 +21,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
-import { UserInterviewStatus } from 'src/enum/userInterviewStatus.enum';
+import { InterviewGuard } from 'src/guards/interview.guard';
 
 @Controller({ version: '1', path: 'interview' })
 export class InterviewController {
@@ -93,7 +93,7 @@ export class InterviewController {
   }
 
   @Post('apply/:interviewId')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, InterviewGuard)
   async applyInterview(
     @Param('interviewId') interviewId: string,
     @UserData() userData: UserInfo,

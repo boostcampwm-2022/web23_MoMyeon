@@ -1,29 +1,20 @@
 import styles from "styles/PostPage.module.scss";
 import React, { useState, useEffect } from "react";
+import { joinStatustState } from "states/joinStatus";
 
 import { useRouter } from "next/router";
 
-const InterviewManageButton = ({
-  userStatus,
-  id,
-}: {
-  userStatus: number | undefined;
-  id: string | undefined;
-}) => {
+const InterviewManageButton = ({ id }: { id: string | undefined }) => {
   const router = useRouter();
-
-  const [questionVisible, setQuestionVisbile] = useState(false);
-  useEffect(() => {
-    if (userStatus === 2) {
-      setQuestionVisbile(true);
-    }
-  }, [userStatus]);
+  const [joinStatus, setJoinStatus] = joinStatustState();
 
   const handleQuestionBtnClicked = async () => {
     await router.push(`/mypage/interview/${id}`);
   };
   const handleFeedbackBtnClicked = async () => {};
 
+  const questionVisible = joinStatus === 2 || joinStatus === 3;
+  const feedbackVisible = joinStatus === 4;
   const buttonAttributes = [
     {
       name: "질문 관리",
@@ -34,7 +25,7 @@ const InterviewManageButton = ({
     },
     {
       name: "피드백",
-      isVisible: true,
+      isVisible: feedbackVisible,
       onClick: handleFeedbackBtnClicked,
       /* postData?.recruitStatus !== undefined && postData?.recruitStatus === 1,*/
       /* 모의 면접 종료 후 */

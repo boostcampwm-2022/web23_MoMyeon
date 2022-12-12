@@ -16,8 +16,6 @@ function Header() {
 
   const { data, isError, error } = useUserDataQuery();
   const userData: UserData = { profile: null, nickname: null };
-  userData.nickname = data?.data.profile;
-  userData.profile = data?.data.nickname;
 
   if (!isError) {
     userData.nickname = data?.data.nickname;

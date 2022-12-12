@@ -3,8 +3,6 @@ import { useState, useRef, useEffect } from "react";
 import { Device } from "mediasoup-client";
 import io from "socket.io-client";
 import { MuteButton } from "components/button/muteButton.component";
-import { ConfigType } from "@stitches/react/types/config";
-import Media = ConfigType.Media;
 
 const MediasoupVideo = ({
   roomName,

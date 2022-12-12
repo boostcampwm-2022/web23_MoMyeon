@@ -8,6 +8,7 @@ import InterviewUser from "components/interviewUser/interviewUser.component";
 import dynamic from "next/dynamic";
 import postFeedback from "utils/api/feedbackCreate/postFeedback";
 import { usePostPageStatusCheck } from "utils/hooks/usePostPageStatus/usePostPageStatusCheck";
+import { Feedback } from "../../components/feedback/feedback.component";
 
 const QAContainer = dynamic(
   () => import("components/question/qaContainer.component"),
@@ -39,6 +40,8 @@ export default function Room({ roomName }: any) {
   const router = useRouter();
   const [isLeft, setIsLeft] = useState(false);
   const [isHost, _] = usePostPageStatusCheck(roomName);
+  const [isFeedbackStarted, setIsFeedbackStarted] = useState(false);
+
   const handleClickExitBtn = () => {
     if (window.confirm("나가시겠습니까?")) {
       setIsLeft(true);
@@ -46,9 +49,12 @@ export default function Room({ roomName }: any) {
     }
   };
 
-  const handleFeedbackBtn = () => {
+  const handleFeedbackBtn = async () => {
     if (isHost) {
-      postFeedback({ roomId: roomName });
+      await postFeedback({ roomId: roomName });
+      setIsFeedbackStarted(true);
+    } else {
+      alert("호스트만 이동이 가능합니다 !");
     }
     window.localStorage.clear();
   };
@@ -60,22 +66,33 @@ export default function Room({ roomName }: any) {
           <MediasoupVideo roomName={roomName} isLeft={isLeft} />
         </div>
         <div className={styles.utilContainer}>
-          <InterviewUser id={roomName} />
-          <div className={styles.resumeWrapper}>
-            <Suspense fallback={<Loading />}>
-              <Resume id={roomName} />
-            </Suspense>
-          </div>
-          <div className={styles.questionWrapper}>
-            <Suspense fallback={<Loading />}>
-              <QAContainer id={roomName} />
-            </Suspense>
-          </div>
+          {!isFeedbackStarted ? (
+            <>
+              <InterviewUser id={roomName} />
+              <div className={styles.resumeWrapper}>
+                <Suspense fallback={<Loading />}>
+                  <Resume id={roomName} />
+                </Suspense>
+              </div>
+              <div className={styles.questionWrapper}>
+                <Suspense fallback={<Loading />}>
+                  <QAContainer id={roomName} />
+                </Suspense>
+              </div>
+            </>
+          ) : (
+            <Feedback roomName={roomName} />
+          )}
           <div className={styles.routerButtonContainer}>
-            <button onClick={handleFeedbackBtn} className={styles.feedbackBtn}>
-              {" "}
-              피드백 가기{" "}
-            </button>
+            {!isFeedbackStarted && (
+              <button
+                onClick={handleFeedbackBtn}
+                className={styles.feedbackBtn}
+              >
+                {" "}
+                피드백 가기{" "}
+              </button>
+            )}
             <button className={styles.exitBtn} onClick={handleClickExitBtn}>
               나가기
             </button>

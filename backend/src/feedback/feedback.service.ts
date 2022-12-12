@@ -99,6 +99,8 @@ export class FeedbackService {
       });
       await this.feedbackRepository.save(feedbacks);
 
+      await this.redis.del(`question:${interviewId}`);
+
       return feedbacks.length;
     } catch (err) {
       console.error(err);

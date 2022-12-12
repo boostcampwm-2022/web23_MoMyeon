@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import createMyResume from "utils/api/createMyResume";
+import createMyResume from "utils/api/myResume/createMyResume";
 const useMyResumeCreate = () => {
   const queryClient = useQueryClient();
   const { data, isLoading, error, mutate } = useMutation(createMyResume, {

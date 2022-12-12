@@ -16,7 +16,7 @@ function Answer({ id, type, feedback, focus, username, userId }: Answer) {
   const room = router.query.room as string;
 
   const textRef = useRef<null | HTMLTextAreaElement>(null);
-  const localKey = `${userId}:${username}:${type}:${id}`;
+  const localKey = `${userId}:${username}:${type}:${id}:${room}`;
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (textRef.current) {
       textRef.current.value = e.target.value;

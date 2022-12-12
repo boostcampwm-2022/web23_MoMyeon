@@ -24,11 +24,14 @@ export class InterviewGuard implements CanActivate {
       id: interviewId,
     });
 
-    if (!interview) throw new NotFoundException('면접 정보 없음');
+    if (!interview) throw new NotFoundException('면접 정보가 없습니다.');
 
     const interviewStatus: InterviewStatus = interview.status;
     if (interviewStatus === InterviewStatus.ENDED) {
       throw new ForbiddenException('이미 마감된 모의면접입니다.');
+    }
+    if (interviewStatus === InterviewStatus.FEEDBACK) {
+      throw new ForbiddenException('이미 종료된 모의면접입니다.');
     }
     return true;
   }

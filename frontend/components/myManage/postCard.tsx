@@ -35,6 +35,9 @@ function PostCard({ id, title, category }: Props) {
   const onClickFeedback = useCallback(() => {
     console.log("feedback");
   }, []);
+  const onClickTitle = useCallback(() => {
+    router.push(`/post/${id}`);
+  }, []);
 
   const button = [
     { title: "면접시작", func: onClickStart },
@@ -45,7 +48,9 @@ function PostCard({ id, title, category }: Props) {
   return (
     <BoxContainer width="60rem" height="10rem">
       <div className={styles.header}>
-        <div className={styles.title}>{title}</div>
+        <div className={styles.title} onClick={onClickTitle}>
+          {title}
+        </div>
         {category?.map((item) => {
           const { id, name } = item;
           return <CategoryComponent key={id} text={name} />;

@@ -2,7 +2,8 @@
 .container {
   @include common.flexRow;
   padding-inline: 2rem;
-  min-width: 50rem;
+  overflow: auto;
+  padding-bottom: 2rem;
 }
 
 .user {

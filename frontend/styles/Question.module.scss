@@ -30,8 +30,9 @@
   border: none;
   width: 45rem;
   height: 17rem;
-  margin-left: 5rem;
+  margin-left: 4rem;
   margin-block: 2rem;
+  padding-right: 1rem;
   display: none;
   font-family: "LINE Seed Sans KR", monospace;
   font-size: 14px;
@@ -48,6 +49,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding-right: 3rem;
 }
 
 .textContainer:hover {

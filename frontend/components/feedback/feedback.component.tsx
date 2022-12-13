@@ -1,13 +1,15 @@
-import styles from "styles/feedback.module.scss";
+import styles from "styles/Feedback.module.scss";
 import { useFeedbackQuery } from "utils/hooks/useFeeedbackQuery";
 import { useEffect, useState } from "react";
 import { useUserDataQuery } from "../../utils/hooks/useUserDataQuery";
 import { FeedbackFilterHeader } from "./feedbackFilterHeader.component";
-import { FeedbackData } from "types/feedback";
-import { FeedbackItem } from "./feedbackItem.component";
+import { FeedbackData, FeedbackQuestionData } from "types/feedback";
+import { FeedbackItemSend } from "./feedbackItemSend.component";
+import { FeedbackItemRecv } from "./feedbackItemRecv.component";
 
 const Feedback = ({ roomName }: { roomName: string }) => {
   const { data, isError, isSuccess } = useFeedbackQuery(roomName);
+
   const {
     data: userData,
     isSuccess: isUserDataSuccess,
@@ -30,6 +32,25 @@ const Feedback = ({ roomName }: { roomName: string }) => {
       const otherFeedbacksData: FeedbackData[] = feedbacksData.filter(
         (feedbackData) => feedbackData.userName !== userData?.data.nickname
       );
+
+      if (myFeedbacksData.length >= 1) {
+        const sortedQuestions: FeedbackQuestionData[] =
+          myFeedbacksData[0]?.question.filter(
+            (questionData) =>
+              questionData.feedback !== "" &&
+              questionData.nickname !== userData?.data.nickname
+          );
+
+        const processed = sortedQuestions.reduce((acc: any, item) => {
+          const group = item.nickname;
+          if (!acc[group]) acc[group] = [];
+          acc[group].push(item);
+          return acc;
+        }, {});
+
+        console.log(processed);
+      }
+
       setMyFeedbacksState(myFeedbacksData);
       setOtherFeedbacksState(otherFeedbacksData);
       setUserName(userData?.data.nickname);
@@ -50,29 +71,29 @@ const Feedback = ({ roomName }: { roomName: string }) => {
         isReceivedFeedback={isReceivedFeedback}
         setIsReceivedFeedback={setIsReceivedFeedback}
       />
-      {isReceivedFeedback
-        ? myFeedbacksState?.map((feedbackData: FeedbackData, idx: number) => {
-            return (
-              <FeedbackItem
-                key={idx}
-                feedbackData={feedbackData}
-                userName={userName}
-                isReceivedFeedback={isReceivedFeedback}
-              />
-            );
-          })
-        : otherFeedbacksState?.map(
-            (feedbackData: FeedbackData, idx: number) => {
+      <div className={styles.feedbackDataContainer}>
+        {isReceivedFeedback
+          ? myFeedbacksState?.map((feedbackData: FeedbackData, idx: number) => {
               return (
-                <FeedbackItem
+                <FeedbackItemRecv
                   key={idx}
                   feedbackData={feedbackData}
                   userName={userName}
-                  isReceivedFeedback={isReceivedFeedback}
                 />
               );
-            }
-          )}
+            })
+          : otherFeedbacksState?.map(
+              (feedbackData: FeedbackData, idx: number) => {
+                return (
+                  <FeedbackItemSend
+                    key={idx}
+                    feedbackData={feedbackData}
+                    userName={userName}
+                  />
+                );
+              }
+            )}
+      </div>
     </div>
   );
 };

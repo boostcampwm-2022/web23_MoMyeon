@@ -2,7 +2,7 @@ import React, { Suspense, useState } from "react";
 import { GetServerSideProps } from "next";
 import { usePreventBack } from "utils/hooks/usePreventBack";
 import { MediasoupVideo } from "components/mediasoupVideo/mediasoupVideo.component";
-import styles from "styles/room.module.scss";
+import styles from "styles/Room.module.scss";
 import { useRouter } from "next/dist/client/compat/router";
 import InterviewUser from "components/interviewUser/interviewUser.component";
 import dynamic from "next/dynamic";

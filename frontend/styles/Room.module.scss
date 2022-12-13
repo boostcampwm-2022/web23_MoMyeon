@@ -78,6 +78,10 @@
   padding-right: 1rem;
 }
 
+.resumeWrapper::-webkit-scrollbar-track{
+  background-color:none;
+}
+
 .questionWrapper {
   overflow-y: scroll;
   width: 32vw;
@@ -88,6 +92,10 @@
   border: 1px solid color.$GRAY;
   border-radius: 20px;
   padding-right: 1rem;
+}
+
+.questionWrapper::-webkit-scrollbar-track{
+  background-color:none;
 }
 
 .muteButtonContainer {

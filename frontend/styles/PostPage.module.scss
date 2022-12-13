@@ -128,8 +128,12 @@
   padding: 1.5rem;
   min-height: 2rem;
   min-width: 10rem;
-  font-size: 18px;
+  font-size: 15px;
   cursor: pointer;
+}
+
+.joinButton:hover {
+  filter: brightness(80%);
 }
 
 .postPageButton {
@@ -144,6 +148,10 @@
   cursor: pointer;
 }
 
+.postPageButton:hover {
+  filter: brightness(80%);
+}
+
 .deleteButton {
   margin-top: 5rem;
   margin-left: auto;
@@ -156,6 +164,10 @@
   font-size: 15px;
   min-height: 2rem;
   min-width: 8em;
+}
+
+.deleteButton:hover {
+  filter: brightness(80%);
 }
 
 .contents {
@@ -179,4 +191,5 @@
 .inActive {
   background-color: #777777;
   cursor: default;
+  filter: brightness(100%);
 }

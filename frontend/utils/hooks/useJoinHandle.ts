@@ -12,15 +12,12 @@ export default function useJoinHandle({
   }
   const { data, isLoading, isError } = usePostPageUserStatusQuery(postId);
   const [, setJoinStatus] = joinStatustState();
-  if (isError) {
-    throw new Error("error");
-  }
+
   // 0: 신청가능단계,  1:모집완료단계 , 2: 내가 참여할때 (참여 불가능) 3:내가 참여할때(참여 가능), 4:인터뷰끝남(피드백)
   useEffect(() => {
     // 호스트 X
     if (data) {
       const { isHost, isStart, userStatus, interviewStatus } = data.data;
-      console.log(isHost, isStart, userStatus, interviewStatus);
       if (interviewStatus === 2) {
         setJoinStatus(4);
         return;
@@ -51,5 +48,12 @@ export default function useJoinHandle({
         return;
       }
     }
+    setJoinStatus(5);
   }, [data]);
+
+  useEffect(() => {
+    return () => {
+      setJoinStatus(-1);
+    };
+  }, []);
 }

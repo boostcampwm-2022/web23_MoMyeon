@@ -5,7 +5,7 @@ import Image from "next/image";
 import modalExit from "public/icon/modalExit.png";
 import github from "public/icon/github.png";
 import { ViewProps, ModalProps } from "./loginModal";
-import { loginModatState } from "states/loginModal";
+import { loginModalState } from "states/loginModal";
 
 Modal.setAppElement("div");
 
@@ -44,7 +44,7 @@ const LoginView = ({ setVisible }: ViewProps) => {
 };
 
 function LoginModal() {
-  const [visible, setVisible] = loginModatState();
+  const [visible, setVisible] = loginModalState();
   const onCloseModal = () => {
     setVisible(false);
   };

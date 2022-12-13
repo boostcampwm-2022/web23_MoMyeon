@@ -9,8 +9,8 @@ const loginModalSet = () => {
   return useSetRecoilState(loginModal);
 };
 
-const loginModatState = () => {
+const loginModalState = () => {
   return useRecoilState(loginModal);
 };
 
-export { loginModal, loginModalSet, loginModatState };
+export { loginModal, loginModalSet, loginModalState };

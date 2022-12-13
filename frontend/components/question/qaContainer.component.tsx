@@ -23,14 +23,11 @@ function QAContainer({ id }: { id: string }) {
     <div>
       <div>{filtered.userName}</div>
 
-      {filtered.question.map((item: any) => {
+      {filtered.question.map((item: any, index: number) => {
+        const { type, id, userId } = item;
+        const key = `${id}${type}${index}${userId}`;
         return (
-          <QAPair
-            key={`${item.id}${filtered.userName}`}
-            username={userName}
-            userId={userId}
-            data={item}
-          />
+          <QAPair key={key} username={userName} userId={userId} data={item} />
         );
       })}
     </div>

@@ -1,17 +1,18 @@
 import styles from "styles/room.module.scss";
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { Device } from "mediasoup-client";
 import io from "socket.io-client";
 import { MuteButton } from "components/button/muteButton.component";
-import { ConfigType } from "@stitches/react/types/config";
-import Media = ConfigType.Media;
+import { feedbackStartedState } from "states/feedbackStarted";
 
 const MediasoupVideo = ({
   roomName,
   isLeft,
+  isHost,
 }: {
   roomName: string;
   isLeft: boolean;
+  isHost: boolean;
 }) => {
   const socketRef = useRef<any>(null);
   const paramsRef = useRef<any>(null);
@@ -34,6 +35,8 @@ const MediasoupVideo = ({
   const producerIdToAudioIdxRef = useRef<any>({});
   const producerIdToVideoIdxRef = useRef<any>({});
 
+  const [isFeedbackStarted, setIsFeedbackStarted] = feedbackStartedState();
+
   useEffect(() => {
     let to = "http://localhost:8443";
     if (process.env.NEXT_PUBLIC_IS_DEPLOYMENT === "true") {
@@ -42,7 +45,7 @@ const MediasoupVideo = ({
     socketRef.current = io(to);
 
     socketRef.current.on("connection-success", ({ socketId }: any) => {
-      console.log(socketId);
+      //console.log(socketId);
       getLocalStream();
     });
 
@@ -63,9 +66,9 @@ const MediasoupVideo = ({
       );
 
       //remoteVideoRef 원래대로 되돌리기
-      console.log(`리모트, ${remoteProducerId}`);
-      console.log(producerIdToAudioIdxRef.current);
-      console.log(producerIdToVideoIdxRef.current);
+      //console.log(`리모트, ${remoteProducerId}`);
+      //console.log(producerIdToAudioIdxRef.current);
+      //console.log(producerIdToVideoIdxRef.current);
 
       const audioIdx = producerIdToAudioIdxRef.current[`${remoteProducerId}`];
       if (audioIdx !== undefined) {
@@ -79,9 +82,13 @@ const MediasoupVideo = ({
         delete producerIdToVideoIdxRef.current[`${remoteProducerId}`];
       }
 
-      console.log(producerIdToAudioIdxRef.current);
-      console.log(producerIdToVideoIdxRef.current);
-      -console.log(audioIdx, videoIdx);
+      //console.log(producerIdToAudioIdxRef.current);
+      //console.log(producerIdToVideoIdxRef.current);
+      //console.log(audioIdx, videoIdx);
+    });
+
+    socketRef.current.on("feedbackStarted", () => {
+      setIsFeedbackStarted(true);
     });
   }, []);
 
@@ -141,18 +148,19 @@ const MediasoupVideo = ({
         ...paramsRef.current,
       };
 
-      console.log("Params ref: ", paramsRef);
+      //console.log("Params ref: ", paramsRef);
 
       joinRoom();
     } catch (e) {
-      alert(e);
+      alert("오디오와 비디오 권한을 확인해 주세요.");
+      console.log(e);
     }
   };
 
   const joinRoom = () => {
-    console.log(socketRef.current, roomName);
+    //console.log(socketRef.current, roomName);
     socketRef.current.emit("join", { roomName }, (data: any) => {
-      console.log(`Router RTP Capabilities: ${data.rtpCapabilities}`);
+      //console.log(`Router RTP Capabilities: ${data.rtpCapabilities}`);
       rtpCapabilitiesRef.current = data.rtpCapabilities;
       createDevice();
     });
@@ -165,7 +173,7 @@ const MediasoupVideo = ({
         routerRtpCapabilities: rtpCapabilitiesRef.current,
       });
 
-      console.log(deviceRef.current.rtpCapabilities);
+      //console.log(deviceRef.current.rtpCapabilities);
       createSendTransport();
     } catch (error) {
       console.log(`디바이스 만들 때 에러: ${error}`);
@@ -176,9 +184,9 @@ const MediasoupVideo = ({
   };
 
   const getProducers = () => {
-    console.log("here?");
+    //console.log("here?");
     socketRef.current.emit("getProducers", (producerIds: any[]) => {
-      console.log("producer ids");
+      //console.log("producer ids");
       producerIds.forEach(signalNewConsumerTransport);
     });
   };
@@ -189,17 +197,17 @@ const MediasoupVideo = ({
       { consumer: false },
       ({ params }: any) => {
         if (params.error) {
-          console.log(params.error);
+          //console.log(params.error);
           return;
         }
-        console.log(params);
+        //console.log(params);
         producerTransportRef.current =
           deviceRef.current.createSendTransport(params);
 
         producerTransportRef.current.on(
           "connect",
           async ({ dtlsParameters }: any, callback: any, errorback: any) => {
-            console.log("dtlsParameters: ", dtlsParameters);
+            //console.log("dtlsParameters: ", dtlsParameters);
             try {
               await socketRef.current.emit("transport-connect", {
                 dtlsParameters: dtlsParameters,
@@ -227,7 +235,7 @@ const MediasoupVideo = ({
         producerTransportRef.current.on(
           "produce",
           async (parameters: any, callback: any, errorback: any) => {
-            console.log("produce parameters: ", parameters);
+            //console.log("produce parameters: ", parameters);
             try {
               await socketRef.current.emit(
                 "transport-produce",
@@ -237,7 +245,7 @@ const MediasoupVideo = ({
                   appData: parameters.appData,
                 },
                 ({ id, producersExist }: any) => {
-                  console.log("here", producersExist);
+                  //console.log("here", producersExist);
 
                   callback(id);
 
@@ -296,7 +304,7 @@ const MediasoupVideo = ({
           console.log(params.error);
           return;
         }
-        console.log(params);
+        //console.log(params);
 
         let consumerTransport = deviceRef.current.createRecvTransport(params);
 
@@ -326,7 +334,7 @@ const MediasoupVideo = ({
           }
         );
 
-        console.log(consumerTransport, remoteProducerId, params.id);
+        //console.log(consumerTransport, remoteProducerId, params.id);
 
         connectRecvTransport(consumerTransport, remoteProducerId, params.id);
       }
@@ -388,7 +396,7 @@ const MediasoupVideo = ({
             producerIdToAudioIdxRef.current[`${remoteProducerId}`] =
               emptyAudioRefIndexes[0];
 
-            console.log("오디오", producerIdToAudioIdxRef.current);
+            //console.log("오디오", producerIdToAudioIdxRef.current);
           }
         }
 
@@ -408,20 +416,9 @@ const MediasoupVideo = ({
               new MediaStream([track]);
             producerIdToVideoIdxRef.current[`${remoteProducerId}`] =
               emptyVideoRefIndexes[0];
-            console.log("비디오", producerIdToAudioIdxRef.current);
+            //console.log("비디오", producerIdToAudioIdxRef.current);
           }
         }
-
-        /*
-        if (params.kind === "audio") {
-          remoteAudioRef.current.filter(
-            (elem: any) => elem.srcObject === null
-          )[0].srcObject = new MediaStream([track]);
-        } else {
-          remoteVideoRef.current.filter(
-            (elem: any) => elem.srcObject === null
-          )[0].srcObject = new MediaStream([track]);
-        }*/
 
         socketRef.current.emit("consumer-resume", {
           serverConsumerId: params.serverConsumerId,
@@ -449,6 +446,12 @@ const MediasoupVideo = ({
     videoTrack.enabled = !videoTrack.enabled;
   };
 
+  useEffect(() => {
+    if (isFeedbackStarted && isHost) {
+      socketRef.current.emit("feedbackStarted");
+    }
+  }, [isFeedbackStarted]);
+
   //나가기 버튼을 누른 경우
   useEffect(() => {
     if (isLeft) {
@@ -456,6 +459,7 @@ const MediasoupVideo = ({
         .getTracks()
         .map((track: MediaStreamTrack) => track.stop());
       socketRef.current.close();
+      setIsFeedbackStarted(false);
     }
   }, [isLeft]);
 

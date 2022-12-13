@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import createMyQuestion from "utils/api/createMyQuestion";
+import createMyQuestion from "utils/api/myQuestion/createMyQuestion";
 
 const useMyQuestionCreate = () => {
   const queryClient = useQueryClient();

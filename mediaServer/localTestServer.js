@@ -81,6 +81,22 @@ io.on("connection", async (socket) => {
     return items;
   };
 
+  socket.on("feedbackStarted", () => {
+    const { roomName } = peers[socket.id];
+    try {
+      const peersSocketId = rooms[roomName].peers;
+
+      peersSocketId.map((peerSocketId) => {
+        if (peerSocketId !== socket.id) {
+          const peerSocket = peers[peerSocketId].socket;
+          peerSocket.emit("feedbackStarted");
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  });
+
   socket.on("disconnect", () => {
     // do some cleanup
     console.log("peer disconnected");
@@ -88,14 +104,20 @@ io.on("connection", async (socket) => {
     producers = removeItems(producers, socket.id, "producer");
     transports = removeItems(transports, socket.id, "transport");
 
-    const { roomName } = peers[socket.id];
-    delete peers[socket.id];
+    try {
+      const { roomName } = peers[socket.id];
+      delete peers[socket.id];
 
-    // remove socket from room
-    rooms[roomName] = {
-      router: rooms[roomName].router,
-      peers: rooms[roomName].peers.filter((socketId) => socketId !== socket.id),
-    };
+      // remove socket from room
+      rooms[roomName] = {
+        router: rooms[roomName].router,
+        peers: rooms[roomName].peers.filter(
+          (socketId) => socketId !== socket.id
+        ),
+      };
+    } catch (e) {
+      console.log(e);
+    }
   });
 
   socket.on("join", async ({ roomName }, callback) => {

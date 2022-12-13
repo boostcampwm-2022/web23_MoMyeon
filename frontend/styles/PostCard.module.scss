@@ -28,6 +28,11 @@
   cursor: pointer;
 }
 
+.container:hover {
+  background-color: aliceblue;
+  border: 2px solid color.$GRAY;
+}
+
 .title {
   margin-top: 4rem;
   margin-bottom: 0;

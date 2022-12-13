@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
 import { usePostPageUserStatusQuery } from "./usePostPageUserStatusQuery";
-
+interface postInfo {
+  isHost: boolean;
+  userStatus: number;
+  isStart: boolean;
+}
 const usePostPageStatusCheck = (
   id: string | undefined
-): [isHost: boolean, userStatus: number] => {
-  const [isHost, setIsHost] = useState<boolean>(false);
-  const [userStatus, setUserStatus] = useState<number>(0);
+): [isHost: boolean, userStatus: number, isStart: boolean] => {
+  const [postInfo, setPostInfo] = useState<postInfo>({
+    isHost: false,
+    userStatus: 0,
+    isStart: false,
+  });
+  const { isHost, userStatus, isStart } = postInfo;
+
   const { data, error, isError, isSuccess }: any =
     usePostPageUserStatusQuery(id);
 
   useEffect(() => {
-    if (isSuccess) {
-      setIsHost(data?.data.isHost);
-      setUserStatus(data?.data.userStatus);
+    if (isSuccess && data) {
+      const { isHost, userStatus, isStart } = data.data;
+      setPostInfo({ ...postInfo, isHost, userStatus, isStart });
     }
   }, [isSuccess]);
 
@@ -23,8 +32,7 @@ const usePostPageStatusCheck = (
       }
     }
   }, [isError]);
-
-  return [isHost, userStatus];
+  return [isHost, userStatus, isStart];
 };
 
 export { usePostPageStatusCheck };

@@ -94,7 +94,7 @@
   display: inline;
 }
 
-.categoryContainer{
+.categoryContainer {
   display: grid;
   width: 52rem;
   padding-top: 7rem;
@@ -105,7 +105,7 @@
   max-width: 100rem;
 }
 
-.categoryItem{
+.categoryItem {
   font-size: 18px;
   width: 10rem;
   color: grey;
@@ -133,7 +133,7 @@
 }
 
 .postPageButton {
-  background-color: color.$MAINCOLOR ;
+  background-color: color.$MAINCOLOR;
   color: color.$SUBCOLOR;
   border: none;
   border-radius: 3rem;
@@ -147,8 +147,8 @@
 .deleteButton {
   margin-top: 5rem;
   margin-left: auto;
-  background-color: #333333 ;
-  border: none ;
+  background-color: #333333;
+  border: none;
   border-right: 3rem;
   color: white;
   cursor: pointer;
@@ -174,4 +174,9 @@
 .nickName {
   font-size: 16px;
   color: darkcyan;
+}
+
+.inActive {
+  background-color: #777777;
+  cursor: default;
 }

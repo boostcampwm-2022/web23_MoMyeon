@@ -17,7 +17,7 @@ function QuestionContainer({ id }: { id: string }) {
   }
   const filtered = data?.filter((item) => item.userId === cur)[0];
   return (
-    <BoxContainer width="60rem" height="32rem">
+    <BoxContainer width="60rem" height="32rem" overflow>
       <div style={{ fontSize: "20px", alignSelf: "center" }}>
         {filtered?.userName}님의 질문 리스트
       </div>

@@ -7,6 +7,7 @@ interface Props {
   id: number;
   title: string;
   category: Category[];
+  status: number;
 }
 function CategoryComponent({ text }: { text: string }) {
   return <div className={styles.category}>#{text}</div>;
@@ -14,17 +15,26 @@ function CategoryComponent({ text }: { text: string }) {
 
 interface ButtonProps {
   text: string;
+  active: boolean;
   onClick: () => void;
 }
-function Button({ text, onClick }: ButtonProps) {
+function Button({ text, onClick, active }: ButtonProps) {
+  const onPressBtn = () => {
+    if (active) {
+      onClick();
+    }
+  };
   return (
-    <button className={styles.button} onClick={onClick}>
+    <button
+      className={`${styles.button} ${!active && styles.inActive}`}
+      onClick={onPressBtn}
+    >
       {text}
     </button>
   );
 }
 
-function PostCard({ id, title, category }: Props) {
+function PostCard({ id, title, category, status }: Props) {
   const router = useRouter();
   const onClickStart = useCallback(() => {
     router.push(`/room/${id}`);
@@ -33,15 +43,29 @@ function PostCard({ id, title, category }: Props) {
     router.push(`/mypage/interview/${id}`);
   }, []);
   const onClickFeedback = useCallback(() => {
-    console.log("feedback");
+    router.push(`/mypage/feedback/${id}`);
   }, []);
 
   const button = [
-    { title: "면접시작", func: onClickStart },
-    { title: "질문관리", func: onClickManage },
-    { title: "피드백", func: onClickFeedback },
+    {
+      title: status === 1 ? "면접시작" : status === 2 ? "면접완료" : "면접대기",
+      func: onClickStart,
+      valid: true,
+      active: status === 1,
+    },
+    {
+      title: "질문관리",
+      func: onClickManage,
+      valid: status !== 2,
+      active: true,
+    },
+    {
+      title: "피드백",
+      func: onClickFeedback,
+      valid: status === 2,
+      active: true,
+    },
   ];
-
   return (
     <BoxContainer width="60rem" height="10rem">
       <div className={styles.header}>
@@ -53,8 +77,12 @@ function PostCard({ id, title, category }: Props) {
       </div>
       <div className={styles.buttons}>
         {button?.map((item) => {
-          const { title, func } = item;
-          return <Button key={title} text={title} onClick={func} />;
+          const { title, func, valid, active } = item;
+          return (
+            valid && (
+              <Button key={title} active={active} text={title} onClick={func} />
+            )
+          );
         })}
       </div>
     </BoxContainer>

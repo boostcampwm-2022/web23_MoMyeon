@@ -46,6 +46,10 @@
   font-size: 16px;
 }
 
+.submitButton:hover {
+  filter: brightness(80%);
+}
+
 .textBox {
   width: 36rem;
   height: 10rem;

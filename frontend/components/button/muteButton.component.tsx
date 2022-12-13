@@ -1,4 +1,4 @@
-import styles from "styles/room.module.scss";
+import styles from "styles/Room.module.scss";
 import React, { useState } from "react";
 
 interface MuteButtonProps {

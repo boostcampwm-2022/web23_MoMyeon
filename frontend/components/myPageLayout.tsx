@@ -1,6 +1,6 @@
 import { PropsWithChildren, ReactNode } from "react";
 import Header from "components/header/header.component";
-import styles from "styles/myPageLayout.module.scss";
+import styles from "styles/MyPageLayout.module.scss";
 
 const MyPageLayout = ({
   children,

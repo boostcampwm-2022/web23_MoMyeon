@@ -1,4 +1,4 @@
-import styles from "styles/room.module.scss";
+import styles from "styles/Room.module.scss";
 import { useRef, useEffect } from "react";
 import { Device } from "mediasoup-client";
 import io from "socket.io-client";

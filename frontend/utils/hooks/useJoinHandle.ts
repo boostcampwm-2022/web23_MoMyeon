@@ -20,7 +20,7 @@ export default function useJoinHandle({
     // 호스트 X
     if (data) {
       const { isHost, isStart, userStatus, interviewStatus } = data.data;
-      console.log(isHost, isStart, userStatus, interviewStatus);
+
       if (interviewStatus === 2) {
         setJoinStatus(4);
         return;

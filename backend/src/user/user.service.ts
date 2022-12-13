@@ -105,6 +105,7 @@ export class UserService {
       .where('ui.status = 2 AND ui.userId = :userId', { userId: id })
       .orderBy('ui.created_at', 'DESC')
       .getRawMany();
+
     const userInterviewData = {
       host: [],
       guest: [],
@@ -115,6 +116,7 @@ export class UserService {
         title: element.interview_title,
         category: JSON.parse(element.interview_categoryList),
         applicationDate: element.ui_created_at,
+        status: element.interview_status,
       };
       if (element.interview_userId === id) {
         userInterviewData.host.push(interviewInfo);

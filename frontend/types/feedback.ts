@@ -4,6 +4,11 @@ export interface FeedbackData {
   question: FeedbackQuestionData[];
 }
 
+export interface ProcessedFeedbackData {
+  userName: string;
+  question: FeedbackQuestionData[];
+}
+
 export interface FeedbackQuestionData {
   contents: string;
   feedback: string;

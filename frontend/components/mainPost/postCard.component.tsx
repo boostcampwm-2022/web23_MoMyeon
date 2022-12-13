@@ -1,9 +1,10 @@
-import React from 'react';
-import { PostProp } from 'types/posts';
-import styles from 'styles/PostCard.module.scss';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { Category } from 'types/posts';
+import React from "react";
+import { PostProp } from "types/posts";
+import styles from "styles/PostCard.module.scss";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { Category } from "types/posts";
+import { mainScrollState } from "states/mainScroll";
 
 function PostCard({ post }: PostProp) {
   const {
@@ -16,8 +17,9 @@ function PostCard({ post }: PostProp) {
     profile,
   } = post;
   const router = useRouter();
-
+  const [, setScroll] = mainScrollState();
   const handlePostCardClick = async () => {
+    setScroll(window.scrollY);
     await router.push(`/post/${interview_id}`);
   };
 

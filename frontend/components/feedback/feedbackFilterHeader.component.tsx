@@ -1,4 +1,4 @@
-import styles from "styles/feedback.module.scss";
+import styles from "styles/Feedback.module.scss";
 import { Dispatch, SetStateAction } from "react";
 
 const FeedbackFilterHeader = ({

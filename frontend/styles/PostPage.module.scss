@@ -36,6 +36,7 @@
   display: flex;
   justify-content: space-between;
   padding: 2rem 0;
+  max-height: 10rem;
 }
 
 .titleInfoCenter {
@@ -96,13 +97,12 @@
 
 .categoryContainer {
   display: grid;
-  width: 52rem;
-  padding-top: 7rem;
-  padding-bottom: 3rem;
-  grid-template-columns: repeat(4, 1fr);
+  overflow: auto;
+  max-width: 52rem;
+  padding : 5rem 0;
+  grid-template-columns: repeat(5, 1fr);
   column-gap: 3rem;
   row-gap: 3rem;
-  max-width: 100rem;
 }
 
 .categoryItem {

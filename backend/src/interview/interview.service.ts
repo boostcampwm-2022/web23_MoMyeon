@@ -52,6 +52,8 @@ export class InterviewService {
     'interview.created_at AS date',
     'interview.categoryList AS category',
     'user.nickname AS host',
+    'interview.current_member AS currentMember',
+    'user.profile AS profile',
   ];
 
   async create(createInterviewDto: CreateInterviewDto) {

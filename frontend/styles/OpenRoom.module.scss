@@ -51,3 +51,7 @@
   margin-bottom: 1rem;
   cursor: pointer;
 }
+
+.muteButton:hover {
+  filter: brightness(80%);
+}

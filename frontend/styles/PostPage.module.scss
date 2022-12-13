@@ -128,8 +128,12 @@
   padding: 1.5rem;
   min-height: 2rem;
   min-width: 10rem;
-  font-size: 18px;
+  font-size: 15px;
   cursor: pointer;
+}
+
+.joinButton:hover {
+  filter: brightness(80%);
 }
 
 .postPageButton {
@@ -144,6 +148,10 @@
   cursor: pointer;
 }
 
+.postPageButton:hover {
+  filter: brightness(80%);
+}
+
 .deleteButton {
   margin-top: 5rem;
   margin-left: auto;
@@ -151,16 +159,21 @@
   border: none;
   border-right: 3rem;
   color: white;
-  cursor: pointer;
   padding: 1.5rem;
   font-size: 15px;
   min-height: 2rem;
   min-width: 8em;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  filter: brightness(80%);
 }
 
 .contents {
   line-height: 4rem;
   font-size: 15px;
+  word-break: break-word;
 }
 
 .nickNameContainer {
@@ -179,4 +192,5 @@
 .inActive {
   background-color: #777777;
   cursor: default;
+  filter: brightness(100%);
 }

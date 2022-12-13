@@ -54,6 +54,7 @@
   font-size: 16px;
   padding: 1rem;
   background-color: color.$SUBCOLOR;
+  word-break: break-word;
 }
 
 .answer {
@@ -62,4 +63,5 @@
   font-size: 16px;
   list-style: square;
   background-color: color.$SUBCOLOR;
+  word-break: break-word;
 }

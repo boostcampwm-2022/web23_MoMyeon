@@ -191,5 +191,8 @@
 .inActive {
   background-color: #777777;
   cursor: default;
+}
+
+.inActive:hover {
   filter: brightness(100%);
 }

@@ -8,6 +8,7 @@ import { FeedbackItem } from "./feedbackItem.component";
 
 const Feedback = ({ roomName }: { roomName: string }) => {
   const { data, isError, isSuccess } = useFeedbackQuery(roomName);
+
   const {
     data: userData,
     isSuccess: isUserDataSuccess,

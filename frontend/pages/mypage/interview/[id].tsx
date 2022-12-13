@@ -1,6 +1,5 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import Header from "components/header/header.component";
 import InterviewUser from "components/interviewUser/interviewUser.component";
 import QuestionContainer from "components/myInterviewQuestion/QuestionContainer.component";
 import styles from "styles/MypageInterview.module.scss";
@@ -10,7 +9,6 @@ import { MyPageLayout } from "components/myPageLayout";
 function Interview({ id }: { id: string }) {
   return (
     <MyPageLayout>
-      <Header />
       <div className={styles.container}>
         <InterviewUser id={id} />
         <div className={styles.rowContainer}>

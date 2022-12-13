@@ -1,4 +1,6 @@
 import { PropsWithChildren, ReactNode } from "react";
+import Header from "components/header/header.component";
+import styles from "styles/myPageLayout.module.scss";
 
 const MyPageLayout = ({
   children,
@@ -6,7 +8,10 @@ const MyPageLayout = ({
   children: PropsWithChildren<ReactNode>;
 }) => {
   return (
-    <div style={{ minHeight: "100vh", padding: "4rem 0" }}>{children}</div>
+    <div className={styles.layout}>
+      <Header />
+      {children}
+    </div>
   );
 };
 

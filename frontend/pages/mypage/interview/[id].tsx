@@ -6,9 +6,10 @@ import QuestionContainer from "components/myInterviewQuestion/QuestionContainer.
 import styles from "styles/MypageInterview.module.scss";
 import CreateQuestion from "components/myInterviewQuestion/createQuestion.component";
 import MyQuestion from "components/myInterviewQuestion/myQuestion.component";
+import { MyPageLayout } from "components/myPageLayout";
 function Interview({ id }: { id: string }) {
   return (
-    <>
+    <MyPageLayout>
       <Header />
       <div className={styles.container}>
         <InterviewUser id={id} />
@@ -18,7 +19,7 @@ function Interview({ id }: { id: string }) {
         </div>
         <CreateQuestion roomId={id} />
       </div>
-    </>
+    </MyPageLayout>
   );
 }
 

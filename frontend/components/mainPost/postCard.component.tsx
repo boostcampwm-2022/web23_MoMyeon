@@ -1,13 +1,20 @@
-import React from "react";
-import { PostProp } from "types/posts";
-import styles from "styles/PostCard.module.scss";
-import userImage from "public/icon/user.png";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { Category } from "types/posts";
+import React from 'react';
+import { PostProp } from 'types/posts';
+import styles from 'styles/PostCard.module.scss';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { Category } from 'types/posts';
 
 function PostCard({ post }: PostProp) {
-  const { interview_id, title, category, maxMember, host } = post;
+  const {
+    interview_id,
+    title,
+    category,
+    currentMember,
+    maxMember,
+    host,
+    profile,
+  } = post;
   const router = useRouter();
 
   const handlePostCardClick = async () => {
@@ -29,10 +36,12 @@ function PostCard({ post }: PostProp) {
       </div>
       <div className={styles.footer}>
         <div className={styles.user}>
-          <Image src={userImage} alt="user" width={30} height={30} />
+          <Image src={profile} alt="user" width={30} height={30} />
           <p> {host} </p>
         </div>
-        <p>최대 {maxMember}명</p>
+        <p>
+          {currentMember}/{maxMember}명
+        </p>
       </div>
     </div>
   );

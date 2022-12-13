@@ -1,34 +1,41 @@
-import { FeedbackData, FeedbackQuestionData } from "types/feedback";
+import { ProcessedFeedbackData } from "types/feedback";
 import styles from "styles/Feedback.module.scss";
 
 const FeedbackItemRecv = ({
-  feedbackData,
-  userName,
+  processedFeedbackData,
 }: {
-  feedbackData: FeedbackData;
+  processedFeedbackData: ProcessedFeedbackData[] | undefined;
   userName: string;
 }) => {
   return (
-    <ul className={styles.sendContainer}>
-      <li className={styles.sendHeader}> 나에게 온 피드백 </li>
-      {feedbackData.question?.map(
-        (questionData: FeedbackQuestionData, question_idx: number) => {
-          if (questionData.feedback === "") {
-            /* 피드백 내용이 없으면 */ return;
-          }
-          if (questionData.nickname === userName) {
-            /* 나에게 온 피드백이면서 내가 쓴 피드백이라면 */ return;
-          }
-          return (
-            <ul className={styles.qaHeader} key={question_idx}>
-              <li> {questionData.nickname}님의 피드백 </li>
-              <li className={styles.question}> {questionData.contents} </li>
-              <li className={styles.answer}> {questionData.feedback} </li>
-            </ul>
-          );
-        }
-      )}
-    </ul>
+    <>
+      {processedFeedbackData?.map((processedFeedbackData, idx) => {
+        return (
+          <ul className={styles.sendContainer} key={idx}>
+            <li className={styles.sendHeader}>
+              {" "}
+              {processedFeedbackData.userName}님의 피드백{" "}
+            </li>
+            {processedFeedbackData.question?.map(
+              (feedbackQuestionData, question_idx) => {
+                return (
+                  <ul className={styles.qaHeader} key={question_idx}>
+                    <li className={styles.question}>
+                      {" "}
+                      {feedbackQuestionData.contents}{" "}
+                    </li>
+                    <li className={styles.answer}>
+                      {" "}
+                      {feedbackQuestionData.feedback}{" "}
+                    </li>
+                  </ul>
+                );
+              }
+            )}
+          </ul>
+        );
+      })}
+    </>
   );
 };
 

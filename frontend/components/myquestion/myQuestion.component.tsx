@@ -4,7 +4,7 @@ import styles from "styles/MypageQuestion.module.scss";
 import { useMyQuestionQuery } from "utils/hooks/useMyQuestion/useMyQuestionQuery";
 import CreateQuestion from "./createQuestion.component";
 import QuestionContainer from "./questionContainer.component";
-import { MyPageBackButton } from "../button/myPageBackButton.component";
+
 function MyQuestion() {
   const { data, isLoading, error } = useMyQuestionQuery();
   return (

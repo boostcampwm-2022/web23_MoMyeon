@@ -5,12 +5,14 @@ import userImage from "public/icon/user.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Category } from "types/posts";
+import { mainScrollState } from "states/mainScroll";
 
 function PostCard({ post }: PostProp) {
   const { interview_id, title, category, maxMember, host } = post;
   const router = useRouter();
-
+  const [, setScroll] = mainScrollState();
   const handlePostCardClick = async () => {
+    setScroll(window.scrollY);
     await router.push(`/post/${interview_id}`);
   };
 

@@ -3,6 +3,7 @@ import { Category as CategoryGet } from './category';
 export interface Post {
   interview_id: number;
   title: string;
+  recruitStatus: number;
   currentMember: number;
   maxMember: number;
   contact: string;

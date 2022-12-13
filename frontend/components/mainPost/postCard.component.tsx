@@ -11,6 +11,7 @@ function PostCard({ post }: PostProp) {
     interview_id,
     title,
     category,
+    recruitStatus,
     currentMember,
     maxMember,
     host,
@@ -42,7 +43,7 @@ function PostCard({ post }: PostProp) {
           <p> {host} </p>
         </div>
         <p>
-          {currentMember}/{maxMember}명
+          {recruitStatus > 0 ? `모집마감` : `${currentMember}/${maxMember}명`}
         </p>
       </div>
     </div>

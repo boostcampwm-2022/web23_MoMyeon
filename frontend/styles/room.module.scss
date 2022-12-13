@@ -12,9 +12,9 @@
 
 .layout {
   position: absolute;
-  padding-top: 2vh;
   display: flex;
   column-gap: 3vh;
+  padding-right: 1rem;
 }
 
 .videoContainer {
@@ -65,6 +65,7 @@
 .utilContainer {
   max-width: 32vw;
   max-height: 88vh;
+  padding-right: 1rem;
 }
 
 .resumeWrapper {
@@ -76,6 +77,7 @@
   padding-inline: 2rem;
   border: 1px solid color.$GRAY;
   border-radius: 20px;
+  padding-right: 1rem;
 }
 
 .questionWrapper {
@@ -87,6 +89,7 @@
   padding-inline: 2rem;
   border: 1px solid color.$GRAY;
   border-radius: 20px;
+  padding-right: 1rem;
 }
 
 .muteButtonContainer {

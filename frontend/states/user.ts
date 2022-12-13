@@ -1,4 +1,9 @@
-import { atom, useSetRecoilState, useRecoilValue } from "recoil";
+import {
+  atom,
+  useSetRecoilState,
+  useRecoilValue,
+  useRecoilState,
+} from "recoil";
 
 const interviewUser = atom<number>({
   key: "interviewUser",
@@ -12,4 +17,13 @@ const interviewUserValue = () => {
   return useRecoilValue(interviewUser);
 };
 
-export { interviewUser, interviewUserSet, interviewUserValue };
+const interviewUserState = () => {
+  return useRecoilState(interviewUser);
+};
+
+export {
+  interviewUser,
+  interviewUserSet,
+  interviewUserValue,
+  interviewUserState,
+};

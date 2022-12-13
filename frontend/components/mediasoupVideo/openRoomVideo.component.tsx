@@ -1,19 +1,10 @@
-import styles from "styles/Room.module.scss";
+import styles from "styles/OpenRoom.module.scss";
 import { useRef, useEffect } from "react";
 import { Device } from "mediasoup-client";
 import io from "socket.io-client";
 import { MuteButton } from "components/button/muteButton.component";
-import { feedbackStartedState } from "states/feedbackStarted";
 
-const MediasoupVideo = ({
-  roomName,
-  isLeft,
-  isHost,
-}: {
-  roomName: string;
-  isLeft: boolean;
-  isHost: boolean;
-}) => {
+const OpenRoomVideo = ({ roomName }: { roomName: string }) => {
   const socketRef = useRef<any>(null);
   const paramsRef = useRef<any>(null);
   const localMediaRef = useRef<any>(null);
@@ -34,8 +25,6 @@ const MediasoupVideo = ({
   const producerIdRef = useRef<any>(null);
   const producerIdToAudioIdxRef = useRef<any>({});
   const producerIdToVideoIdxRef = useRef<any>({});
-
-  const [isFeedbackStarted, setIsFeedbackStarted] = feedbackStartedState();
 
   useEffect(() => {
     let to = "http://localhost:8443";
@@ -85,10 +74,6 @@ const MediasoupVideo = ({
       //console.log(producerIdToAudioIdxRef.current);
       //console.log(producerIdToVideoIdxRef.current);
       //console.log(audioIdx, videoIdx);
-    });
-
-    socketRef.current.on("feedbackStarted", () => {
-      setIsFeedbackStarted(true);
     });
   }, []);
 
@@ -446,23 +431,6 @@ const MediasoupVideo = ({
     videoTrack.enabled = !videoTrack.enabled;
   };
 
-  useEffect(() => {
-    if (isFeedbackStarted && isHost) {
-      socketRef.current.emit("feedbackStarted");
-    }
-  }, [isFeedbackStarted]);
-
-  //나가기 버튼을 누른 경우
-  useEffect(() => {
-    if (isLeft) {
-      localMediaRef.current.srcObject
-        .getTracks()
-        .map((track: MediaStreamTrack) => track.stop());
-      socketRef.current.close();
-      setIsFeedbackStarted(false);
-    }
-  }, [isLeft]);
-
   return (
     <div className={styles.videoContainer}>
       <div>
@@ -478,7 +446,7 @@ const MediasoupVideo = ({
           />
         </div>
       </div>
-      {[0, 1, 2, 3, 4].map((remote) => {
+      {Array.from(Array(29).keys()).map((remote) => {
         return (
           <div key={remote}>
             <audio
@@ -504,4 +472,4 @@ const MediasoupVideo = ({
   );
 };
 
-export { MediasoupVideo };
+export { OpenRoomVideo };

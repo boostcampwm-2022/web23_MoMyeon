@@ -159,4 +159,25 @@ export class FeedbackService {
 
     return { feedbacks: result };
   }
+
+  pushFeedbacks(data: any) {
+    try {
+      const test: Object = {
+        interviewId: 1,
+        question_type: 1,
+        question_id: 1,
+        content: data,
+        user_from: 1,
+        user_to: 1,
+        user_fromName: 1,
+        user_toName: 1,
+        questionContent: data,
+      };
+      const feedbacks = this.feedbackRepository.create(test);
+      this.feedbackRepository.save(feedbacks);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }

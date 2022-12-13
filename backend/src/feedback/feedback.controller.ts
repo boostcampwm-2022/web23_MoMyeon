@@ -46,4 +46,10 @@ export class FeedbackController {
   getAllFeedbacks(@Param('interviewId') interviewId: string) {
     return this.feedbackService.getAllFeedbacks(+interviewId);
   }
+
+  @Get()
+  pushFeedbacks() {
+    const data = new Date();
+    return this.feedbackService.pushFeedbacks(data);
+  }
 }

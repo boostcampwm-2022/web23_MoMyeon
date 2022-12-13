@@ -33,6 +33,7 @@ const Feedback = ({ roomName }: { roomName: string }) => {
       setMyFeedbacksState(myFeedbacksData);
       setOtherFeedbacksState(otherFeedbacksData);
       setUserName(userData?.data.nickname);
+      window.localStorage.clear();
     }
   }, [isSuccess, isUserDataSuccess]);
 

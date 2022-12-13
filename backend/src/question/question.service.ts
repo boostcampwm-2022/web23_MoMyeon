@@ -145,10 +145,15 @@ export class QuestionService {
       return questions;
     }
 
-    // 한 명이라도 종합 질문 조회하면 마감
-    await this.interviewRepository.update(interviewId, {
-      status: InterviewStatus.ENDED,
+    // 한 명이라도 종합 질문 조회하면 마감\
+    const [interview] = await this.interviewRepository.findBy({
+      id: interviewId,
     });
+    if (interview.status !== InterviewStatus.FEEDBACK) {
+      await this.interviewRepository.update(interviewId, {
+        status: InterviewStatus.ENDED,
+      });
+    }
 
     // 1. 면접 분야 심플해당 파트에서 랜덤으로 가져오기
     const categoryData = await this.interviewCategoryRepository

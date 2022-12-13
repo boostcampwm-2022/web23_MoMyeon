@@ -24,6 +24,10 @@
   height: 90%;
 }
 
+.scrollY::-webkit-scrollbar-track{
+  background-color:none;
+}
+
 .resumeTitle {
   font-size: 14px;
   margin-bottom: 2rem;

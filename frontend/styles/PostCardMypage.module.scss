@@ -51,5 +51,8 @@
 .inActive {
   cursor: default;
   background-color: #bababa;
+}
+
+.inActive:hover {
   filter: brightness(100%);
 }

@@ -9,6 +9,11 @@
   border: 1px solid color.$GRAY;
   border-radius: 20px;
 }
+
+.outContainer::-webkit-scrollbar-track{
+  background-color:none;
+}
+
 .container {
   @include common.flexRow;
   align-items: center;

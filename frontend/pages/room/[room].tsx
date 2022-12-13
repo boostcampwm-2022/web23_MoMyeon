@@ -53,11 +53,7 @@ export default function Room({ roomName }: any) {
 
   const handleFeedbackBtn = async () => {
     if (isHost) {
-      if (
-        confirm(
-          "더 이상 피드백을 작성할 수 없습니다.\n모든 사용자가 피드백을 완료 했는지 확인해 주세요."
-        )
-      ) {
+      if (confirm("피드백을 시작하시겠습니까?")) {
         await postFeedback({ roomId: roomName });
         setIsFeedbackStarted(true);
       }

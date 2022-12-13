@@ -26,6 +26,7 @@ export function InterviewJoinButtonComponent({
     "신청완료",
     "참여하기",
     "면접완료",
+    "신청하기",
   ];
   const handleJoinClick = async () => {
     if (joinStatus === 0 && postId) {
@@ -34,6 +35,9 @@ export function InterviewJoinButtonComponent({
 
     if (joinStatus === 3) {
       await router.replace(`../room/${postId}`);
+    }
+    if (joinStatus === 5) {
+      setLoginModalVisible(true);
     }
   };
 

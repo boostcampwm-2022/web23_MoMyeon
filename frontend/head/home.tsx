@@ -11,7 +11,7 @@ function HomeHead() {
       />
       <meta
         name="keywords"
-        content="면졉, 모의면접, interview, 코딩, IT, IT기업, 네이버, 카카오, 라인"
+        content="모두의 면접, 면졉, 모의면접, interview, 코딩, IT, IT기업, 네이버, 카카오, 라인, 백엔드, 프론트엔드, CS"
       />
       <meta name="og:site_name" content="모두의 면접" />
       <meta name="og:title" content="IT기업 모의 면접" />

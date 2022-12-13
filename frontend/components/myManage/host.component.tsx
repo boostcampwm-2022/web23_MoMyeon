@@ -10,9 +10,11 @@ function Host({ data }: Props) {
       <Title text="내가 만든 모의 면접" />
       <div className={styles.scroll}>
         {data?.map((item) => {
-          const { title, interview_id, category } = item;
+          const { title, interview_id, category, status } = item;
+
           return (
             <PostCard
+              status={status}
               key={interview_id}
               id={interview_id}
               title={title}

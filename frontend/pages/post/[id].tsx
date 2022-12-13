@@ -14,7 +14,6 @@ import { InterviewManageButton } from "components/button/interviewManageButton.c
 import { PostPageApplyList } from "../../components/postPageApplyList/postPageApplyList";
 import useJoinHandle from "utils/hooks/useJoinHandle";
 import { usePostPageStatusCheck } from "utils/hooks/usePostPageStatus/usePostPageStatusCheck";
-
 const PostPage = ({ postData }: { postData: PostData | null }) => {
   const router = useRouter();
 
@@ -43,7 +42,7 @@ const PostPage = ({ postData }: { postData: PostData | null }) => {
 
   return (
     <div className={styles.postPageContainer}>
-      <PostPageHead />
+      <PostPageHead postData={postData} />
       <Header />
       <div className={styles.postContainer}>
         <section className={styles.titleContainer}>

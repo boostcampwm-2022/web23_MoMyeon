@@ -9,8 +9,9 @@ import { GetServerSideProps, NextPage } from "next";
 import { GithubCodeProps } from "types/auth";
 import { CategoryProps, Category, CategoryParentProps } from "types/category";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useGithubLoginMutation } from "../utils/hooks/useGithubLoginMutation";
+import { mainScrollState } from "states/mainScroll";
 import { useRouter } from "next/router";
 
 const Home: NextPage<GithubCodeProps & CategoryProps & CategoryParentProps> = ({
@@ -20,7 +21,8 @@ const Home: NextPage<GithubCodeProps & CategoryProps & CategoryParentProps> = ({
 }) => {
   const mutation = useGithubLoginMutation();
   const router = useRouter();
-
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [scroll] = mainScrollState();
   useEffect(() => {
     if (code !== null) {
       mutation.mutate(code);
@@ -38,8 +40,13 @@ const Home: NextPage<GithubCodeProps & CategoryProps & CategoryParentProps> = ({
     reload();
   }, [mutation.isSuccess]);
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      window.scrollTo(0, scroll);
+    }
+  }, [scrollRef.current]);
   return (
-    <div className={styles.main}>
+    <div ref={scrollRef} className={styles.main}>
       <HomeHead />
       <Header />
       <CategoryContainer category={category} categoryKey={categoryKey} />

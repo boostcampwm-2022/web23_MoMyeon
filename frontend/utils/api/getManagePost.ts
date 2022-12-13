@@ -9,6 +9,7 @@ export interface Post {
   interview_id: number;
   title: string;
   category: Category[];
+  status: number;
   applicationDate: string;
 }
 interface Category {

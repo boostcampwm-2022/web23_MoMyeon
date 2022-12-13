@@ -44,7 +44,12 @@
   cursor: pointer;
 }
 
+.button:hover {
+  filter: brightness(80%);
+}
+
 .inActive {
   cursor: default;
   background-color: #bababa;
+  filter: brightness(100%);
 }

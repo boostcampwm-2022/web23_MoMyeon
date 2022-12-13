@@ -11,6 +11,10 @@
   border-radius: 20px;
 }
 
+.container::-webkit-scrollbar-track{
+  background-color:none;
+}
+
 .text {
   font-size: 16px;
   margin-left: 1.1rem;

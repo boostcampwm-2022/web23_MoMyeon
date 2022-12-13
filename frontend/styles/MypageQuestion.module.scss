@@ -17,6 +17,10 @@
   margin-top: 4rem;
 }
 
+.questionContainer::-webkit-scrollbar-track{
+  background-color:none;
+}
+
 .createQuestion {
   width: 55rem;
   height: 12rem;

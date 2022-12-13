@@ -1,4 +1,5 @@
 import { FeedbackData, FeedbackQuestionData } from "types/feedback";
+import styles from "styles/Feedback.module.scss";
 
 const FeedbackItemSend = ({
   feedbackData,
@@ -8,8 +9,11 @@ const FeedbackItemSend = ({
   userName: string;
 }) => {
   return (
-    <ul>
-      <li> {feedbackData.userName}에게 쓴 피드백 </li>
+    <ul className={styles.sendContainer}>
+      <li className={styles.sendHeader}>
+        {" "}
+        {feedbackData.userName}에게 쓴 피드백{" "}
+      </li>
       {feedbackData.question?.map(
         (questionData: FeedbackQuestionData, question_idx: number) => {
           if (questionData.feedback === "") {
@@ -21,9 +25,9 @@ const FeedbackItemSend = ({
           }
 
           return (
-            <ul key={question_idx}>
-              <li> 질문: {questionData.contents} </li>
-              <li> 피드백: {questionData.feedback} </li>
+            <ul className={styles.qaHeader} key={question_idx}>
+              <li className={styles.question}> {questionData.contents} </li>
+              <li className={styles.answer}> {questionData.feedback} </li>
             </ul>
           );
         }

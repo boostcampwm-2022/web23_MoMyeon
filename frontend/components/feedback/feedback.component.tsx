@@ -3,7 +3,7 @@ import { useFeedbackQuery } from "utils/hooks/useFeeedbackQuery";
 import { useEffect, useState } from "react";
 import { useUserDataQuery } from "../../utils/hooks/useUserDataQuery";
 import { FeedbackFilterHeader } from "./feedbackFilterHeader.component";
-import { FeedbackData } from "types/feedback";
+import { FeedbackData, FeedbackQuestionData } from "types/feedback";
 import { FeedbackItemSend } from "./feedbackItemSend.component";
 import { FeedbackItemRecv } from "./feedbackItemRecv.component";
 
@@ -32,6 +32,25 @@ const Feedback = ({ roomName }: { roomName: string }) => {
       const otherFeedbacksData: FeedbackData[] = feedbacksData.filter(
         (feedbackData) => feedbackData.userName !== userData?.data.nickname
       );
+
+      if (myFeedbacksData.length >= 1) {
+        const sortedQuestions: FeedbackQuestionData[] =
+          myFeedbacksData[0]?.question.filter(
+            (questionData) =>
+              questionData.feedback !== "" &&
+              questionData.nickname !== userData?.data.nickname
+          );
+
+        const processed = sortedQuestions.reduce((acc: any, item) => {
+          const group = item.nickname;
+          if (!acc[group]) acc[group] = [];
+          acc[group].push(item);
+          return acc;
+        }, {});
+
+        console.log(processed);
+      }
+
       setMyFeedbacksState(myFeedbacksData);
       setOtherFeedbacksState(otherFeedbacksData);
       setUserName(userData?.data.nickname);

@@ -20,6 +20,20 @@ function HomeHead() {
         content="모두가 쉽게 모의 면접을 모집하고 화상채팅 기능을 통해 모의면접을 실시한다"
       />
       <meta name="og:type" content="website" />
+      <link
+        rel="preload"
+        href="LINESeedSansKR-Rg.woff2"
+        as="font"
+        type="font/woff2"
+        crossOrigin="anonymous"
+      />
+      <link
+        rel="preload"
+        href="LINESeedSansKR-Bd.woff2"
+        as="font"
+        type="font/woff2"
+        crossOrigin="anonymous"
+      />
     </Head>
   );
 }

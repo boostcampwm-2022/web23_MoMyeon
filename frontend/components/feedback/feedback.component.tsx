@@ -113,6 +113,7 @@ const Feedback = ({
           <FeedbackItemRecv
             processedFeedbackData={myFeedbacksState}
             userName={userName}
+            isMyPage={isMyPage}
           />
         ) : (
           otherFeedbacksState?.map(
@@ -122,6 +123,7 @@ const Feedback = ({
                   key={idx}
                   feedbackData={feedbackData}
                   userName={userName}
+                  isMyPage={isMyPage}
                 />
               );
             }

@@ -3,7 +3,6 @@
 .createPageContainer {
   min-height: 100vh;
   padding: 4rem 0;
-
 }
 
 .createContainer {
@@ -37,6 +36,7 @@
     -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
+    font-display: swap;
   }
 
   textarea {
@@ -48,6 +48,7 @@
     border: 1px solid #cccccc;
     border-radius: 5px;
     padding: 0.7rem;
+    font-display: swap;
   }
 }
 

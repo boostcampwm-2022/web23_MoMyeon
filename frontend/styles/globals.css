@@ -29,6 +29,28 @@ a {
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: "LINE Seed Sans KR";
+  src: local("LINE Seed Sans KR Regular"),
+    url("../public/LINESeedSansKR-Rg.woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "LINE Seed Sans KR";
+  src: local("LINE Seed Sans KR Bold"), url("../public/LINESeedSansKR-Bd.woff2");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "LINE Seed Sans KR";
+  src: local("LINE Seed Sans KR Thin"), url("../public/LINESeedSansKR-Th.woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
 /*
 @media (prefers-color-scheme: dark) {
   html {
@@ -40,24 +62,3 @@ a {
   }
 }
 */
-
-@font-face {
-  font-family: "LINE Seed Sans KR";
-  src: url("../public/fonts/lineSeedSansKR/LINESeedSansKR-Rg.woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "LINE Seed Sans KR";
-  src: url("../public/fonts/lineSeedSansKR/LINESeedSansKR-Bd.woff2");
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "LINE Seed Sans KR";
-  src: url("../public/fonts/lineSeedSansKR/LINESeedSansKR-Th.woff2");
-  font-weight: 300;
-  font-style: normal;
-}

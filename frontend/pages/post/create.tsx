@@ -6,6 +6,7 @@ import Head from "next/head";
 import { GetServerSideProps, NextPage } from "next";
 import { useUserDataQuery } from "../../utils/hooks/useUserDataQuery";
 import { useRouter } from "next/router";
+import Title from "../../components/title";
 
 const Create: NextPage = () => {
   const { isLoading, isError } = useUserDataQuery();
@@ -31,9 +32,7 @@ const Create: NextPage = () => {
         <title>모두의 면접</title>
       </Head>
       <div className={styles.createContainer}>
-        <div className={styles.titleWrapper}>
-          <h2> 모의 면접 모집 </h2>
-        </div>
+        <Title text={"모의 면접 모집"} />
         <CreatePostForm />
       </div>
     </div>

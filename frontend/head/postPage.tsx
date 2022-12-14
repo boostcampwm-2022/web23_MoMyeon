@@ -18,7 +18,7 @@ function PostPageHead({ postData }: { postData: PostData | null }) {
   };
   return (
     <Head>
-      <title>모두의 면접</title>
+      <title>{postData?.title}</title>
       <meta name="description" content={title} />
       <meta name="keywords" content={CategoryToString(category)} />
       <meta name="og:site_name" content="모두의 면접" />

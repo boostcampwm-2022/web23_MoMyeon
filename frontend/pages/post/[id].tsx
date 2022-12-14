@@ -14,6 +14,7 @@ import { InterviewManageButton } from "components/button/interviewManageButton.c
 import { PostPageApplyList } from "../../components/postPageApplyList/postPageApplyList";
 import useJoinHandle from "utils/hooks/useJoinHandle";
 import { usePostPageStatusCheck } from "utils/hooks/usePostPageStatus/usePostPageStatusCheck";
+import Head from "next/head";
 const PostPage = ({ postData }: { postData: PostData | null }) => {
   const router = useRouter();
 

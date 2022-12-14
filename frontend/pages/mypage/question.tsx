@@ -5,7 +5,7 @@ import { MyPageLayout } from "components/myPageLayout";
 
 const Question: NextPage = () => {
   return (
-    <MyPageLayout>
+    <MyPageLayout pageTitle={"모면: 내 질문"}>
       <MyQuestion />
     </MyPageLayout>
   );

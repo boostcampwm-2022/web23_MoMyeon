@@ -4,7 +4,7 @@ import MyManage from "components/myManage/myManage.component";
 import { MyPageLayout } from "components/myPageLayout";
 const Manage: NextPage = () => {
   return (
-    <MyPageLayout>
+    <MyPageLayout pageTitle={"모면: 면접 관리"}>
       <MyManage />
     </MyPageLayout>
   );

@@ -1,4 +1,5 @@
 import styles from "styles/Feedback.module.scss";
+import myPageStyles from "styles/MyPageFeedback.module.scss";
 import { useFeedbackQuery } from "utils/hooks/useFeeedbackQuery";
 import { useEffect, useState } from "react";
 import { useUserDataQuery } from "../../utils/hooks/useUserDataQuery";
@@ -11,7 +12,13 @@ import {
 import { FeedbackItemSend } from "./feedbackItemSend.component";
 import { FeedbackItemRecv } from "./feedbackItemRecv.component";
 
-const Feedback = ({ roomName }: { roomName: string }) => {
+const Feedback = ({
+  roomName,
+  isMyPage,
+}: {
+  roomName: string;
+  isMyPage: boolean;
+}) => {
   const { data, isError, isSuccess } = useFeedbackQuery(roomName);
 
   const {
@@ -89,12 +96,19 @@ const Feedback = ({ roomName }: { roomName: string }) => {
   }
 
   return (
-    <div className={styles.backdrop}>
+    <div className={isMyPage ? myPageStyles.backdrop : styles.backdrop}>
       <FeedbackFilterHeader
         isReceivedFeedback={isReceivedFeedback}
         setIsReceivedFeedback={setIsReceivedFeedback}
+        isMyPage={isMyPage}
       />
-      <div className={styles.feedbackDataContainer}>
+      <div
+        className={
+          isMyPage
+            ? myPageStyles.feedbackDataContainer
+            : styles.feedbackDataContainer
+        }
+      >
         {isReceivedFeedback ? (
           <FeedbackItemRecv
             processedFeedbackData={myFeedbacksState}

@@ -85,7 +85,7 @@ export default function Room({ roomName }: any) {
               </div>
             </>
           ) : (
-            <Feedback roomName={roomName} />
+            <Feedback roomName={roomName} isMyPage={false} />
           )}
           <div className={styles.routerButtonContainer}>
             {!isFeedbackStarted && (

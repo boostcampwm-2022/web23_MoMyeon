@@ -159,4 +159,36 @@ export class FeedbackService {
 
     return { feedbacks: result };
   }
+
+  async saveFeedbackMysql(
+    interviewId: number,
+    saveFeedbackDto: SaveFeedbackDto,
+    userData: UserInfo,
+  ) {
+    const {
+      userId: toId,
+      nickname: toName,
+      type,
+      questionId,
+      feedback,
+    } = saveFeedbackDto;
+    const { id: fromId, nickname: fromName } = userData;
+    const [question] = await this.selectQuestionRepository(type).findBy({
+      id: questionId,
+    });
+
+    const created = this.feedbackRepository.create({
+      interviewId,
+      question_type: type,
+      question_id: questionId,
+      content: feedback,
+      user_from: fromId,
+      user_to: toId,
+      user_fromName: fromName,
+      user_toName: toName,
+      questionContent: question.content,
+    });
+    await this.feedbackRepository.save(created);
+    return true;
+  }
 }

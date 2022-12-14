@@ -34,6 +34,60 @@ export class FeedbackController {
     return { message: 'success' };
   }
 
+  @Get('test-redis/:interviewId')
+  async saveFeedbackTestRedis(
+    @Param('interviewId') interviewId: string,
+    // @Body() saveFeedbackDto: SaveFeedbackDto,
+  ) {
+    const saveFeedbackDto: SaveFeedbackDto = {
+      userId: 1,
+      nickname: 'test',
+      type: 1,
+      questionId: 1,
+      feedback: 'test',
+    };
+    const userData: UserInfo = {
+      id: 1,
+      oauth_provider: 'github',
+      oauth_uid: '123',
+      nickname: 'test',
+      profile: 'test',
+    };
+    await this.feedbackService.saveFeedback(
+      +interviewId,
+      saveFeedbackDto,
+      userData,
+    );
+    return { message: 'success' };
+  }
+
+  @Get('test-mysql/:interviewId')
+  async saveFeedbackTestMysql(
+    @Param('interviewId') interviewId: string,
+    // @Body() saveFeedbackDto: SaveFeedbackDto,
+  ) {
+    const saveFeedbackDto: SaveFeedbackDto = {
+      userId: 1,
+      nickname: 'test',
+      type: 1,
+      questionId: 1,
+      feedback: 'test',
+    };
+    const userData: UserInfo = {
+      id: 1,
+      oauth_provider: 'github',
+      oauth_uid: '123',
+      nickname: 'test',
+      profile: 'test',
+    };
+    await this.feedbackService.saveFeedbackMysql(
+      +interviewId,
+      saveFeedbackDto,
+      userData,
+    );
+    return { message: 'success' };
+  }
+
   @Post(':interviewId')
   @UseGuards(JwtGuard, HostGuard)
   async saveAllFeedback(@Param('interviewId') interviewId: string) {

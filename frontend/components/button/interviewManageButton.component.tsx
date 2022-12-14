@@ -11,7 +11,9 @@ const InterviewManageButton = ({ id }: { id: string | undefined }) => {
   const handleQuestionBtnClicked = async () => {
     await router.push(`/mypage/interview/${id}`);
   };
-  const handleFeedbackBtnClicked = async () => {};
+  const handleFeedbackBtnClicked = async () => {
+    await router.push(`/mypage/feedback/${id}`);
+  };
 
   const questionVisible = joinStatus === 2 || joinStatus === 3;
   const feedbackVisible = joinStatus === 4;
@@ -44,7 +46,7 @@ const InterviewManageButton = ({ id }: { id: string | undefined }) => {
           <li className={styles.postButtonLi} key={attribute.name}>
             <button
               className={styles.postPageButton}
-              onClick={handleQuestionBtnClicked}
+              onClick={attribute.onClick}
             >
               {" "}
               {attribute.name}{" "}

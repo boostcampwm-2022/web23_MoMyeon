@@ -59,7 +59,7 @@ function PostCard({ id, title, category, status }: Props) {
     {
       title: "질문관리",
       func: onClickManage,
-      valid: status !== 2,
+      valid: status === 0,
       active: true,
     },
     {

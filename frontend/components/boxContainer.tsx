@@ -1,4 +1,6 @@
 import React, { PropsWithChildren } from "react";
+import styles from "styles/BoxContainer.module.scss";
+
 interface Shape {
   width: string;
   height: string;
@@ -12,17 +14,11 @@ function BoxContainer({
 }: PropsWithChildren & Shape) {
   return (
     <div
+      className={styles.container}
       style={{
-        display: "flex",
-        flexDirection: "column",
         width,
         height,
-        paddingBlock: "2rem",
-        paddingInline: "2rem",
-        border: "1px solid #D0D0D0",
-        borderRadius: "20px",
-        marginTop: "4rem",
-        overflowY: overflow ? "scroll" : "hidden",
+        overflowY: overflow ? "auto" : "hidden",
       }}
     >
       {children}

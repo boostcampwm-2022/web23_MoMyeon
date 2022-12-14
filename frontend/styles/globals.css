@@ -10,14 +10,14 @@ body {
 
 textarea {
   font-family: "LINE Seed Sans KR", -apple-system, BlinkMacSystemFont, Segoe UI,
-  Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-  sans-serif;
+    Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+    sans-serif;
 }
 
 input {
   font-family: "LINE Seed Sans KR", -apple-system, BlinkMacSystemFont, Segoe UI,
-  Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-  sans-serif;
+    Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+    sans-serif;
 }
 
 a {
@@ -40,7 +40,6 @@ a {
   }
 }
 */
-
 
 @font-face {
   font-family: "LINE Seed Sans KR";

@@ -8,7 +8,7 @@ import MyQuestion from "components/myInterviewQuestion/myQuestion.component";
 import { MyPageLayout } from "components/myPageLayout";
 function Interview({ id }: { id: string }) {
   return (
-    <MyPageLayout>
+    <MyPageLayout pageTitle={"모면: 면접 질문 관리 "}>
       <div className={styles.container}>
         <InterviewUser id={id} />
         <div className={styles.rowContainer}>

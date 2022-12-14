@@ -1,19 +1,26 @@
 import styles from "styles/Feedback.module.scss";
+import myPageStyles from "styles/MyPageFeedback.module.scss";
 import { Dispatch, SetStateAction } from "react";
 
 const FeedbackFilterHeader = ({
   isReceivedFeedback,
   setIsReceivedFeedback,
+  isMyPage,
 }: {
   isReceivedFeedback: boolean;
   setIsReceivedFeedback: Dispatch<SetStateAction<boolean>>;
+  isMyPage: boolean;
 }) => {
   const handleFilterClicked = (isReceived: boolean) => {
     setIsReceivedFeedback(isReceived);
   };
 
   return (
-    <div className={styles.filterContainer}>
+    <div
+      className={
+        isMyPage ? myPageStyles.filterContainer : styles.filterContainer
+      }
+    >
       <div
         className={`${styles.filter} ${
           !isReceivedFeedback && styles.focusBottom

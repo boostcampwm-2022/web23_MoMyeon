@@ -1,0 +1,88 @@
+@use "_color";
+@use "_common";
+
+.backdrop {
+  width: 50vw;
+  height: 100vh;
+}
+
+.titleContainer {
+  width: 50vw;
+  padding: 1.4rem;
+  border-bottom: 1px solid color.$GRAY;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.myPageFeedbackContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.filterContainer {
+  @include common.flexRow;
+  justify-content: space-evenly;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  background-color: color.$SUBCOLOR;
+}
+
+.filter {
+  cursor: pointer;
+  padding: 0.6rem;
+  margin-right: 5rem;
+  font-size: 16px;
+}
+
+.focusBottom {
+  color: color.$MAINCOLOR;
+  border-bottom: 4px solid color.$MAINCOLOR;
+}
+
+.feedbackDataContainer {
+  padding-right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 94%;
+}
+
+.sendContainer {
+  list-style: none;
+  padding-left: 1rem;
+  padding-right: 3rem;
+  border: solid 1px mediumaquamarine;
+}
+
+.sendHeader {
+  font-size: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 2rem;
+}
+
+.qaHeader {
+  padding: 2rem 2rem 2rem 4rem;
+}
+
+.question {
+  font-size: 16px;
+  padding: 1rem;
+  background-color: color.$SUBCOLOR;
+  word-break: break-word;
+}
+
+.answer {
+  padding: 1rem 1rem 1rem 2rem;
+  margin-top: 1rem;
+  font-size: 16px;
+  list-style: square;
+  background-color: color.$SUBCOLOR;
+  word-break: break-word;
+}

@@ -15,7 +15,7 @@ const InterviewManageButton = ({ id }: { id: string | undefined }) => {
     await router.push(`/mypage/feedback/${id}`);
   };
 
-  const questionVisible = joinStatus === 2 || joinStatus === 3;
+  const questionVisible = joinStatus === 2;
   const feedbackVisible = joinStatus === 4;
   const buttonAttributes = [
     {

@@ -6,7 +6,7 @@
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   //padding-left: 1rem;
 }
 
@@ -30,9 +30,8 @@
   width: 20vw;
   height: 40vh;
   background-color: #333333;
-  --webkit-transform:rotateY(180deg);
+  --webkit-transform: rotateY(180deg);
 }
-
 
 .routerButtonContainer {
   padding: 1rem;
@@ -68,7 +67,7 @@
 }
 
 .resumeWrapper {
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 32vw;
   height: 30vh;
   padding-block: 2rem;
@@ -76,14 +75,34 @@
   border: 1px solid color.$GRAY;
   border-radius: 20px;
   padding-right: 1rem;
+  /* 스크롤바 설정*/
+  &::-webkit-scrollbar {
+    /*  스크롤바 막대 너비 설정 */
+    width: 6px;
+  }
+
+  /* 스크롤바 막대 설정*/
+  &::-webkit-scrollbar-thumb {
+    /* 스크롤바 막대 높이 설정    */
+    height: 5rem;
+    background-color: color.$GRAY;
+    /* 스크롤바 둥글게 설정    */
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: rgba(226, 226, 226, 0);
+  }
 }
 
-.resumeWrapper::-webkit-scrollbar-track{
-  background-color:none;
+.resumeWrapper::-webkit-scrollbar-track {
+  background-color: none;
 }
 
 .questionWrapper {
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 32vw;
   height: 46vh;
   margin-top: 2vh;
@@ -92,10 +111,30 @@
   border: 1px solid color.$GRAY;
   border-radius: 20px;
   padding-right: 1rem;
+  /* 스크롤바 설정*/
+  &::-webkit-scrollbar {
+    /*  스크롤바 막대 너비 설정 */
+    width: 6px;
+  }
+
+  /* 스크롤바 막대 설정*/
+  &::-webkit-scrollbar-thumb {
+    /* 스크롤바 막대 높이 설정    */
+    height: 5rem;
+    background-color: color.$GRAY;
+    /* 스크롤바 둥글게 설정    */
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: rgba(226, 226, 226, 0);
+  }
 }
 
-.questionWrapper::-webkit-scrollbar-track{
-  background-color:none;
+.questionWrapper::-webkit-scrollbar-track {
+  background-color: none;
 }
 
 .muteButtonContainer {

@@ -1,0 +1,32 @@
+@use "_color";
+
+.container {
+  display: "flex";
+  flex-direction: "column";
+  padding-block: 2rem;
+  padding-inline: 2rem;
+  border: 1px solid #d0d0d0;
+  border-radius: 20px;
+  margin-top: 4rem;
+  /* 스크롤바 설정*/
+  &::-webkit-scrollbar {
+    /*  스크롤바 막대 너비 설정 */
+    width: 6px;
+  }
+
+  /* 스크롤바 막대 설정*/
+  &::-webkit-scrollbar-thumb {
+    /* 스크롤바 막대 높이 설정    */
+    height: 5rem;
+    background-color: color.$GRAY;
+    /* 스크롤바 둥글게 설정    */
+    border-radius: 10px;
+  }
+
+  /* 스크롤바 뒷 배경 설정*/
+  &::-webkit-scrollbar-track {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: rgba(226, 226, 226, 0);
+  }
+}

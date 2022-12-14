@@ -18,7 +18,7 @@ export default function useJoinHandle({
     // 호스트 X
     if (data) {
       const { isHost, isStart, userStatus, interviewStatus } = data.data;
-      if (interviewStatus === 2) {
+      if (interviewStatus === 2 && userStatus === 2) {
         setJoinStatus(4);
         return;
       }
@@ -27,7 +27,10 @@ export default function useJoinHandle({
         return;
       }
       // 신청 끝, 내가 신청못함
-      if (interviewStatus === 1 && userStatus === 0) {
+      if (
+        (interviewStatus === 1 || interviewStatus === 2) &&
+        userStatus === 0
+      ) {
         setJoinStatus(1);
         return;
       }

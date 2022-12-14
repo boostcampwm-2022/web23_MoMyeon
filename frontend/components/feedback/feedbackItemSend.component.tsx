@@ -1,16 +1,21 @@
 import { FeedbackData, FeedbackQuestionData } from "types/feedback";
 import styles from "styles/Feedback.module.scss";
+import myPageStyles from "styles/MyPageFeedback.module.scss";
 
 const FeedbackItemSend = ({
   feedbackData,
   userName,
+  isMyPage,
 }: {
   feedbackData: FeedbackData;
   userName: string;
+  isMyPage: boolean;
 }) => {
   return (
-    <ul className={styles.sendContainer}>
-      <li className={styles.sendHeader}>
+    <ul
+      className={isMyPage ? myPageStyles.sendContainer : styles.sendContainer}
+    >
+      <li className={isMyPage ? myPageStyles.sendHeader : styles.sendHeader}>
         {" "}
         {feedbackData.userName}에게 쓴 피드백{" "}
       </li>
@@ -25,9 +30,20 @@ const FeedbackItemSend = ({
           }
 
           return (
-            <ul className={styles.qaHeader} key={question_idx}>
-              <li className={styles.question}> {questionData.contents} </li>
-              <li className={styles.answer}> {questionData.feedback} </li>
+            <ul
+              className={isMyPage ? myPageStyles.qaHeader : styles.qaHeader}
+              key={question_idx}
+            >
+              <li
+                className={isMyPage ? myPageStyles.question : styles.question}
+              >
+                {" "}
+                {questionData.contents}{" "}
+              </li>
+              <li className={isMyPage ? myPageStyles.answer : styles.answer}>
+                {" "}
+                {questionData.feedback}{" "}
+              </li>
             </ul>
           );
         }

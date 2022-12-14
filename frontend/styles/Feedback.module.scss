@@ -36,7 +36,8 @@
   list-style: none;
   padding-left: 1rem;
   padding-right: 3rem;
-  border: solid 1px mediumaquamarine;
+  border: 1px solid #d0d0d0;
+  border-radius: 20px;
 }
 
 .sendHeader {
@@ -48,6 +49,7 @@
 
 .qaHeader {
   padding: 2rem 2rem 2rem 4rem;
+  list-style: none;
 }
 
 .question {
@@ -58,10 +60,10 @@
 }
 
 .answer {
-  padding: 1rem 1rem 1rem 2rem;
+  padding: 3rem 2rem 2rem 2rem;
   margin-top: 1rem;
   font-size: 16px;
-  list-style: square;
-  background-color: color.$SUBCOLOR;
   word-break: break-word;
+  background-color: color.$SUBCOLOR;
+  min-height: 20vh;
 }

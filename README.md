@@ -3,10 +3,11 @@
 ## 프로젝트명
 ![https://user-images.githubusercontent.com/106823684/201805789-52ef3a88-13cd-4b58-9f85-fb7da8f1fa13.png](https://user-images.githubusercontent.com/106823684/201805789-52ef3a88-13cd-4b58-9f85-fb7da8f1fa13.png)
 
+### [[모면 바로가기](https://www.momyeon.site/)]
+
 ### 🐬 개발자 대상 온라인 모의면접 서비스
 
 ### ✏️ 게시글을 등록하여 함께 모의 면접을 연습할 사람을 모아요
-
 
 ### 🌟 모의 면접 중에 피드백을 작성할 수 있고, 서로의 피드백을 확인할 수 있어요
 
@@ -61,5 +62,6 @@
 - 별도의 가입 없이 서비스를 사용 가능
 - 서버 확장성을 고려하여 JWT 토큰을 사용
 
-
-### [데모 링크](https://www.momyeon.site/)
+# 📚 고민의 흔적
+- [검색엔진 최적화를 위한 길 - 성능을 중점으로](https://www.notion.so/1bf776048d284140b9dfd97b56843690)
+- [Redis로 요청을 빠르게 처리하기](https://www.notion.so/Redis-0ce4c87685cf4e7d89f25ee6c63977a2)

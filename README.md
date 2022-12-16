@@ -63,5 +63,5 @@
 - 서버 확장성을 고려하여 JWT 토큰을 사용
 
 # 📚 고민의 흔적
-- [검색엔진 최적화를 위한 길 - 성능을 중점으로](https://www.notion.so/1bf776048d284140b9dfd97b56843690)
-- [Redis로 요청을 빠르게 처리하기](https://www.notion.so/Redis-0ce4c87685cf4e7d89f25ee6c63977a2)
+- [검색엔진 최적화를 위한 길 - 성능을 중점으로](https://github.com/boostcampwm-2022/web23_MoMyeon/wiki/%EA%B2%80%EC%83%89%EC%97%94%EC%A7%84-%EC%B5%9C%EC%A0%81%ED%99%94%EB%A5%BC-%EC%9C%84%ED%95%9C-%EA%B8%B8:-%EC%84%B1%EB%8A%A5%EC%9D%84-%EC%A4%91%EC%A0%90%EC%9C%BC%EB%A1%9C)
+- [Redis로 요청을 빠르게 처리하기](https://github.com/boostcampwm-2022/web23_MoMyeon/wiki/Redis%EB%A1%9C-%EC%9A%94%EC%B2%AD%EC%9D%84-%EB%B9%A0%EB%A5%B4%EA%B2%8C-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0)

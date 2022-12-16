@@ -27,7 +27,7 @@
 
 
 # ⚙ 아키텍쳐
-![](https://user-images.githubusercontent.com/75475398/206688956-24bf6b8d-a8cb-4803-b52b-b3817d61d666.png)
+![](https://user-images.githubusercontent.com/106823684/206896037-4a9f94d7-b465-4d69-b0ed-04f63ea0c3f4.png)
 
 
 # 🖥️ 화면구성
